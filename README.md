@@ -1,0 +1,1 @@
+# minecraft-wiki-discord-bot
