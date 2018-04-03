@@ -1,7 +1,4 @@
 const Discord = require('discord.js');
-const fs = require('fs');
-
-const config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
 var client = new Discord.Client();
 
@@ -46,7 +43,7 @@ client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.member;
 	var channel = msg.channel;
-	if (author.id != client.user.id && cont.startsWith(config.prefix)) {
+	if (author.id != client.user.id && cont.startsWith(process.env.prefix)) {
 		var invoke = cont.split(' ')[1];
 		var args = cont.split(' ').slice(2);
 		var space = '';
@@ -80,4 +77,4 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 });
 
 
-client.login(config.token);
+client.login(process.env.token);
