@@ -1,0 +1,15 @@
+{
+  "name": "wiki-bot",
+  "version": "1.0.0",
+  "description": "Discord-Bot für den Server des Minecraft Wiki (DE)",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js debug",
+    "start": "node main.js"
+  },
+  "author": "MarkusRost",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
+}
