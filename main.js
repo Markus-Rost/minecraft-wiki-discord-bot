@@ -18,7 +18,9 @@ var cmdmap = {
 }
 
 function cmd_say(msg, args) {
-	msg.channel.send(args.join(' '));
+	if (msg.author.id == process.env.owner) {
+		msg.channel.send(args.join(' '));
+	}
 	msg.delete();
 }
 
