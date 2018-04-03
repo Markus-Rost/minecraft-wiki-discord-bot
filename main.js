@@ -6,7 +6,7 @@ var client = new Discord.Client();
 
 client.on('ready', () => {
 	console.log('Erfolgreich als ' + client.user.username + ' angemeldet!');
-	client.user.setActivity('Minecraft Wiki!')
+	client.user.setActivity('Minecraft Wiki');
 });
 
 
