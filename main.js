@@ -20,11 +20,16 @@ var cmdmap = {
 function cmd_say(msg, args) {
 	if (msg.author.id == process.env.owner) {
 		msg.channel.send(args.join(' '));
+		msg.delete();
+	} else {
+		var space = '';
+		if (args.length) space = '_';
+		msg.channel.send('https://minecraft-de.gamepedia.com/say' + space + args.join('_'));
 	}
-	msg.delete();
 }
 
 function cmd_test(msg, args) {
+	msg.reply('Ganz ruhig, ich bin ja schon wach!');
 	console.log('Dies ist ein Test!');
 }
 
