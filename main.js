@@ -19,7 +19,7 @@ var cmdmap = {
 }
 
 function cmd_say(msg, args) {
-	if (msg.author.id == process.env.owner) {
+	if ((msg.author.id == process.env.owner) || (msg.author.id == msg.guild.ownerID)) {
 		msg.channel.send(args.join(' '));
 		msg.delete();
 	} else {
