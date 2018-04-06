@@ -49,7 +49,7 @@ function cmd_uwmc(msg, args) {
 }
 
 function cmd_invite(msg, args) {
-	msg.reply('nutze diesen Link, um andere einzuladen:\nhttps://discord.gg/F75vfpd');
+	msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
 }
 
 
