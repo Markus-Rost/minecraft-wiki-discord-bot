@@ -15,7 +15,8 @@ var cmdmap = {
 	test: cmd_test,
 	technik: cmd_technik,
 	en: cmd_en,
-	uwmc: cmd_uwmc
+	uwmc: cmd_uwmc,
+	invite: cmd_invite
 }
 
 function cmd_say(msg, args) {
@@ -30,6 +31,7 @@ function cmd_say(msg, args) {
 }
 
 function cmd_test(msg, args) {
+	var x = Math.floor((Math.random() * 10) + 1);
 	msg.reply('Ganz ruhig, ich bin ja schon wach!');
 	console.log('Dies ist ein Test!');
 }
@@ -44,6 +46,10 @@ function cmd_en(msg, args) {
 
 function cmd_uwmc(msg, args) {
 	msg.channel.send('https://uwmc.de/' + args.join('_'));
+}
+
+function cmd_invite(msg, args) {
+	msg.reply('nutze diesen Link, um andere einzuladen:\nhttps://discord.gg/F75vfpd');
 }
 
 
