@@ -49,7 +49,11 @@ function cmd_uwmc(msg, args) {
 }
 
 function cmd_invite(msg, args) {
-	msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
+	if ( args[0] == 'minecraft' ) {
+		msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
+	} else {
+		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
+	}
 }
 
 
