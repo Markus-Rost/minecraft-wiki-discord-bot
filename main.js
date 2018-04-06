@@ -36,12 +36,21 @@ function cmd_test(msg, args) {
 	switch (x) {
 		case 1:
 			text = 'ich bin ja schon wach!';
-			break; 
+			break;
 		case 2:
 			text = 'du hast mich gerufen?';
-			break; 
-		default: 
+			break;
+		case 3:
+			text = 'hast du **Kekse** gesagt?';
+			break;
+		case 4:
 			text = 'ja ich funktioniere noch!';
+			break;
+		case 5:
+			text = 'hast du **Kekse** gesagt?';
+			break;
+		default: 
+			text = 'ich bin voll funktionsfähig!';
 	}
 	msg.reply(text);
 	console.log('Dies ist ein Test!');
