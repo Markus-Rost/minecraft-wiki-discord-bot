@@ -32,7 +32,18 @@ function cmd_say(msg, args) {
 
 function cmd_test(msg, args) {
 	var x = Math.floor((Math.random() * 10) + 1);
-	msg.reply('Ganz ruhig, ich bin ja schon wach!');
+	var text = '';
+	switch (x) {
+		case 1:
+			text = 'ich bin ja schon wach!';
+			break; 
+		case 2:
+			text = 'du hast mich gerufen?';
+			break; 
+		default: 
+			text = 'ja ich funktioniere noch!';
+	}
+	msg.reply(text);
 	console.log('Dies ist ein Test!');
 }
 
