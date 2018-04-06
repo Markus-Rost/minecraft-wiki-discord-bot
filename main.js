@@ -16,7 +16,9 @@ var cmdmap = {
 	technik: cmd_technik,
 	en: cmd_en,
 	uwmc: cmd_uwmc,
-	invite: cmd_invite
+	invite: cmd_invite,
+	search: cmd_search,
+	suche: cmd_search
 }
 
 function cmd_say(msg, args) {
@@ -74,6 +76,10 @@ function cmd_invite(msg, args) {
 	} else {
 		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
 	}
+}
+
+function cmd_search(msg, args) {
+	msg.channel.send('https://minecraft-de.gamepedia.com/Spezial:Suche/' + args.join('_'));
 }
 
 
