@@ -87,7 +87,7 @@ client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.member;
 	var channel = msg.channel;
-	if (author.id != client.user.id && cont.startsWith(process.env.prefix)) {
+	if ( channel.type == 'text' && author.id != client.user.id && cont.startsWith(process.env.prefix)) {
 		var invoke = cont.split(' ')[1];
 		var args = cont.split(' ').slice(2);
 		var space = '';
