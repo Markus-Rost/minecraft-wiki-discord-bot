@@ -18,11 +18,12 @@ var cmdmap = {
 	uwmc: cmd_uwmc,
 	invite: cmd_invite,
 	search: cmd_search,
-	suche: cmd_search
+	suche: cmd_search,
+	stop: cmd_stop
 }
 
 function cmd_say(msg, args) {
-	if ((msg.author.id == msg.guild.ownerID) || (msg.author.id == process.env.owner)) {
+	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
 		msg.channel.send(args.join(' '));
 		msg.delete();
 	} else {
@@ -82,40 +83,48 @@ function cmd_search(msg, args) {
 	msg.channel.send('https://minecraft-de.gamepedia.com/Spezial:Suche/' + args.join('_'));
 }
 
+function cmd_stop(msg, args) {
+	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
+		msg.reply('ich schalte mich nun aus!');
+		console.log('Ich schalte mich nun aus!');
+		client.destroy();
+	} else {
+		var space = '';
+		if (args.length) space = '_';
+		msg.channel.send('https://minecraft-de.gamepedia.com/stop' + space + args.join('_'));
+	}
+}
+
 
 client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.member;
 	var channel = msg.channel;
-	if ( channel.type == 'text' && author.id != client.user.id && cont.startsWith(process.env.prefix)) {
+	if ( channel.type == 'text' && author.id != client.user.id && cont.startsWith(process.env.prefix) ) {
 		var invoke = cont.split(' ')[1];
 		var args = cont.split(' ').slice(2);
 		var space = '';
 		if (args.length) space = '_';
 		
 		console.log(invoke + ' - ' + args);
-		if (invoke in cmdmap) {
+		if ( invoke in cmdmap ) {
 			cmdmap[invoke](msg, args);
 		} else {
-			msg.channel.send('https://minecraft-de.gamepedia.com/' + invoke + space + args.join('_'));
+			channel.send('https://minecraft-de.gamepedia.com/' + invoke + space + args.join('_'));
 		}
 	}
 });
 
 
 client.on('voiceStateUpdate', (oldm, newm) => {
-	if (oldm.voiceChannelID != newm.voiceChannelID) {
-		if (oldm.voiceChannel) {
-			if (oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name)) {
-				oldm.removeRole(oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name), oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
-				console.log(oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
-			}
+	if ( oldm.voiceChannelID != newm.voiceChannelID ) {
+		if ( oldm.voiceChannel && oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name) ) {
+			oldm.removeRole(oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name), oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
+			console.log(oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
 		}
-		if (newm.voiceChannel) {
-			if (newm.guild.roles.find('name', 'Sprachkanal – ' + newm.voiceChannel.name)) {
-				newm.addRole(newm.guild.roles.find('name', 'Sprachkanal – ' + newm.voiceChannel.name), newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
-				console.log(newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
-			}
+		if ( newm.voiceChannel && newm.guild.roles.find('name', 'Sprachkanal – ' + newm.voiceChannel.name) ) {
+			newm.addRole(newm.guild.roles.find('name', 'Sprachkanal – ' + newm.voiceChannel.name), newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
+			console.log(newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
 		}
 	}
 });
