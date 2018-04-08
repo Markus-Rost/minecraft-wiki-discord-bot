@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 var client = new Discord.Client();
 
 
+var pause = false;
+
 
 client.on('ready', () => {
 	console.log('Erfolgreich als ' + client.user.username + ' angemeldet!');
@@ -19,14 +21,15 @@ var cmdmap = {
 	invite: cmd_invite,
 	search: cmd_search,
 	suche: cmd_search,
-	stop: cmd_stop
+	stop: cmd_stop,
+	pause: cmd_pause
 }
 
 function cmd_say(msg, args) {
 	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
 		msg.channel.send(args.join(' '));
 		msg.delete();
-	} else {
+	} else if ( !pause ) {
 		var space = '';
 		if (args.length) space = '_';
 		msg.channel.send('https://minecraft-de.gamepedia.com/say' + space + args.join('_'));
@@ -88,10 +91,28 @@ function cmd_stop(msg, args) {
 		msg.reply('ich schalte mich nun aus!');
 		console.log('Ich schalte mich nun aus!');
 		client.destroy();
-	} else {
+	} else if ( !pause ) {
 		var space = '';
 		if (args.length) space = '_';
 		msg.channel.send('https://minecraft-de.gamepedia.com/stop' + space + args.join('_'));
+	}
+}
+
+function cmd_pause(msg, args) {
+	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
+		if ( pause ) {
+			msg.reply('ich bin wieder wach!');
+			console.log('Ich bin wieder wach!');
+			pause = false;
+		} else {
+			msg.reply('ich lege mich nun schlafen!');
+			console.log('Ich lege mich nun schlafen!');
+			pause = true;
+		}
+	} else if ( !pause ) {
+		var space = '';
+		if (args.length) space = '_';
+		msg.channel.send('https://minecraft-de.gamepedia.com/pause' + space + args.join('_'));
 	}
 }
 
@@ -103,14 +124,17 @@ client.on('message', msg => {
 	if ( channel.type == 'text' && author.id != client.user.id && cont.startsWith(process.env.prefix) ) {
 		var invoke = cont.split(' ')[1];
 		var args = cont.split(' ').slice(2);
-		var space = '';
-		if (args.length) space = '_';
-		
 		console.log(invoke + ' - ' + args);
-		if ( invoke in cmdmap ) {
+		if ( !pause ) {
+			if ( invoke in cmdmap ) {
+				cmdmap[invoke](msg, args);
+			} else {
+				var space = '';
+				if (args.length) space = '_';
+				channel.send('https://minecraft-de.gamepedia.com/' + invoke + space + args.join('_'));
+			}
+		} else if ( pause && author.id == process.env.owner && ( invoke == "pause" || invoke == "stop" || invoke == "say" ) ) {
 			cmdmap[invoke](msg, args);
-		} else {
-			channel.send('https://minecraft-de.gamepedia.com/' + invoke + space + args.join('_'));
 		}
 	}
 });
