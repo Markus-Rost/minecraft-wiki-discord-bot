@@ -33,7 +33,7 @@ function cmd_say(msg, args) {
 			msg.channel.send(args.join(' '));
 		}
 		msg.delete();
-	} else if ( !pause ) {
+	} else {
 		var space = '';
 		if (args.length) space = '_';
 		msg.channel.send('https://minecraft-de.gamepedia.com/say' + space + args.join('_'));
@@ -41,29 +41,34 @@ function cmd_say(msg, args) {
 }
 
 function cmd_test(msg, args) {
-	var x = Math.floor((Math.random() * 10) + 1);
-	var text = '';
-	switch (x) {
-		case 1:
-			text = 'ich bin ja schon wach!';
-			break;
-		case 2:
-			text = 'du hast mich gerufen?';
-			break;
-		case 3:
-			text = 'hast du **Kekse** gesagt?';
-			break;
-		case 4:
-			text = 'ja ich funktioniere noch!';
-			break;
-		case 5:
-			text = 'hast du **Kekse** gesagt?';
-			break;
-		default: 
-			text = 'ich bin voll funktionsfähig!';
+	if ( !pause ) {
+		var x = Math.floor((Math.random() * 10) + 1);
+		var text = '';
+		switch (x) {
+			case 1:
+				text = 'ich bin ja schon wach!';
+				break;
+			case 2:
+				text = 'du hast mich gerufen?';
+				break;
+			case 3:
+				text = 'hast du **Kekse** gesagt?';
+				break;
+			case 4:
+				text = 'ja ich funktioniere noch!';
+				break;
+			case 5:
+				text = 'hast du **Kekse** gesagt?';
+				break;
+			default: 
+				text = 'ich bin voll funktionsfähig!';
+		}
+		msg.reply(text);
+		console.log('Dies ist ein Test: Voll funktionsfähig!');
+	} else {
+		msg.reply('ich mache gerade eine Pause.');
+		console.log('Dies ist ein Test: Pausiert!');
 	}
-	msg.reply(text);
-	console.log('Dies ist ein Test!');
 }
 
 function cmd_technik(msg, args) {
@@ -137,7 +142,7 @@ client.on('message', msg => {
 				if (args.length) space = '_';
 				channel.send('https://minecraft-de.gamepedia.com/' + invoke + space + args.join('_'));
 			}
-		} else if ( pause && author.id == process.env.owner && ( invoke == "pause" || invoke == "stop" || invoke == "say" ) ) {
+		} else if ( pause && author.id == process.env.owner && ( invoke == "pause" || invoke == "stop" || invoke == "say" || invoke == "test" ) ) {
 			cmdmap[invoke](msg, args);
 		}
 	}
