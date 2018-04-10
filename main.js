@@ -27,7 +27,11 @@ var cmdmap = {
 
 function cmd_say(msg, args) {
 	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
-		msg.channel.send(args.join(' '));
+		if ( args[0] == 'alarm' ) {
+			msg.channel.send(':rotating_light: **' + args.join(' ') + '** :rotating_light:');
+		} else {
+			msg.channel.send(args.join(' '));
+		}
 		msg.delete();
 	} else if ( !pause ) {
 		var space = '';
