@@ -222,7 +222,7 @@ var befehle = {
 					'/enchant <Selektor> <Verzauberungs-ID> [<Stufe>]'
 				],
 	'execute':		[
-					'/* So kompliziert, diesen Befehl verstehe ich leider noch nicht! *'
+					'/* So kompliziert, diesen Befehl verstehe ich leider noch nicht! */'
 				],
 	'experience':		[
 					'/experience add <Selektor> <Menge>',
@@ -387,7 +387,7 @@ var befehle = {
 					'/tellraw <Selektor> <Nachricht im JSON-Format>'
 				],
 	'tickingarea':		[
-					'/* Diesen Befehl gibt es nur in der Bedrock Edition *',
+					'/* Diesen Befehl gibt es nur in der Bedrock Edition */',
 					'/tickingarea add <von: x y z> <bis: x y z> [<Name: String>]',
 					'/tickingarea add circle <Zentrum: x y z> <Radius: int> [<Name: String>]',
 					'/tickingarea remove <Name: String>',
