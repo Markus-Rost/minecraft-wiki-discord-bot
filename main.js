@@ -443,7 +443,6 @@ var befehle = {
 }
 
 var aliase = {
-	'?': 'help',
 	'tell': 'msg',
 	'tp': 'teleport',
 	'w': 'msg',
