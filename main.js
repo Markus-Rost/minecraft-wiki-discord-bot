@@ -380,8 +380,14 @@ var befehle = {
 					'/team remove <Teamname>'
 				],
 	'teleport':		[
-					'/teleport [<Selektor>] <Selektor des Zieles>',
-					'/teleport [<Selektor>] <Zielort> [<Blickrichtung>]'
+					'/teleport <Selektor des Zieles>',
+					'/teleport <Zielort>',
+					'/teleport <Selektor> <Selektor des Zieles>',
+					'/teleport <Selektor> <Zielort>',
+					'/teleport <Selektor> <Zielort> <Drehung> <Kopfneigung>',
+					'/teleport <Selektor> <Zielort> facing <x> <y> <z>',
+					'/teleport <Selektor> <Zielort> facing <Selektor im Blick> eyes',
+					'/teleport <Selektor> <Zielort> facing <Selektor im Blick> feet'
 				],
 	'tellraw':		[
 					'/tellraw <Selektor> <Nachricht im JSON-Format>'
