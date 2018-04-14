@@ -58,12 +58,12 @@ function cmd_help(msg, args) {
 	if ( args.length ) {
 		var cmdlist = ''
 		for ( var i = 0; i < cmds.length; i++ ) {
-			if ( cmds[i].cmd.split(' ')[0].equals( args[0].toLowerCase() ) && !cmds[i].unsearchable ) {
+			if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable ) {
 				cmdlist += '🔹 `!wiki ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
 		
-		if ( cmdlist.equals( '' ) ) msg.react('❓');
+		if ( cmdlist == '' ) msg.react('❓');
 		else msg.channel.send(cmdlist);
 	}	
 	else {
@@ -323,7 +323,6 @@ var befehle = {
 				],
 	'list':			[
 					'/list'
-				],
 	'locate':		[
 					'/locate <Bauwerk>'
 				],
@@ -549,7 +548,7 @@ client.on('message', msg => {
 					msg.react('⏳').then( function( reaction ) {
 						hourglass = reaction;
 						request( {
-							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srsearch=' + title + '&srlimit=1',
+							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srsearch=' + title + '&srlimit=2',
 							json: true
 						}, function( error, response, body ) {
 							if ( error || !response || !body ) {
