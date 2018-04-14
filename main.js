@@ -40,9 +40,9 @@ function cmd_help(msg, args) {
 		{ cmd: 'befehl <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
 		{ cmd: 'command <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
 		{ cmd: 'cmd <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
-		{ cmd: 'hilfe', 'Liste alle Befehle auf' },
+		{ cmd: 'hilfe', desc: 'Liste alle Befehle auf' },
 		{ cmd: 'hilfe [<Befehl>]', desc: 'Frage mich, wie ein Befehl funktioniert' },
-		{ cmd: 'help', 'Liste alle Befehle auf', hide: true },
+		{ cmd: 'help', desc: 'Liste alle Befehle auf', hide: true },
 		{ cmd: 'help [<Befehl>]', desc: 'Frage mich, wie ein Befehl funktioniert', hide: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
 		{ cmd: 'seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki' },
@@ -51,7 +51,7 @@ function cmd_help(msg, args) {
 		{ cmd: 'en <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki' },
 		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum' },
 		{ cmd: 'invite', desc: 'Ich antworte mit dem Invite-Link für diesen Server' },
-		{ cmd: 'suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.' }
+		{ cmd: 'suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.' },
 		{ cmd: 'search <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.', hide: true }
 	]
 	
