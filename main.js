@@ -560,10 +560,10 @@ client.on('message', msg => {
 									msg.react('🤷');
 								}
 								else if ( body.query.searchinfo.totalhits == 1 ) {
-									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURIComponent( body.query.search[0].title.replace( ' ', '_' ) ) );
+									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) );
 								}
 								else {
-									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURIComponent( body.query.search[0].title.replace( ' ', '_' ) )
+									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) )
 										     + '\nNicht das richtige Ergebnis? Nutze `!wiki suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern!' );
 								}
 							}
