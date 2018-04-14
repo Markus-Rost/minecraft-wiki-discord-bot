@@ -277,7 +277,32 @@ var befehle = {
 					'/enchant <Selektor> <Verzauberungs-ID> [<Stufe>]'
 				],
 	'execute':		[
-					'/* So kompliziert, diesen Befehl verstehe ich leider noch nicht! */'
+					'/execute align <Achsen> <execute-Unterbefehl>',
+					'/execute anchored (eyes|feet) <execute-Unterbefehl>',
+					'/execute as <Objekt> <execute-Unterbefehl>',
+					'/execute at <Objekt> <execute-Unterbefehl>',
+					'/execute facing <Koordinaten> <execute-Unterbefehl>',
+					'/execute facing entity <Objekt> <execute-Unterbefehl>',
+					'/execute if block <Koordinaten> <Block> <execute-Unterbefehl>',
+					'/execute if blocks <von-Koordinaten> <bis-Koordinaten> <Vergleichskoordinaten> <Block> <execute-Unterbefehl>',
+					'/execute if entity <Objekt> <execute-Unterbefehl>',
+					'/execute if score <Objekt> <Ziel> (<|<=|=|>|>=) <Objekt> <Ziel> <execute-Unterbefehl>',
+					'/execute if score <Objekt> <Ziel> matches <Bereich> <execute-Unterbefehl>',
+					'/execute in (overworld|the_end|the_nether) <execute-Unterbefehl>',
+					'/execute positioned <Koordinaten> <execute-Unterbefehl>',
+					'/execute positioned as <Objekt> <execute-Unterbefehl>',
+					'/execute rotated <Rotation> <execute-Unterbefehl>',
+					'/execute rotated as <Objekt> <execute-Unterbefehl>',
+					'/execute run <Befehl>',
+					'/execute store (result|success) block <Koordinaten> <Pfad> <Typ> <Skalierung> <execute-Unterbefehl>',
+					'/execute store (result|success) bossbar <Datenwert> (max|value) <Pfad> <Typ> <Skalierung> <execute-Unterbefehl>',
+					'/execute store (result|success) entity <Objekt> <Pfad> <Typ> <Skalierung> <execute-Unterbefehl>',
+					'/execute store (result|success) score <Objekt> <Ziel> <execute-Unterbefehl>',
+					'/execute unless block <Koordinaten> <Block> <execute-Unterbefehl>',
+					'/execute unless blocks <von-Koordinaten> <bis-Koordinaten> <Vergleichskoordinaten> <Block> <execute-Unterbefehl>',
+					'/execute unless entity <Objekt> <execute-Unterbefehl>',
+					'/execute unless score <Objekt> <Ziel> (<|<=|=|>|>=) <Objekt> <Ziel> <execute-Unterbefehl>',
+					'/execute unless score <Objekt> <Ziel> matches <Bereich> <execute-Unterbefehl>'
 				],
 	'experience':		[
 					'/experience add <Selektor> <Menge>',
