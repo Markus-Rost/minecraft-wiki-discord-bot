@@ -541,7 +541,7 @@ client.on('message', msg => {
 			} else if ( invoke.startsWith('/') ) {
 				cmd_befehl(msg, invoke.substr(1), args);
 			} else {
-				var title = cont.split(' ')[1]. + (args.length ? '_' : '') + args.join('_');
+				var title = cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_');
 				
 				if ( title.contains( '#' ) ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
 				else {
