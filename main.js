@@ -59,7 +59,7 @@ function cmd_help(msg, args) {
 		var cmdlist = ''
 		for ( var i = 0; i < cmds.length; i++ ) {
 			if ( cmds[i].split(' ')[0].equals( args[0].toLowerCase() ) && !cmds[i].unsearchable ) {
-				cmdlist += '🔹 `!wiki ' + cmds[i].cmd + '\n\t' + cmds[i].desc + '\n';
+				cmdlist += '🔹 `!wiki ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
 		
@@ -548,7 +548,6 @@ client.on('message', msg => {
 					var hourglass;
 					msg.react('⏳').then( function( reaction ) {
 						hourglass = reaction;
-					} ).catch( console.log ).finally( function() {
 						request( {
 							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srsearch=' + title + '&srlimit=1',
 							json: true
