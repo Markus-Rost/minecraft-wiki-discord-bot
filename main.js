@@ -58,7 +58,7 @@ function cmd_help(msg, args) {
 	if ( args.length ) {
 		var cmdlist = ''
 		for ( var i = 0; i < cmds.length; i++ ) {
-			if ( cmds[i].split(' ')[0].equals( args[0].toLowerCase() ) && !cmds[i].unsearchable ) {
+			if ( cmds[i].cmd.split(' ')[0].equals( args[0].toLowerCase() ) && !cmds[i].unsearchable ) {
 				cmdlist += '🔹 `!wiki ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
@@ -558,10 +558,14 @@ client.on('message', msg => {
 							}
 							else {
 								if ( body.query.searchinfo.totalhits == 0 ) {
-									channel.send( 'https://minecraft-de.gamepedia.com/' + title );
+									msg.react('🤷');
+								}
+								else if ( body.query.searchinfo.totalhits == 1 ) {
+									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURIComponent( body.query.search[0].title.replace( ' ', '_' ) ) );
 								}
 								else {
-									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURIComponent( body.query.search[0].title ) );
+									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURIComponent( body.query.search[0].title.replace( ' ', '_' ) )
+										     + '\nNicht das richtige Ergebnis? Nutze `!wiki suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern!' );
 								}
 							}
 							
