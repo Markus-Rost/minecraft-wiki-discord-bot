@@ -79,7 +79,7 @@ function cmd_help(msg, args) {
 }
 
 function cmd_say(msg, args) {
-	if ( msg.member != null && msg.member.roles.find('name', 'Administrator') ) {
+	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner || ( msg.member != null && msg.member.roles.find('name', 'Administrator') ) ) {
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send(':rotating_light: **' + args.slice(1).join(' ') + '** :rotating_light:');
 		} else {
