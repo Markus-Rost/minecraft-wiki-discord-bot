@@ -120,11 +120,11 @@ function cmd_test(msg, args) {
 		msg.reply('ich mache gerade eine Pause.');
 		console.log('Dies ist ein Test: Pausiert!');
 	}
+}
 
 function cmd_seite(msg, args) {
 	msg.channel.send('https://minecraft-de.gamepedia.com/' + args.join('_'));
 }
-	}
 
 function cmd_technik(msg, args) {
 	msg.channel.send('https://minecraft-technik.gamepedia.com/' + args.join('_'));
@@ -543,7 +543,7 @@ client.on('message', msg => {
 			} else {
 				var title = cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_');
 				
-				if ( title.contains( '#' ) ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
+				if ( title.indexOf( '#' ) != -1 ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
 				else {
 					var hourglass;
 					msg.react('⏳').then( function( reaction ) {
