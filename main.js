@@ -323,6 +323,7 @@ var befehle = {
 				],
 	'list':			[
 					'/list'
+				],
 	'locate':		[
 					'/locate <Bauwerk>'
 				],
