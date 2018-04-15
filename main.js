@@ -70,7 +70,7 @@ function cmd_help(msg, args) {
 		var cmdlist = 'Du willst also wissen, was ich so drauf habe? Hier ist eine Liste aller Befehle, die ich verstehe:\n';
 		for ( var i = 0; i < cmds.length; i++ ) {
 			if ( !cmds[i].hide ) {
-				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '\n\t' + cmds[i].desc + '\n';
+				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
 		
