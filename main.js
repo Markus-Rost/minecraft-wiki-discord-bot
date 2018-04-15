@@ -59,7 +59,7 @@ function cmd_help(msg, args) {
 		var cmdlist = ''
 		for ( var i = 0; i < cmds.length; i++ ) {
 			if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable ) {
-				cmdlist += '🔹 `!wiki ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+				cmdlist += '🔹 `' + config.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
 		
@@ -70,7 +70,7 @@ function cmd_help(msg, args) {
 		var cmdlist = 'Du willst also wissen, was ich so drauf habe? Hier ist eine Liste aller Befehle, die ich verstehe:\n';
 		for ( var i = 0; i < cmds.length; i++ ) {
 			if ( !cmds[i].hide ) {
-				cmdlist += '🔹 `!wiki ' + cmds[i].cmd + '\n\t' + cmds[i].desc + '\n';
+				cmdlist += '🔹 `' + config.prefix + cmds[i].cmd + '\n\t' + cmds[i].desc + '\n';
 			}
 		}
 		
@@ -79,7 +79,7 @@ function cmd_help(msg, args) {
 }
 
 function cmd_say(msg, args) {
-	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner || ( msg.member != null && msg.member.roles.find('name', 'Administrator') ) ) {
+	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner || msg.member.roles.find('name', 'Administrator') ) {
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send(':rotating_light: **' + args.slice(1).join(' ') + '** :rotating_light:');
 		} else {
@@ -139,7 +139,7 @@ function cmd_uwmc(msg, args) {
 }
 
 function cmd_invite(msg, args) {
-	if ( args[0].toLowerCase() == 'minecraft' ) {
+	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 		msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
 	} else {
 		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
@@ -277,32 +277,34 @@ var befehle = {
 					'/enchant <Selektor> <Verzauberungs-ID> [<Stufe>]'
 				],
 	'execute':		[
-					'/execute align <Achsen> <execute-Unterbefehl>',
-					'/execute anchored (eyes|feet) <execute-Unterbefehl>',
-					'/execute as <Objekt> <execute-Unterbefehl>',
-					'/execute at <Objekt> <execute-Unterbefehl>',
-					'/execute facing <Koordinaten> <execute-Unterbefehl>',
-					'/execute facing entity <Objekt> <execute-Unterbefehl>',
-					'/execute if block <Koordinaten> <Block> <execute-Unterbefehl>',
-					'/execute if blocks <von-Koordinaten> <bis-Koordinaten> <Vergleichskoordinaten> <Block> <execute-Unterbefehl>',
-					'/execute if entity <Objekt> <execute-Unterbefehl>',
-					'/execute if score <Objekt> <Ziel> (<|<=|=|>|>=) <Objekt> <Ziel> <execute-Unterbefehl>',
-					'/execute if score <Objekt> <Ziel> matches <Bereich> <execute-Unterbefehl>',
-					'/execute in (overworld|the_end|the_nether) <execute-Unterbefehl>',
-					'/execute positioned <Koordinaten> <execute-Unterbefehl>',
-					'/execute positioned as <Objekt> <execute-Unterbefehl>',
-					'/execute rotated <Rotation> <execute-Unterbefehl>',
-					'/execute rotated as <Objekt> <execute-Unterbefehl>',
-					'/execute run <Befehl>',
-					'/execute store (result|success) block <Koordinaten> <Pfad> <Typ> <Skalierung> <execute-Unterbefehl>',
-					'/execute store (result|success) bossbar <Datenwert> (max|value) <Pfad> <Typ> <Skalierung> <execute-Unterbefehl>',
-					'/execute store (result|success) entity <Objekt> <Pfad> <Typ> <Skalierung> <execute-Unterbefehl>',
-					'/execute store (result|success) score <Objekt> <Ziel> <execute-Unterbefehl>',
-					'/execute unless block <Koordinaten> <Block> <execute-Unterbefehl>',
-					'/execute unless blocks <von-Koordinaten> <bis-Koordinaten> <Vergleichskoordinaten> <Block> <execute-Unterbefehl>',
-					'/execute unless entity <Objekt> <execute-Unterbefehl>',
-					'/execute unless score <Objekt> <Ziel> (<|<=|=|>|>=) <Objekt> <Ziel> <execute-Unterbefehl>',
-					'/execute unless score <Objekt> <Ziel> matches <Bereich> <execute-Unterbefehl>'
+					'/execute <Unterbefehl>',
+					'\nUnterbefehle:\n=============',
+					'run <Befehl>',
+					'align <Achsen> <Unterbefehl>',
+					'anchored (eyes|feet) <Unterbefehl>',
+					'as <Selektor> <Unterbefehl>',
+					'at <Selektor> <Unterbefehl>',
+					'facing <x> <y> <z> <Unterbefehl>',
+					'facing entity <Selektor> <Unterbefehl>',
+					'if block <x> <y> <z> <Block> <Unterbefehl>',
+					'if blocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> <Block> <Unterbefehl>',
+					'if entity <Selektor> <Unterbefehl>',
+					'if score <Selektor> <Ziel> (<|<=|=|>|>=) <Selektor> <Ziel> <Unterbefehl>',
+					'if score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>',
+					'in <Dimension> <Unterbefehl>',
+					'positioned <x> <y> <z> <Unterbefehl>',
+					'positioned as <Selektor> <Unterbefehl>',
+					'rotated <Rotation> <Unterbefehl>',
+					'rotated as <Selektor> <Unterbefehl>',
+					'store (result|success) block <x> <y> <z> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store (result|success) bossbar <Name> (max|value) <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store (result|success) entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store (result|success) score <Selektor> <Ziel> <Unterbefehl>',
+					'unless block <x> <y> <z> <Block> <Unterbefehl>',
+					'unless blocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> <Block> <Unterbefehl>',
+					'unless entity <Selektor> <Unterbefehl>',
+					'unless score <Selektor> <Ziel> <Operator> <Selektor> <Ziel> <Unterbefehl>',
+					'unless score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>'
 				],
 	'experience':		[
 					'/experience add <Selektor> <Menge>',
@@ -548,7 +550,12 @@ function cmd_befehl(msg, befehl, args) {
 }
 
 function cmd_befehl2(msg, args) {
-	cmd_befehl(msg, args[0], args.slice(1));
+	if ( args[0].startsWith('/') ) {
+		cmd_befehl(msg, args[0].substr(1), args.slice(1));
+	}
+	else {
+		cmd_befehl(msg, args[0], args.slice(1));
+	}
 }
 
 
