@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+var request = require('request');
 
 var client = new Discord.Client();
 
@@ -13,8 +14,15 @@ client.on('ready', () => {
 
 
 var cmdmap = {
+	hilfe: cmd_help,
+	help: cmd_help,
+	befehl: cmd_befehl2,
+	command: cmd_befehl2,
+	cmd: cmd_befehl2,
 	say: cmd_say,
 	test: cmd_test,
+	seite: cmd_seite,
+	page: cmd_seite,
 	technik: cmd_technik,
 	en: cmd_en,
 	uwmc: cmd_uwmc,
@@ -25,8 +33,53 @@ var cmdmap = {
 	pause: cmd_pause
 }
 
+function cmd_help(msg, args) {
+	var cmds = [
+		{ cmd: '<Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Minecraft Wiki', unsearchable: true },
+		{ cmd: '/<Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', unsearchable: true },
+		{ cmd: 'befehl <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
+		{ cmd: 'command <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
+		{ cmd: 'cmd <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
+		{ cmd: 'hilfe', desc: 'Liste alle Befehle auf' },
+		{ cmd: 'hilfe [<Befehl>]', desc: 'Frage mich, wie ein Befehl funktioniert' },
+		{ cmd: 'help', desc: 'Liste alle Befehle auf', hide: true },
+		{ cmd: 'help [<Befehl>]', desc: 'Frage mich, wie ein Befehl funktioniert', hide: true },
+		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
+		{ cmd: 'seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki' },
+		{ cmd: 'page <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki', hide: true },
+		{ cmd: 'technik <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki' },
+		{ cmd: 'en <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki' },
+		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum' },
+		{ cmd: 'invite', desc: 'Ich antworte mit dem Invite-Link für diesen Server' },
+		{ cmd: 'suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.' },
+		{ cmd: 'search <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.', hide: true }
+	]
+	
+	if ( args.length ) {
+		var cmdlist = ''
+		for ( var i = 0; i < cmds.length; i++ ) {
+			if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable ) {
+				cmdlist += '🔹 `' + config.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+			}
+		}
+		
+		if ( cmdlist == '' ) msg.react('❓');
+		else msg.channel.send(cmdlist);
+	}	
+	else {
+		var cmdlist = 'Du willst also wissen, was ich so drauf habe? Hier ist eine Liste aller Befehle, die ich verstehe:\n';
+		for ( var i = 0; i < cmds.length; i++ ) {
+			if ( !cmds[i].hide ) {
+				cmdlist += '🔹 `' + config.prefix + cmds[i].cmd + '\n\t' + cmds[i].desc + '\n';
+			}
+		}
+		
+		msg.channel.send(cmdlist);
+	}
+}
+
 function cmd_say(msg, args) {
-	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
+	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner || msg.member.roles.find('name', 'Administrator') ) {
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send(':rotating_light: **' + args.slice(1).join(' ') + '** :rotating_light:');
 		} else {
@@ -34,9 +87,7 @@ function cmd_say(msg, args) {
 		}
 		msg.delete();
 	} else {
-		var space = '';
-		if (args.length) space = '_';
-		msg.channel.send('https://minecraft-de.gamepedia.com/say' + space + args.join('_'));
+		msg.react('❌')
 	}
 }
 
@@ -71,6 +122,10 @@ function cmd_test(msg, args) {
 	}
 }
 
+function cmd_seite(msg, args) {
+	msg.channel.send('https://minecraft-de.gamepedia.com/' + args.join('_'));
+}
+
 function cmd_technik(msg, args) {
 	msg.channel.send('https://minecraft-technik.gamepedia.com/' + args.join('_'));
 }
@@ -84,7 +139,7 @@ function cmd_uwmc(msg, args) {
 }
 
 function cmd_invite(msg, args) {
-	if ( args[0].toLowerCase() == 'minecraft' ) {
+	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 		msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
 	} else {
 		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
@@ -222,7 +277,34 @@ var befehle = {
 					'/enchant <Selektor> <Verzauberungs-ID> [<Stufe>]'
 				],
 	'execute':		[
-					'/* So kompliziert, diesen Befehl verstehe ich leider noch nicht! */'
+					'/execute <Unterbefehl>',
+					'\nUnterbefehle:\n=============',
+					'run <Befehl>',
+					'align <Achsen> <Unterbefehl>',
+					'anchored (eyes|feet) <Unterbefehl>',
+					'as <Selektor> <Unterbefehl>',
+					'at <Selektor> <Unterbefehl>',
+					'facing <x> <y> <z> <Unterbefehl>',
+					'facing entity <Selektor> <Unterbefehl>',
+					'if block <x> <y> <z> <Block> <Unterbefehl>',
+					'if blocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> <Block> <Unterbefehl>',
+					'if entity <Selektor> <Unterbefehl>',
+					'if score <Selektor> <Ziel> (<|<=|=|>|>=) <Selektor> <Ziel> <Unterbefehl>',
+					'if score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>',
+					'in <Dimension> <Unterbefehl>',
+					'positioned <x> <y> <z> <Unterbefehl>',
+					'positioned as <Selektor> <Unterbefehl>',
+					'rotated <Rotation> <Unterbefehl>',
+					'rotated as <Selektor> <Unterbefehl>',
+					'store (result|success) block <x> <y> <z> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store (result|success) bossbar <Name> (max|value) <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store (result|success) entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store (result|success) score <Selektor> <Ziel> <Unterbefehl>',
+					'unless block <x> <y> <z> <Block> <Unterbefehl>',
+					'unless blocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> <Block> <Unterbefehl>',
+					'unless entity <Selektor> <Unterbefehl>',
+					'unless score <Selektor> <Ziel> <Operator> <Selektor> <Ziel> <Unterbefehl>',
+					'unless score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>'
 				],
 	'experience':		[
 					'/experience add <Selektor> <Menge>',
@@ -456,14 +538,23 @@ var aliase = {
 }
 
 function cmd_befehl(msg, befehl, args) {
-	if ( befehl in befehle ) {
-		msg.channel.send('```markdown\n' + befehle[befehl].join('\n') + '\n```\nhttps://minecraft-de.gamepedia.com/Befehl/' + befehl);
-	} else if ( befehl in aliase ) {
-		cmd_befehl(msg, aliase[befehl], args);
-	} else {
-		var space = '';
-		if (args.length) space = '_';
-		msg.channel.send('https://minecraft-de.gamepedia.com//' + befehl + space + args.join('_'));
+	var aliasCmd = ( befehl in aliase ) ? aliase[befehl] : befehl;
+	
+	if ( aliasCmd in befehle ) {
+		var cmdSyntax = befehle[aliasCmd].join( '\n' ).replace( '/' + aliasCmd, '/' + befehl );
+		msg.channel.send('```markdown\n' + cmdSyntax + '\n```\nhttps://minecraft-de.gamepedia.com/Befehl/' + aliasCmd);
+	}
+	else {
+		msg.react('❓');
+	}
+}
+
+function cmd_befehl2(msg, args) {
+	if ( args[0].startsWith('/') ) {
+		cmd_befehl(msg, args[0].substr(1), args.slice(1));
+	}
+	else {
+		cmd_befehl(msg, args[0], args.slice(1));
 	}
 }
 
@@ -472,8 +563,8 @@ client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.member;
 	var channel = msg.channel;
-	if ( channel.type == 'text' && author.id != client.user.id && cont.startsWith(process.env.prefix) ) {
-		var invoke = cont.split(' ')[1];
+	if ( channel.type == 'text' && author.id != client.user.id && cont.toLowerCase().startsWith(process.env.prefix) ) {
+		var invoke = cont.split(' ')[1].toLowerCase();
 		var args = cont.split(' ').slice(2);
 		console.log(invoke + ' - ' + args);
 		if ( !pause ) {
@@ -482,9 +573,38 @@ client.on('message', msg => {
 			} else if ( invoke.startsWith('/') ) {
 				cmd_befehl(msg, invoke.substr(1), args);
 			} else {
-				var space = '';
-				if (args.length) space = '_';
-				channel.send('https://minecraft-de.gamepedia.com/' + invoke + space + args.join('_'));
+				var title = cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_');
+				
+				if ( title.indexOf( '#' ) != -1 ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
+				else {
+					var hourglass;
+					msg.react('⏳').then( function( reaction ) {
+						hourglass = reaction;
+						request( {
+							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srsearch=' + title + '&srlimit=1',
+							json: true
+						}, function( error, response, body ) {
+							if ( error || !response || !body ) {
+								console.log( 'Error while getting search results: ' + error );
+								channel.send( 'https://minecraft-de.gamepedia.com/' + title );
+							}
+							else {
+								if ( body.query.searchinfo.totalhits == 0 ) {
+									msg.react('🤷');
+								}
+								else if ( body.query.searchinfo.totalhits == 1 ) {
+									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) );
+								}
+								else {
+									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) )
+										     + '\nNicht das richtige Ergebnis? Nutze `!wiki suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern!' );
+								}
+							}
+							
+							if ( hourglass != undefined ) hourglass.remove();
+						} );
+					} );
+				}
 			}
 		} else if ( pause && author.id == process.env.owner && ( invoke == "pause" || invoke == "stop" || invoke == "say" || invoke == "test" ) ) {
 			cmdmap[invoke](msg, args);
