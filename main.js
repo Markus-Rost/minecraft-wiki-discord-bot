@@ -575,7 +575,7 @@ client.on('message', msg => {
 			} else {
 				var title = cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_');
 				
-				if ( title.indexOf( '#' ) != -1 ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
+				if ( title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
 				else {
 					var hourglass;
 					msg.react('⏳').then( function( reaction ) {
