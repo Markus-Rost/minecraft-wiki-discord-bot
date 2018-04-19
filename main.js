@@ -563,7 +563,7 @@ client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.member;
 	var channel = msg.channel;
-	if ( channel.type == 'text' && author.id != client.user.id && cont.toLowerCase().startsWith(process.env.prefix) ) {
+	if ( channel.type == 'text' && cont.toLowerCase().startsWith(process.env.prefix) && author.id != client.user.id ) {
 		var invoke = cont.split(' ')[1].toLowerCase();
 		var args = cont.split(' ').slice(2);
 		console.log(invoke + ' - ' + args);
