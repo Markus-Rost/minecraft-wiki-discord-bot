@@ -581,7 +581,7 @@ client.on('message', msg => {
 					msg.react('⏳').then( function( reaction ) {
 						hourglass = reaction;
 						request( {
-							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=*&srsearch=' + title + '&srlimit=1',
+							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
 							json: true
 						}, function( error, response, body ) {
 							if ( error || !response || !body ) {
