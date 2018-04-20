@@ -597,7 +597,7 @@ client.on('message', msg => {
 								}
 								else {
 									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) )
-										     + '\nNicht das richtige Ergebnis? Nutze `!wiki suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern!' );
+										     + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + ' suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + 'seite ' + title.replace( '_', ' ' ) + '` für einen direkten Link!' );
 								}
 							}
 							
