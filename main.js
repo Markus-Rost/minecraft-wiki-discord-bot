@@ -30,7 +30,16 @@ var cmdmap = {
 	search: cmd_search,
 	suche: cmd_search,
 	stop: cmd_stop,
-	pause: cmd_pause
+	pause: cmd_pause,
+	delete: cmd_delete
+}
+
+var pausecmdmap = {
+	say: cmd_say,
+	test: cmd_test,
+	stop: cmd_stop,
+	pause: cmd_pause,
+	delete: cmd_delete
 }
 
 function cmd_help(msg, args) {
@@ -87,7 +96,7 @@ function cmd_say(msg, args) {
 		}
 		msg.delete();
 	} else {
-		msg.react('❌')
+		msg.react('❌');
 	}
 }
 
@@ -558,6 +567,21 @@ function cmd_befehl2(msg, args) {
 	}
 }
 
+function cmd_delete(msg, args) {
+	if ( msg.author.id == msg.guild.ownerID || msg.author.id == config.owner || msg.member.roles.find('name', 'Administrator') ) {
+		if ( parseInt(args[0], 10) + 1 > 0 ) {
+			msg.channel.bulkDelete( parseInt(args[0], 10) + 1 );
+			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
+			console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
+		}
+		else {
+			msg.reply('du hast keine gültige Anzahl angegeben.');
+		}
+	} else {
+		msg.react('❌');
+	}
+}
+
 
 client.on('message', msg => {
 	var cont = msg.content;
@@ -606,8 +630,8 @@ client.on('message', msg => {
 					} );
 				}
 			}
-		} else if ( pause && author.id == process.env.owner && ( invoke == "pause" || invoke == "stop" || invoke == "say" || invoke == "test" ) ) {
-			cmdmap[invoke](msg, args);
+		} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
+			pausecmdmap[invoke](msg, args);
 		}
 	}
 });
