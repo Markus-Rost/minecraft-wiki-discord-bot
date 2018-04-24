@@ -570,7 +570,7 @@ function cmd_befehl2(msg, args) {
 function cmd_delete(msg, args) {
 	if ( msg.author.id == msg.guild.ownerID || msg.author.id == config.owner || msg.member.roles.find('name', 'Administrator') ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
-			msg.channel.bulkDelete( parseInt(args[0], 10) + 1 );
+			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
 			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
 			console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
 		}
