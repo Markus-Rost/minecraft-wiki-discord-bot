@@ -70,7 +70,7 @@ function cmd_help(msg, args) {
 	]
 	
 	if ( args.length ) {
-		if ( args[0].toLowerCase() == 'admin' && ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == config.owner ) ) {
+		if ( args[0].toLowerCase() == 'admin' && ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) ) {
 			var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
 			for ( var i = 0; i < cmds.length; i++ ) {
 				if ( cmds[i].admin && !cmds[i].hide ) {
@@ -83,7 +83,7 @@ function cmd_help(msg, args) {
 		else {
 			var cmdlist = ''
 			for ( var i = 0; i < cmds.length; i++ ) {
-				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( !cmds[i].admin || msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == config.owner ) ) {
+				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( !cmds[i].admin || msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) ) {
 					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 				}
 			}
@@ -585,7 +585,7 @@ function cmd_befehl2(msg, args) {
 }
 
 function cmd_delete(msg, args) {
-	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == config.owner ) {
+	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
 			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
