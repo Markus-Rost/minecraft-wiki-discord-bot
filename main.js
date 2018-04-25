@@ -44,41 +44,58 @@ var pausecmdmap = {
 
 function cmd_help(msg, args) {
 	var cmds = [
-		{ cmd: '<Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Minecraft Wiki', unsearchable: true },
-		{ cmd: '/<Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', unsearchable: true },
-		{ cmd: 'befehl <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
-		{ cmd: 'command <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
-		{ cmd: 'cmd <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki', hide: true },
-		{ cmd: 'hilfe', desc: 'Liste alle Befehle auf' },
-		{ cmd: 'hilfe [<Befehl>]', desc: 'Frage mich, wie ein Befehl funktioniert' },
-		{ cmd: 'help', desc: 'Liste alle Befehle auf', hide: true },
-		{ cmd: 'help [<Befehl>]', desc: 'Frage mich, wie ein Befehl funktioniert', hide: true },
+		{ cmd: '<Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Minecraft Wiki.', unsearchable: true },
+		{ cmd: '/<Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki.', unsearchable: true },
+		{ cmd: 'befehl <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki.', hide: true },
+		{ cmd: 'command <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki.', hide: true },
+		{ cmd: 'cmd <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki.', hide: true },
+		{ cmd: 'hilfe', desc: 'Ich liste alle Befehle auf.' },
+		{ cmd: 'hilfe <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.' },
+		{ cmd: 'hilfe admin', desc: 'Ich liste alle Befehle für Administratoren auf.', admin: true },
+		{ cmd: 'help', desc: 'Ich liste alle Befehle auf.', hide: true },
+		{ cmd: 'help <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.', hide: true },
+		{ cmd: 'help admin', desc: 'Ich liste alle Befehle für Administratoren auf.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
-		{ cmd: 'seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki' },
-		{ cmd: 'page <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki', hide: true },
-		{ cmd: 'technik <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki' },
-		{ cmd: 'en <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki' },
-		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum' },
-		{ cmd: 'invite', desc: 'Ich antworte mit dem Invite-Link für diesen Server' },
+		{ cmd: 'seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki.' },
+		{ cmd: 'page <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki.', hide: true },
+		{ cmd: 'technik <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki.' },
+		{ cmd: 'en <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki.' },
+		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum.' },
+		{ cmd: 'invite', desc: 'Ich antworte mit dem Invite-Link für diesen Server.' },
 		{ cmd: 'suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.' },
-		{ cmd: 'search <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.', hide: true }
+		{ cmd: 'search <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Minecraft Wiki.', hide: true },
+		{ cmd: 'say <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht.', admin: true },
+		{ cmd: 'say alarm <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht bereits vorformatiert: :rotating_light: **<Nachricht>** :rotating_light:', admin: true },
+		{ cmd: 'delete <Anzahl>', desc: 'Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.', admin: true }
 	]
 	
 	if ( args.length ) {
-		var cmdlist = ''
-		for ( var i = 0; i < cmds.length; i++ ) {
-			if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable ) {
-				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+		if ( args[0].toLowerCase() == 'admin' && ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == config.owner ) ) {
+			var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
+			for ( var i = 0; i < cmds.length; i++ ) {
+				if ( cmds[i].admin && !cmds[i].hide ) {
+					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+				}
 			}
+			
+			msg.channel.send(cmdlist);
 		}
-		
-		if ( cmdlist == '' ) msg.react('❓');
-		else msg.channel.send(cmdlist);
-	}	
+		else {
+			var cmdlist = ''
+			for ( var i = 0; i < cmds.length; i++ ) {
+				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( !cmds[i].admin || msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == config.owner ) ) {
+					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+				}
+			}
+			
+			if ( cmdlist == '' ) msg.react('❓');
+			else msg.channel.send(cmdlist);
+		}
+	}
 	else {
 		var cmdlist = 'Du willst also wissen, was ich so drauf habe? Hier ist eine Liste aller Befehle, die ich verstehe:\n';
 		for ( var i = 0; i < cmds.length; i++ ) {
-			if ( !cmds[i].hide ) {
+			if ( !cmds[i].hide && !cmds[i].admin ) {
 				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
@@ -88,7 +105,7 @@ function cmd_help(msg, args) {
 }
 
 function cmd_say(msg, args) {
-	if ( msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner || msg.member.roles.find('name', 'Administrator') ) {
+	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send(':rotating_light: **' + args.slice(1).join(' ') + '** :rotating_light:');
 		} else {
@@ -568,7 +585,7 @@ function cmd_befehl2(msg, args) {
 }
 
 function cmd_delete(msg, args) {
-	if ( msg.author.id == msg.guild.ownerID || msg.author.id == config.owner || msg.member.roles.find('name', 'Administrator') ) {
+	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == config.owner ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
 			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
