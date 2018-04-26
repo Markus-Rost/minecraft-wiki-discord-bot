@@ -211,20 +211,24 @@ var befehle = {
 	'advancement':		[
 					'/advancement grant <Selektor> everything',
 					'/advancement grant <Selektor> from <Fortschritt>',
-					'/advancement grant <Selektor> only <Fortschritt> [<Kriterium>]',
+					'/advancement grant <Selektor> only <Fortschritt>',
+					'/advancement grant <Selektor> only <Fortschritt> <Kriterium>',
 					'/advancement grant <Selektor> through <Fortschritt>',
 					'/advancement grant <Selektor> until <Fortschritt>',
 					'/advancement revoke <Selektor> everything',
 					'/advancement revoke <Selektor> from <Fortschritt>',
-					'/advancement revoke <Selektor> only <Fortschritt> [<Kriterium>]',
+					'/advancement revoke <Selektor> only <Fortschritt>',
+					'/advancement revoke <Selektor> only <Fortschritt> <Kriterium>',
 					'/advancement revoke <Selektor> through <Fortschritt>',
 					'/advancement revoke <Selektor> until <Fortschritt>'
 				],
 	'ban':			[
-					'/ban <Selektor> [<Grund>]'
+					'/ban <Selektor>',
+					'/ban <Selektor> <Grund>'
 				],
 	'ban-ip':		[
-					'/ban-ip <Selektor> [<Grund>]'
+					'/ban-ip <Selektor>'
+					'/ban-ip <Selektor> <Grund>'
 				],
 	'banlist':		[
 					'/banlist',
@@ -242,26 +246,37 @@ var befehle = {
 					'/bossbar set <Name> color <Farbe>',
 					'/bossbar set <Name> max <MaxMenge>',
 					'/bossbar set <Name> name <Beschriftung>',
-					'/bossbar set <Name> players [<Selektor>]',
+					'/bossbar set <Name> players',
+					'/bossbar set <Name> players <Selektor>',
 					'/bossbar set <Name> style <Stil>',
 					'/bossbar set <Name> value <Wert>',
 					'/bossbar set <Name> visible <Sichtbarkeit>'
 				],
 	'clear':		[
-					'/clear [<Selektor>] [<Gegenstand>] [<MaxMenge>]'
+					'/clear',
+					'/clear <Selektor>',
+					'/clear <Selektor> <Gegenstand>',
+					'/clear <Selektor> <Gegenstand> <MaxMenge>'
 				],
 	'clone':		[
-					'/clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z>',
-					'/clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> filtered <Filterblock> [<Platzierung>]',
-					'/clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> masked [<Platzierung>]',
-					'/clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> replace [<Platzierung>]'
+					'/clone <Position1> <Position2> <Ziel-Position>',
+					'/clone <Position1> <Position2> <Ziel-Position> filtered <Filterblock>',
+					'/clone <Position1> <Position2> <Ziel-Position> filtered <Filterblock> <Platzierung>',
+					'/clone <Position1> <Position2> <Ziel-Position> masked',
+					'/clone <Position1> <Position2> <Ziel-Position> masked <Platzierung>',
+					'/clone <Position1> <Position2> <Ziel-Position> replace',
+					'/clone <Position1> <Position2> <Ziel-Position> replace <Platzierung>'
 				],
 	'data':			[
-					'/data get block <x> <y> <z> [<Pfad>] [<Skalierung>]',
-					'/data get entity <Selektor> [<Pfad>] [<Skalierung>]',
-					'/data merge block <x> <y> <z> <NBT-Daten>',
+					'/data get block <Position>',
+					'/data get block <Position> <Pfad>',
+					'/data get block <Position> <Pfad> <Skalierung>',
+					'/data get entity <Selektor>',
+					'/data get entity <Selektor> <Pfad>',
+					'/data get entity <Selektor> <Pfad> <Skalierung>',
+					'/data merge block <Position> <NBT-Daten>',
 					'/data merge entity <Selektor> <NBT-Daten>',
-					'/data remove block <x> <y> <z> <Pfad>',
+					'/data remove block <Position> <Pfad>',
 					'/data remove entity <Selektor> <Pfad>'
 				],
 	'datapack':		[
@@ -296,8 +311,12 @@ var befehle = {
 					'/difficulty peaceful'
 				],
 	'effect':		[
-					'/effect clear <Selektor> [<Effekt-ID>]',
-					'/effect give <Selektor> <Effekt-ID> [<Zeit in Sekunden>] [<Verstärkung>] [<Partikelunsichtbarkeit>]'
+					'/effect clear <Selektor>',
+					'/effect clear <Selektor> <Effekt-ID>',
+					'/effect give <Selektor> <Effekt-ID>',
+					'/effect give <Selektor> <Effekt-ID> <Zeit in Sekunden>',
+					'/effect give <Selektor> <Effekt-ID> <Zeit in Sekunden> <Verstärkung>',
+					'/effect give <Selektor> <Effekt-ID> <Zeit in Sekunden> <Verstärkung> <Partikelunsichtbarkeit>'
 				],
 	'enchant':		[
 					'/enchant <Selektor> <Verzauberungs-ID> [<Stufe>]'
@@ -307,30 +326,37 @@ var befehle = {
 					'\nUnterbefehle:\n=============',
 					'run <Befehl>',
 					'align <Achsen> <Unterbefehl>',
-					'anchored (eyes|feet) <Unterbefehl>',
+					'anchored eyes <Unterbefehl>',
+					'anchored feet <Unterbefehl>',
 					'as <Selektor> <Unterbefehl>',
 					'at <Selektor> <Unterbefehl>',
-					'facing <x> <y> <z> <Unterbefehl>',
+					'facing <Position> <Unterbefehl>',
 					'facing entity <Selektor> <Unterbefehl>',
-					'if block <x> <y> <z> <Block> <Unterbefehl>',
-					'if blocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> <Block> <Unterbefehl>',
+					'if block <Position> <Block> <Unterbefehl>',
+					'unless block <Position> <Block> <Unterbefehl>',
+					'if blocks <Position1> <Position2> <Ziel-Position> <Block> <Unterbefehl>',
+					'unless blocks <Position1> <Position2> <Ziel-Position> <Block> <Unterbefehl>',
 					'if entity <Selektor> <Unterbefehl>',
-					'if score <Selektor> <Ziel> (<|<=|=|>|>=) <Selektor> <Ziel> <Unterbefehl>',
+					'unless entity <Selektor> <Unterbefehl>',
+					'if score <Selektor> <Ziel> <Operation> <Selektor> <Ziel> <Unterbefehl>',
+					'unless score <Selektor> <Ziel> <Operator> <Selektor> <Ziel> <Unterbefehl>',
 					'if score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>',
+					'unless score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>',
 					'in <Dimension> <Unterbefehl>',
-					'positioned <x> <y> <z> <Unterbefehl>',
+					'positioned <Position> <Unterbefehl>',
 					'positioned as <Selektor> <Unterbefehl>',
 					'rotated <Rotation> <Unterbefehl>',
 					'rotated as <Selektor> <Unterbefehl>',
-					'store (result|success) block <x> <y> <z> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store (result|success) bossbar <Name> (max|value) <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store (result|success) entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store (result|success) score <Selektor> <Ziel> <Unterbefehl>',
-					'unless block <x> <y> <z> <Block> <Unterbefehl>',
-					'unless blocks <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> <Block> <Unterbefehl>',
-					'unless entity <Selektor> <Unterbefehl>',
-					'unless score <Selektor> <Ziel> <Operator> <Selektor> <Ziel> <Unterbefehl>',
-					'unless score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>'
+					'store result block <Position> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store success block <Position> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store result bossbar <Name> max <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store success bossbar <Name> max <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store result bossbar <Name> value <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store success bossbar <Name> value <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store result entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store success entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
+					'store result score <Selektor> <Ziel> <Unterbefehl>',
+					'store success score <Selektor> <Ziel> <Unterbefehl>'
 				],
 	'experience':		[
 					'/experience add <Selektor> <Menge>',
@@ -343,33 +369,42 @@ var befehle = {
 					'/experience set <Selektor> <Menge> points'
 				],
 	'fill':			[
-					'/fill <x1> <y1> <z1> <x2> <y2> <z2> <Block>',
-					'/fill <x1> <y1> <z1> <x2> <y2> <z2> <Block> destroy',
-					'/fill <x1> <y1> <z1> <x2> <y2> <z2> <Block> hollow',
-					'/fill <x1> <y1> <z1> <x2> <y2> <z2> <Block> keep',
-					'/fill <x1> <y1> <z1> <x2> <y2> <z2> <Block> outline',
-					'/fill <x1> <y1> <z1> <x2> <y2> <z2> <Block> replace [<Filterblock>]'
+					'/fill <Position1> <Position2> <Block>',
+					'/fill <Position1> <Position2> <Block> destroy',
+					'/fill <Position1> <Position2> <Block> hollow',
+					'/fill <Position1> <Position2> <Block> keep',
+					'/fill <Position1> <Position2> <Block> outline',
+					'/fill <Position1> <Position2> <Block> replace',
+					'/fill <Position1> <Position2> <Block> replace <Filterblock>'
 				],
 	'function':		[
 					'/function <Funktion>'
 				],
 	'gamemode':		[
-					'/gamemode adventure [<Selektor>]',
-					'/gamemode creative [<Selektor>]',
-					'/gamemode spectator [<Selektor>]',
-					'/gamemode survival [<Selektor>]'
+					'/gamemode adventure',
+					'/gamemode adventure <Selektor>',
+					'/gamemode creative',
+					'/gamemode creative <Selektor>',
+					'/gamemode spectator',
+					'/gamemode spectator <Selektor>',
+					'/gamemode survival',
+					'/gamemode survival <Selektor>'
 				],
 	'gamerule':		[
-					'/gamerule <Regel> [<Wert>]'
+					'/gamerule <Regel>',
+					'/gamerule <Regel> <Wert>'
 				],
 	'give':			[
-					'/give <Selektor> <Gegenstand> [<Anzahl>]'
+					'/give <Selektor> <Gegenstand>',
+					'/give <Selektor> <Gegenstand> <Anzahl>'
 				],
 	'help':			[
-					'/help [<Befehl>]'
+					'/help',
+					'/help <Befehl>'
 				],
 	'kick':			[
-					'/kick <Selektor> [<Grund>]'
+					'/kick <Selektor>',
+					'/kick <Selektor> <Grund>'
 				],
 	'kill':			[
 					'/kill <Selektor>'
@@ -396,16 +431,23 @@ var befehle = {
 					'/pardon-ip <IP-Adresse>'
 				],
 	'particle':		[
-					'/particle <Partikel-ID> [<Textur-Parameter>]',
-					'/particle <Partikel-ID> [<Textur-Parameter>] <x> <y> <z> <xd> <yd> <zd> <Geschwindigkeit> <Anzahl>',
-					'/particle <Partikel-ID> [<Textur-Parameter>] <x> <y> <z> <xd> <yd> <zd> <Geschwindigkeit> <Anzahl> force [<Selektor>]',
-					'/particle <Partikel-ID> [<Textur-Parameter>] <x> <y> <z> <xd> <yd> <zd> <Geschwindigkeit> <Anzahl> normal [<Selektor>]'
+					'/particle <Partikel-ID>',
+					'/particle <Partikel-ID> <Position> <Ausdehnung> <Geschwindigkeit> <Anzahl>',
+					'/particle <Partikel-ID> <Position> <Ausdehnung> <Geschwindigkeit> <Anzahl> force',
+					'/particle <Partikel-ID> <Position> <Ausdehnung> <Geschwindigkeit> <Anzahl> force <Selektor>',
+					'/particle <Partikel-ID> <Position> <Ausdehnung> <Geschwindigkeit> <Anzahl> normal',
+					'/particle <Partikel-ID> <Position> <Ausdehnung> <Geschwindigkeit> <Anzahl> normal <Selektor>'
 				],
 	'playsound':		[
-					'/playsound <Geräusch> <Geräuschart> <Selektor> [<x> <y> <z>] [<Lautstärke>] [<Tonhöhe>] [<Mindestlautstärke>]'
+					'/playsound <Geräusch> <Geräuschart> <Selektor>',
+					'/playsound <Geräusch> <Geräuschart> <Selektor> <Position>',
+					'/playsound <Geräusch> <Geräuschart> <Selektor> <Position> <Lautstärke>',
+					'/playsound <Geräusch> <Geräuschart> <Selektor> <Position> <Lautstärke> <Tonhöhe>',
+					'/playsound <Geräusch> <Geräuschart> <Selektor> <Position> <Lautstärke> <Tonhöhe> <Mindestlautstärke>'
 				],
 	'publish':		[
-					'/publish [<Port>]'
+					'/publish',
+					'/publish <Port>'
 				],
 	'recipe':		[
 					'/recipe give <Selektor> *',
@@ -417,11 +459,14 @@ var befehle = {
 					'/reload'
 				],
 	'replaceitem':		[
-					'/replaceitem block <x> <y> <z> <Slot> <Gegenstand> [<Anzahl>]',
-					'/replaceitem entity <Selektor> <Slot> <Gegenstand> [<Anzahl>]'
+					'/replaceitem block <Position> <Slot> <Gegenstand>',
+					'/replaceitem block <Position> <Slot> <Gegenstand> <Anzahl>',
+					'/replaceitem entity <Selektor> <Slot> <Gegenstand>',
+					'/replaceitem entity <Selektor> <Slot> <Gegenstand> <Anzahl>'
 				],
 	'save-all':		[
-					'/save-all [flush]'
+					'/save-all',
+					'/save-all flush'
 				],
 	'save-off':		[
 					'/save-off'
@@ -433,45 +478,57 @@ var befehle = {
 					'/say <Nachricht>'
 				],
 	'scoreboard':		[
-					'/scoreboard objectives add <Ziel> <Kriterientyp> [<Anzeigename>]',
+					'/scoreboard objectives add <Ziel> <Kriterientyp>',
+					'/scoreboard objectives add <Ziel> <Kriterientyp> <Anzeigename>',
 					'/scoreboard objectives list',
 					'/scoreboard objectives remove <Ziel>',
-					'/scoreboard objectives setdisplay <Anzeigeposition> [<Ziel>]',
+					'/scoreboard objectives setdisplay <Anzeigeposition>',
+					'/scoreboard objectives setdisplay <Anzeigeposition> <Ziel>',
 					'/scoreboard players add <Selektor> <Ziel> <Punkte>',
 					'/scoreboard players enable <Selektor> <Ziel>',
 					'/scoreboard players get <Selektor> <Ziel>',
-					'/scoreboard players list [<Selektor>]',
+					'/scoreboard players list',
+					'/scoreboard players list <Selektor>',
 					'/scoreboard players operation <Selektor> <Ziel> <Operation> <Selektor> <Ziel>',
 					'/scoreboard players remove <Selektor> <Ziel> <Punkte>',
-					'/scoreboard players reset <Selektor> [<Ziel>]',
+					'/scoreboard players reset <Selektor>',
+					'/scoreboard players reset <Selektor> <Ziel>',
 					'/scoreboard players set <Selektor> <Ziel> <Punkte>'
 				],
 	'seed':			[
 					'/seed'
 				],
 	'setblock':		[
-					'/setblock <x> <y> <z> <Block> [<Platzierung>]'
+					'/setblock <Position> <Block>',
+					'/setblock <Position> <Block> <Platzierung>'
 				],
 	'setidletimeout':	[
 					'/setidletimeout <Zeit in Sekunden>'
 				],
 	'setworldspawn':	[
-					'/setworldspawn [<x> <y> <z>]'
+					'/setworldspawn',
+					'/setworldspawn <Position>'
 				],
 	'spawnpoint':		[
-					'/spawnpoint [<Selektor>] [<x> <y> <z>]'
+					'/spawnpoint',
+					'/spawnpoint <Selektor>',
+					'/spawnpoint <Selektor> <Position>'
 				],
 	'spreadplayers':	[
-					'/spreadplayers <x> <z> <Abstand> <Bereich> <Teamverteilung> <Selektor>'
+					'/spreadplayers <Position ohne Y-Koordinate> <Abstand> <Bereich> <Teamverteilung> <Selektor>'
 				],
 	'stop':			[
 					'/stop'
 				],
 	'stopsound':		[
-					'/stopsound <Selektor> [<Geräuschart>] [<Geräusch>]'
+					'/stopsound <Selektor>',
+					'/stopsound <Selektor> <Geräuschart>',
+					'/stopsound <Selektor> <Geräuschart> <Geräusch>'
 				],
 	'summon':		[
-					'/summon <Objekt> [<x> <y> <z>] [<NBT-Daten>]'
+					'/summon <Objekt>',
+					'/summon <Objekt> <Position>',
+					'/summon <Objekt> <Position> <NBT-Daten>'
 				],
 	'tag':			[
 					'/tag <Selektor> add <Name des Etikett>',
@@ -479,35 +536,41 @@ var befehle = {
 					'/tag <Selektor> remove <Name des Etikett>'
 				],
 	'team':			[
-					'/team add <Teamname> [<Anzeigename>]',
+					'/team add <Teamname>',
+					'/team add <Teamname> <Anzeigename>',
 					'/team empty <Teamname>',
-					'/team join <Teamname> [<Selektor>]',
+					'/team join <Teamname>',
+					'/team join <Teamname> <Selektor>',
 					'/team leave <Selektor>',
-					'/team list [<Teamname>]',
+					'/team list',
+					'/team list <Teamname>',
 					'/team option <Teamname> <Eigenschaft> <Wert>',
 					'/team remove <Teamname>'
 				],
 	'teleport':		[
-					'/teleport <Selektor des Zieles>',
-					'/teleport <Zielort>',
-					'/teleport <Selektor> <Selektor des Zieles>',
-					'/teleport <Selektor> <Zielort>',
-					'/teleport <Selektor> <Zielort> <Drehung> <Kopfneigung>',
-					'/teleport <Selektor> <Zielort> facing <x> <y> <z>',
-					'/teleport <Selektor> <Zielort> facing <Selektor im Blick> eyes',
-					'/teleport <Selektor> <Zielort> facing <Selektor im Blick> feet'
+					'/teleport <Ziel-Selektor>',
+					'/teleport <Ziel-Position>',
+					'/teleport <Selektor> <Ziel-Selektor>',
+					'/teleport <Selektor> <Ziel-Position>',
+					'/teleport <Selektor> <Ziel-Position> <Drehung> <Kopfneigung>',
+					'/teleport <Selektor> <Ziel-Position> facing <Position>',
+					'/teleport <Selektor> <Ziel-Position> facing <Selektor> eyes',
+					'/teleport <Selektor> <Ziel-Position> facing <Selektor> feet'
 				],
 	'tellraw':		[
 					'/tellraw <Selektor> <Nachricht im JSON-Format>'
 				],
 	'tickingarea':		[
 					'/* Diesen Befehl gibt es nur in der Bedrock Edition */',
-					'/tickingarea add <von: x y z> <bis: x y z> [<Name: String>]',
-					'/tickingarea add circle <Zentrum: x y z> <Radius: int> [<Name: String>]',
+					'/tickingarea add <von: x y z> <bis: x y z>',
+					'/tickingarea add <von: x y z> <bis: x y z> <Name: String>',
+					'/tickingarea add circle <Zentrum: x y z> <Radius: int>',
+					'/tickingarea add circle <Zentrum: x y z> <Radius: int> <Name: String>',
 					'/tickingarea remove <Name: String>',
 					'/tickingarea remove <Position: x y z>',
 					'/tickingarea remove_all',
-					'/tickingarea list [all-dimensions]'
+					'/tickingarea list',
+					'/tickingarea list all-dimensions'
 				],
 	'time':			[
 					'/time add <Zeit>',
@@ -532,9 +595,12 @@ var befehle = {
 					'/trigger <Auslöser> set <Wert>'
 				],
 	'weather':		[
-					'/weather clear [<Dauer in Sekunden>]',
-					'/weather rain [<Dauer in Sekunden>]',
-					'/weather thunder [<Dauer in Sekunden>]'
+					'/weather clear',
+					'/weather clear <Dauer in Sekunden>',
+					'/weather rain',
+					'/weather rain <Dauer in Sekunden>',
+					'/weather thunder',
+					'/weather thunder <Dauer in Sekunden>'
 				],
 	'whitelist':		[
 					'/whitelist add <Selektor>',
@@ -545,12 +611,14 @@ var befehle = {
 					'/whitelist remove <Selektor>'
 				],
 	'worldborder':		[
-					'/worldborder add <Weite> [<Zeit in Sekunden>]',
-					'/worldborder center <x> <z>',
+					'/worldborder add <Weite>',
+					'/worldborder add <Weite> <Zeit in Sekunden>',
+					'/worldborder center <Position ohne Y-Koordinate>',
 					'/worldborder damage amount <Schaden pro Block>',
 					'/worldborder damage buffer <Weite>',
 					'/worldborder get',
-					'/worldborder set <Weite> [<Zeit in Sekunden>]',
+					'/worldborder set <Weite>',
+					'/worldborder set <Weite> <Zeit in Sekunden>',
 					'/worldborder warning distance <Weite>',
 					'/worldborder warning time <Zeit in Sekunden>'
 				]
