@@ -227,7 +227,7 @@ var befehle = {
 					'/ban <Selektor> <Grund>'
 				],
 	'ban-ip':		[
-					'/ban-ip <Selektor>'
+					'/ban-ip <Selektor>',
 					'/ban-ip <Selektor> <Grund>'
 				],
 	'banlist':		[
