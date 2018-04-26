@@ -21,14 +21,10 @@ var cmdmap = {
 	cmd: cmd_befehl2,
 	say: cmd_say,
 	test: cmd_test,
-	seite: cmd_seite,
-	page: cmd_seite,
 	technik: cmd_technik,
 	en: cmd_en,
 	uwmc: cmd_uwmc,
 	invite: cmd_invite,
-	search: cmd_search,
-	suche: cmd_search,
 	stop: cmd_stop,
 	pause: cmd_pause,
 	delete: cmd_delete
@@ -148,20 +144,27 @@ function cmd_test(msg, args) {
 	}
 }
 
-function cmd_seite(msg, args) {
-	msg.channel.send('https://minecraft-de.gamepedia.com/' + args.join('_'));
-}
-
 function cmd_technik(msg, args) {
-	msg.channel.send('https://minecraft-technik.gamepedia.com/' + args.join('_'));
+	if ( !args.length ) {
+		msg.channel.send( 'https://technic-de.gamepedia.com/Technik_Wiki' );
+	}
+	else {
+		if ( args[0].toLowerCase().startsWith('wiki') ) {
+			var title = 'Technik_' + args.join('_');
+		} else {
+			var title = args.join('_');
+		}
+		
+		cmd_link(msg, title, 'technic-de', 'technik ');
+	}
 }
 
 function cmd_en(msg, args) {
-	msg.channel.send('https://minecraft.gamepedia.com/' + args.join('_'));
+	cmd_link(msg, args.join('_'), 'minecraft', 'en ');
 }
 
 function cmd_uwmc(msg, args) {
-	msg.channel.send('https://uwmc.de/' + args.join('_'));
+	msg.channel.send('https://uwmc.de/' + args.join('-'));
 }
 
 function cmd_invite(msg, args) {
@@ -170,10 +173,6 @@ function cmd_invite(msg, args) {
 	} else {
 		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
 	}
-}
-
-function cmd_search(msg, args) {
-	msg.channel.send('https://minecraft-de.gamepedia.com/Spezial:Suche/' + args.join('_'));
 }
 
 function cmd_stop(msg, args) {
@@ -667,6 +666,43 @@ function cmd_delete(msg, args) {
 	}
 }
 
+function cmd_link(msg, title, wiki, cmd) {
+	var invoke = title.split('_')[0].toLowerCase();
+	var args = title.split('_').slice(1);
+	
+	if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
+	else if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
+	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
+	else {
+		var hourglass;
+		msg.react('⏳').then( function( reaction ) {
+			hourglass = reaction;
+			request( {
+				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
+				json: true
+			}, function( error, response, body ) {
+				if ( error || !response || !body ) {
+					console.log( 'Fehler beim Erhalten der Suchergebnisse: ' + error );
+					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
+				}
+				else {
+					if ( body.query.searchinfo.totalhits == 0 ) {
+						msg.react('🤷');
+					}
+					else if ( body.query.searchinfo.totalhits == 1 ) {
+						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) );
+					}
+					else {
+						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + cmd + 'suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + cmd + 'seite ' + title.replace( '_', ' ' ) + '` für einen direkten Link!' );
+					}
+				}
+				
+				if ( hourglass != undefined ) hourglass.remove();
+			} );
+		} );
+	}
+}
+
 
 client.on('message', msg => {
 	var cont = msg.content;
@@ -682,38 +718,7 @@ client.on('message', msg => {
 			} else if ( invoke.startsWith('/') ) {
 				cmd_befehl(msg, invoke.substr(1), args);
 			} else {
-				var title = cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_');
-				
-				if ( title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) channel.send( 'https://minecraft-de.gamepedia.com/' + title );
-				else {
-					var hourglass;
-					msg.react('⏳').then( function( reaction ) {
-						hourglass = reaction;
-						request( {
-							uri: 'https://minecraft-de.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
-							json: true
-						}, function( error, response, body ) {
-							if ( error || !response || !body ) {
-								console.log( 'Error while getting search results: ' + error );
-								channel.send( 'https://minecraft-de.gamepedia.com/' + title );
-							}
-							else {
-								if ( body.query.searchinfo.totalhits == 0 ) {
-									msg.react('🤷');
-								}
-								else if ( body.query.searchinfo.totalhits == 1 ) {
-									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) );
-								}
-								else {
-									channel.send( 'https://minecraft-de.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) )
-										     + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + 'suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + 'seite ' + title.replace( '_', ' ' ) + '` für einen direkten Link!' );
-								}
-							}
-							
-							if ( hourglass != undefined ) hourglass.remove();
-						} );
-					} );
-				}
+				cmd_link(msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 			}
 		} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
 			pausecmdmap[invoke](msg, args);
