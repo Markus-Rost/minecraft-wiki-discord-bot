@@ -27,7 +27,8 @@ var cmdmap = {
 	invite: cmd_invite,
 	stop: cmd_stop,
 	pause: cmd_pause,
-	delete: cmd_delete
+	delete: cmd_delete,
+	info: cmd_info
 }
 
 var pausecmdmap = {
@@ -57,16 +58,18 @@ function cmd_help(msg, args) {
 		{ cmd: 'help admin', desc: 'Ich liste alle Befehle für Administratoren auf.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
 		{ cmd: 'technik <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Technik Wiki.' },
-		{ cmd: 'technik seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki.' },
-		{ cmd: 'technik suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Technik Wiki.' },
+		{ cmd: 'technik seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki.', hide: true },
+		{ cmd: 'technik suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Technik Wiki.', hide: true },
 		{ cmd: 'en <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im englischen Minecraft Wiki.' },
-		{ cmd: 'en seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki.' },
-		{ cmd: 'en suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im englischen Minecraft Wiki.' },
+		{ cmd: 'en seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki.', hide: true },
+		{ cmd: 'en suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im englischen Minecraft Wiki.', hide: true },
+		{ cmd: '!<Wiki> <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im angegebenen Gamepedia-Wiki: `https://<Wiki>.gamepedia.com/`', unsearchable: true },
 		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum.' },
 		{ cmd: 'invite', desc: 'Ich antworte mit dem Invite-Link für diesen Server.' },
 		{ cmd: 'say <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht.', admin: true },
-		{ cmd: 'say alarm <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht bereits vorformatiert: :rotating_light: **<Nachricht>** :rotating_light:', admin: true },
-		{ cmd: 'delete <Anzahl>', desc: 'Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.', admin: true }
+		{ cmd: 'say alarm <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht bereits vorformatiert: 🚨 **<Nachricht>** 🚨', admin: true },
+		{ cmd: 'delete <Anzahl>', desc: 'Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.', admin: true },
+		{ cmd: 'info', desc: 'Du wirst bei neuen Entwicklungsversionen benachrichtigt.' }
 	]
 	
 	if ( args.length ) {
@@ -107,7 +110,7 @@ function cmd_help(msg, args) {
 function cmd_say(msg, args) {
 	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
 		if ( args[0] == 'alarm' ) {
-			msg.channel.send(':rotating_light: **' + args.slice(1).join(' ') + '** :rotating_light:');
+			msg.channel.send('🚨 **' + args.slice(1).join(' ') + '** 🚨');
 		} else {
 			msg.channel.send(args.join(' '));
 		}
@@ -685,9 +688,9 @@ function cmd_link(msg, title, wiki, cmd) {
 				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
 				json: true
 			}, function( error, response, body ) {
-				if ( error || !response || !body ) {
+				if ( error || !response || !body || !body.query || !body.query.search[0] ) {
 					console.log( 'Fehler beim Erhalten der Suchergebnisse: ' + error );
-					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
+					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title ).then( message => message.react('440540569450840095') );
 				}
 				else {
 					if ( body.query.searchinfo.totalhits == 0 ) {
@@ -707,6 +710,25 @@ function cmd_link(msg, title, wiki, cmd) {
 	}
 }
 
+function cmd_info(msg, args) {
+	if ( msg.member.guild.roles.find('name', 'Entwicklungsversion') ) {
+		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
+			msg.member.removeRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
+			console.log(msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
+			msg.react('🔕');
+		}
+		else {
+			msg.member.addRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.');
+			console.log(msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.');
+			msg.react('🔔');
+		}
+	}
+	else {
+		console.log('Die Rolle "Entwicklungsversion" ist auf diesem Server nicht vorhanden.');
+		msg.reply('dieser Befehl funktioniert auf diesem Server nicht.');
+	}
+}
+
 
 client.on('message', msg => {
 	var cont = msg.content;
@@ -721,6 +743,8 @@ client.on('message', msg => {
 				cmdmap[invoke](msg, args);
 			} else if ( invoke.startsWith('/') ) {
 				cmd_befehl(msg, invoke.substr(1), args);
+			} else if ( invoke.startsWith('!') ) {
+				cmd_link(msg, args.join('_'), invoke.substr(1), invoke + ' ');
 			} else {
 				cmd_link(msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 			}
