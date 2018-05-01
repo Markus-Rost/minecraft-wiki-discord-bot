@@ -73,7 +73,7 @@ function cmd_help(msg, args) {
 	]
 	
 	if ( args.length ) {
-		if ( args[0].toLowerCase() == 'admin' && ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) ) {
+		if ( args[0].toLowerCase() == 'admin' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 			var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
 			for ( var i = 0; i < cmds.length; i++ ) {
 				if ( cmds[i].admin && !cmds[i].hide ) {
@@ -86,7 +86,7 @@ function cmd_help(msg, args) {
 		else {
 			var cmdlist = ''
 			for ( var i = 0; i < cmds.length; i++ ) {
-				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( !cmds[i].admin || msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) ) {
+				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( !cmds[i].admin || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 				}
 			}
@@ -108,7 +108,7 @@ function cmd_help(msg, args) {
 }
 
 function cmd_say(msg, args) {
-	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
+	if ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) {
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send('🚨 **' + args.slice(1).join(' ') + '** 🚨');
 		} else {
@@ -188,9 +188,7 @@ function cmd_stop(msg, args) {
 		console.log('Ich schalte mich nun aus!');
 		client.destroy();
 	} else if ( !pause ) {
-		var space = '';
-		if (args.length) space = '_';
-		msg.channel.send('https://minecraft-de.gamepedia.com/stop' + space + args.join('_'));
+		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 	}
 }
 
@@ -206,9 +204,7 @@ function cmd_pause(msg, args) {
 			pause = true;
 		}
 	} else if ( !pause ) {
-		var space = '';
-		if (args.length) space = '_';
-		msg.channel.send('https://minecraft-de.gamepedia.com/pause' + space + args.join('_'));
+		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 	}
 }
 
@@ -659,7 +655,7 @@ function cmd_befehl2(msg, args) {
 }
 
 function cmd_delete(msg, args) {
-	if ( msg.member.roles.find('name', 'Administrator') || msg.author.id == msg.guild.ownerID || msg.author.id == process.env.owner ) {
+	if ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
 			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
@@ -688,9 +684,9 @@ function cmd_link(msg, title, wiki, cmd) {
 				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
 				json: true
 			}, function( error, response, body ) {
-				if ( error || !response || !body || !body.query || !body.query.search[0] ) {
+				if ( error || !response || !body || !body.query || ( !body.query.search[0] && body.query.searchinfo.totalhits != 0 ) ) {
 					console.log( 'Fehler beim Erhalten der Suchergebnisse: ' + error );
-					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title ).then( message => message.react('440540569450840095') );
+					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title ).then( message => message.react('440871715938238494') );
 				}
 				else {
 					if ( body.query.searchinfo.totalhits == 0 ) {
