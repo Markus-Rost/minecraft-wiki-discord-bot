@@ -28,7 +28,8 @@ var cmdmap = {
 	stop: cmd_stop,
 	pause: cmd_pause,
 	delete: cmd_delete,
-	info: cmd_info
+	info: cmd_info,
+	server: cmd_serverlist
 }
 
 var pausecmdmap = {
@@ -36,7 +37,8 @@ var pausecmdmap = {
 	test: cmd_test,
 	stop: cmd_stop,
 	pause: cmd_pause,
-	delete: cmd_delete
+	delete: cmd_delete,
+	server: cmd_serverlist
 }
 
 function cmd_help(msg, args) {
@@ -65,15 +67,15 @@ function cmd_help(msg, args) {
 		{ cmd: 'en suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im englischen Minecraft Wiki.', hide: true },
 		{ cmd: '!<Wiki> <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im angegebenen Gamepedia-Wiki: `https://<Wiki>.gamepedia.com/`', unsearchable: true },
 		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum.' },
-		{ cmd: 'invite', desc: 'Ich antworte mit dem Invite-Link für diesen Server.' },
+		{ cmd: 'invite', desc: 'Ich antworte mit einem Invite-Link für den Server des deutschen Minecraft Wiki.' },
 		{ cmd: 'say <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht.', admin: true },
 		{ cmd: 'say alarm <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht bereits vorformatiert: 🚨 **<Nachricht>** 🚨', admin: true },
 		{ cmd: 'delete <Anzahl>', desc: 'Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.', admin: true },
-		{ cmd: 'info', desc: 'Du wirst bei neuen Entwicklungsversionen benachrichtigt.' }
+		{ cmd: 'info', desc: 'Du wirst bei neuen Entwicklungsversionen auf dem Server des deutschen Minecraft Wiki erwähnt.' }
 	]
 	
 	if ( args.length ) {
-		if ( args[0].toLowerCase() == 'admin' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 			var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
 			for ( var i = 0; i < cmds.length; i++ ) {
 				if ( cmds[i].admin && !cmds[i].hide ) {
@@ -86,7 +88,7 @@ function cmd_help(msg, args) {
 		else {
 			var cmdlist = ''
 			for ( var i = 0; i < cmds.length; i++ ) {
-				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( !cmds[i].admin || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( msg.channel.type != 'text' || !cmds[i].admin || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 				}
 			}
@@ -108,7 +110,7 @@ function cmd_help(msg, args) {
 }
 
 function cmd_say(msg, args) {
-	if ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) {
+	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send('🚨 **' + args.slice(1).join(' ') + '** 🚨');
 		} else {
@@ -177,6 +179,8 @@ function cmd_uwmc(msg, args) {
 function cmd_invite(msg, args) {
 	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 		msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
+	} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
+		client.generateInvite(268954689).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n' + invite) );
 	} else {
 		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
 	}
@@ -655,7 +659,7 @@ function cmd_befehl2(msg, args) {
 }
 
 function cmd_delete(msg, args) {
-	if ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) {
+	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
 			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
@@ -707,7 +711,7 @@ function cmd_link(msg, title, wiki, cmd) {
 }
 
 function cmd_info(msg, args) {
-	if ( msg.member.guild.roles.find('name', 'Entwicklungsversion') ) {
+	if ( msg.channel.type == 'text' && msg.member.guild.roles.find('name', 'Entwicklungsversion') ) {
 		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
 			msg.member.removeRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
 			console.log(msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
@@ -720,17 +724,33 @@ function cmd_info(msg, args) {
 		}
 	}
 	else {
-		console.log('Die Rolle "Entwicklungsversion" ist auf diesem Server nicht vorhanden.');
-		msg.reply('dieser Befehl funktioniert auf diesem Server nicht.');
+		msg.react('❌');
+	}
+}
+
+function cmd_serverlist(msg, args) {
+	if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '>' ) {
+		var guilds = client.guilds;
+		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
+		guilds.forEach( function(value, key, map) {
+			var channel = value.channels.find('type', 'text');
+			serverlist += '"' + value.name + '" von ' + value.owner.toString() + '\n' + channel.toString();
+			channel.createInvite().then( invite => serverlist += ': ' + invite.toString() );
+			serverlist += '\n\n';
+		} );
+		msg.author.send(serverlist);
+		msg.delete();
+	} else if ( !pause ) {
+		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 	}
 }
 
 
 client.on('message', msg => {
 	var cont = msg.content;
-	var author = msg.member;
+	var author = msg.author;
 	var channel = msg.channel;
-	if ( channel.type == 'text' && cont.toLowerCase().startsWith(process.env.prefix) && !msg.webhookID && author.id != client.user.id ) {
+	if ( cont.toLowerCase().startsWith(process.env.prefix) && !msg.webhookID && author.id != client.user.id ) {
 		var invoke = cont.split(' ')[1].toLowerCase();
 		var args = cont.split(' ').slice(2);
 		console.log(invoke + ' - ' + args);
