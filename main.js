@@ -711,7 +711,7 @@ function cmd_link(msg, title, wiki, cmd) {
 }
 
 function cmd_info(msg, args) {
-	if ( msg.channel.type == 'text' && msg.member.guild.roles.find('name', 'Entwicklungsversion') ) {
+	if ( msg.channel.type == 'text' && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
 		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
 			msg.member.removeRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
 			console.log(msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
