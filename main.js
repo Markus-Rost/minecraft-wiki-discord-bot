@@ -689,7 +689,7 @@ function cmd_link(msg, title, wiki, cmd) {
 				json: true
 			}, function( error, response, body ) {
 				if ( error || !response || !body || !body.query || ( !body.query.search[0] && body.query.searchinfo.totalhits != 0 ) ) {
-					console.log( 'Fehler beim Erhalten der Suchergebnisse: ' + error );
+					console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '' ) : '' ) ) );
 					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title ).then( message => message.react('440871715938238494') );
 				}
 				else {
