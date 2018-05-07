@@ -733,11 +733,9 @@ function cmd_serverlist(msg, args) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
 		guilds.forEach( function(value, key, map) {
-			var channel = value.channels.find('type', 'text');
-			serverlist += '"' + value.name + '" von ' + value.owner.toString() + '\n' + channel.toString() + '\n\n';
+			serverlist += '"' + value.name + '" von ' + value.owner.toString() + '\n' + value.channels.find('type', 'text').toString() + '\n\n';
 		} );
 		msg.author.send(serverlist);
-		msg.delete();
 	} else if ( !pause ) {
 		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 	}
@@ -780,6 +778,17 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 			console.log(newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
 		}
 	}
+});
+
+
+client.on('guildCreate', guild => {
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + '\n' + guild.channels.find('type', 'text').toString() ) );
+	console.log('Ich wurde zu einem Server hinzugefügt.');
+});
+
+client.on('guildDelete', guild => {
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + '\n' + guild.channels.find('type', 'text').toString() ) );
+	console.log('Ich wurde von einem Server entfernt.');
 });
 
 
