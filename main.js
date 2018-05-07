@@ -734,9 +734,7 @@ function cmd_serverlist(msg, args) {
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
 		guilds.forEach( function(value, key, map) {
 			var channel = value.channels.find('type', 'text');
-			serverlist += '"' + value.name + '" von ' + value.owner.toString() + '\n' + channel.toString();
-			channel.createInvite().then( invite => serverlist += ': ' + invite.toString() );
-			serverlist += '\n\n';
+			serverlist += '"' + value.name + '" von ' + value.owner.toString() + '\n' + channel.toString() + '\n\n';
 		} );
 		msg.author.send(serverlist);
 		msg.delete();
