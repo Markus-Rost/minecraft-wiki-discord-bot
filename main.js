@@ -242,7 +242,7 @@ var befehle = {
 					'/banlist players'
 				],
 	'bossbar':		[
-					'/bossbar create <Name> <Beschriftung>',
+					'/bossbar add <Name> <Beschriftung>',
 					'/bossbar get <Name> max',
 					'/bossbar get <Name> players',
 					'/bossbar get <Name> value',
