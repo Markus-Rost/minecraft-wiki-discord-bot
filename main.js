@@ -733,7 +733,7 @@ function cmd_serverlist(msg, args) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
 		guilds.forEach( function(value, key, map) {
-			serverlist += '"' + value.name + '" von ' + value.owner.toString() + ' mit ' + value.memberCount + ' Mitgliedern\n' + value.channels.find('type', 'text').toString() + '\n\n';
+			serverlist += '"' + value.toString() + '" von ' + value.owner.toString() + ' mit ' + value.memberCount + ' Mitgliedern\n' + value.channels.find('type', 'text').toString() + '\n\n';
 		} );
 		msg.author.send(serverlist);
 	} else if ( !pause ) {
@@ -749,7 +749,7 @@ client.on('message', msg => {
 	if ( cont.toLowerCase().startsWith(process.env.prefix) && !msg.webhookID && author.id != client.user.id ) {
 		var invoke = cont.split(' ')[1].toLowerCase();
 		var args = cont.split(' ').slice(2);
-		console.log(invoke + ' - ' + args);
+		console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
 		if ( !pause ) {
 			if ( invoke in cmdmap ) {
 				cmdmap[invoke](msg, args);
@@ -771,23 +771,23 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 	if ( oldm.voiceChannelID != newm.voiceChannelID ) {
 		if ( oldm.voiceChannel && oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name) ) {
 			oldm.removeRole(oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name), oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
-			console.log(oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
+			console.log(oldm.guild.name + ': ' + oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
 		}
 		if ( newm.voiceChannel && newm.guild.roles.find('name', 'Sprachkanal – ' + newm.voiceChannel.name) ) {
 			newm.addRole(newm.guild.roles.find('name', 'Sprachkanal – ' + newm.voiceChannel.name), newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
-			console.log(newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
+			console.log(newm.guild.name + ': ' + newm.displayName + ' hat den Sprach-Kanal "' + newm.voiceChannel.name + '" betreten.');
 		}
 	}
 });
 
 
 client.on('guildCreate', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
 	console.log('Ich wurde zu einem Server hinzugefügt.');
 });
 
 client.on('guildDelete', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
 	console.log('Ich wurde von einem Server entfernt.');
 });
 
