@@ -733,7 +733,7 @@ function cmd_serverlist(msg, args) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
 		guilds.forEach( function(value, key, map) {
-			serverlist += '"' + value.name + '" von ' + value.owner.toString() + '\n' + value.channels.find('type', 'text').toString() + '\n\n';
+			serverlist += '"' + value.name + '" von ' + value.owner.toString() + ' mit ' + value.memberCount + ' Mitgliedern\n' + value.channels.find('type', 'text').toString() + '\n\n';
 		} );
 		msg.author.send(serverlist);
 	} else if ( !pause ) {
@@ -782,12 +782,12 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 
 
 client.on('guildCreate', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + '\n' + guild.channels.find('type', 'text').toString() ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
 	console.log('Ich wurde zu einem Server hinzugefügt.');
 });
 
 client.on('guildDelete', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + '\n' + guild.channels.find('type', 'text').toString() ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.name + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
 	console.log('Ich wurde von einem Server entfernt.');
 });
 
