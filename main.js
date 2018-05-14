@@ -29,7 +29,9 @@ var cmdmap = {
 	pause: cmd_pause,
 	delete: cmd_delete,
 	info: cmd_info,
-	server: cmd_serverlist
+	server: cmd_serverlist,
+	umfrage: cmd_umfrage,
+	poll: cmd_umfrage
 }
 
 var pausecmdmap = {
@@ -58,7 +60,6 @@ function cmd_help(msg, args) {
 		{ cmd: 'help', desc: 'Ich liste alle Befehle auf.', hide: true },
 		{ cmd: 'help <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.', hide: true },
 		{ cmd: 'help admin', desc: 'Ich liste alle Befehle für Administratoren auf.', hide: true, admin: true },
-		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
 		{ cmd: 'technik <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Technik Wiki.' },
 		{ cmd: 'technik seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki.', hide: true },
 		{ cmd: 'technik suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Technik Wiki.', hide: true },
@@ -66,6 +67,9 @@ function cmd_help(msg, args) {
 		{ cmd: 'en seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki.', hide: true },
 		{ cmd: 'en suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im englischen Minecraft Wiki.', hide: true },
 		{ cmd: '!<Wiki> <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im angegebenen Gamepedia-Wiki: `https://<Wiki>.gamepedia.com/`', unsearchable: true },
+		{ cmd: 'umfrage', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
+		{ cmd: 'poll', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
+		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
 		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum.' },
 		{ cmd: 'invite', desc: 'Ich antworte mit einem Invite-Link für den Server des deutschen Minecraft Wiki.' },
 		{ cmd: 'say <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht.', admin: true },
@@ -738,6 +742,37 @@ function cmd_serverlist(msg, args) {
 		msg.author.send(serverlist);
 	} else if ( !pause ) {
 		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+	}
+}
+
+function cmd_umfrage(msg, args) {
+	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+		if ( args.length ) {
+			var reactions = [];
+			for ( var i = 0; i < args.length; i++ ) {
+				var reaction = args[i];
+				var pattern = /^[\w\*]/
+				if ( pattern.test(reaction) ) {
+					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => { 
+						reactions.forEach( function(entry) {
+							poll.react(entry).catch( error => poll.react('440871715938238494') );
+						} );
+					} );
+					msg.delete();
+					break;
+				} else if ( reaction == '' ) {
+				} else {
+					if ( reaction.startsWith('<:') ) {
+						reaction = reaction.substring(reaction.lastIndexOf(':')+1, reaction.length-1);
+					}
+					reactions[i] = reaction;
+				}
+			}
+		} else {
+			msg.reply('Schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```' + process.env.prefix + msg.content.split(' ')[1] + ' Emoji Emoji [...] <Text mit Frage>```');
+		}
+	} else {
+		msg.react('❌');
 	}
 }
 
