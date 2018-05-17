@@ -86,6 +86,7 @@ function cmd_help(msg, args) {
 					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 				}
 			}
+			cmdlist += '🔹 Ich kann auch servereigene Emoji schreiben:\n\t`<:Emoji-ID>` – normale Emoji\n\t`<a:Emoji-ID>` – animierte Emoji\n\tEs sind nur Emoji von Servern möglich, auf denen ich mich auch befinde!';
 			
 			msg.channel.send(cmdlist);
 		}
