@@ -69,8 +69,8 @@ function cmd_help(msg, args) {
 		{ cmd: 'en seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki.', hide: true },
 		{ cmd: 'en suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im englischen Minecraft Wiki.', hide: true },
 		{ cmd: '!<Wiki> <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im angegebenen Gamepedia-Wiki: `https://<Wiki>.gamepedia.com/`', unsearchable: true },
-		{ cmd: 'umfrage <Emoji> [<Emoji> ...] <Text mit Frage>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
-		{ cmd: 'poll <Emoji> [<Emoji> ...] <Text mit Frage>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
+		{ cmd: 'umfrage <Emoji> [<Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
+		{ cmd: 'poll <Emoji> [<Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
 		{ cmd: 'uwmc <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum.' },
 		{ cmd: 'invite', desc: 'Ich antworte mit einem Invite-Link für den Server des deutschen Minecraft Wiki.' },
@@ -786,7 +786,7 @@ function cmd_umfrage(msg, args) {
 				}
 			}
 		} else {
-			msg.reply('Schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```' + process.env.prefix + msg.content.split(' ')[1] + ' Emoji Emoji [...] <Text mit Frage>```');
+			msg.reply('Schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' <Emoji> [<Emoji> ...] <Frage als Freitext>```');
 		}
 	} else {
 		msg.react('❌');
