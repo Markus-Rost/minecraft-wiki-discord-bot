@@ -57,9 +57,11 @@ function cmd_help(msg, args) {
 		{ cmd: 'hilfe', desc: 'Ich liste alle Befehle auf.' },
 		{ cmd: 'hilfe <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.' },
 		{ cmd: 'hilfe admin', desc: 'Ich liste alle Befehle für Administratoren auf.', admin: true },
+		{ cmd: 'hilfe admin emoji', desc: 'Ich liste alle Server-Emoji auf, die ich kenne.', admin: true },
 		{ cmd: 'help', desc: 'Ich liste alle Befehle auf.', hide: true },
 		{ cmd: 'help <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.', hide: true },
 		{ cmd: 'help admin', desc: 'Ich liste alle Befehle für Administratoren auf.', hide: true, admin: true },
+		{ cmd: 'help admin emoji', desc: 'Ich liste alle Server-Emoji auf, die ich kenne.', hide: true, admin: true },
 		{ cmd: 'technik <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Technik Wiki.' },
 		{ cmd: 'technik seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki.', hide: true },
 		{ cmd: 'technik suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Technik Wiki.', hide: true },
@@ -80,15 +82,24 @@ function cmd_help(msg, args) {
 	
 	if ( args.length ) {
 		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
-			var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
-			for ( var i = 0; i < cmds.length; i++ ) {
-				if ( cmds[i].admin && !cmds[i].hide ) {
-					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
-				}
+			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
+				var cmdlist = 'Dies sind alle Server-Emoji, die ich nutzen kann:\n';
+				var emojis = client.emojis
+				emojis.forEach( function(emoji) {
+					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`\n';
+				} );
+				msg.channel.send(cmdlist);
 			}
-			cmdlist += '🔹 Ich kann auch servereigene Emoji schreiben:\n\t`<:Emoji-ID>` – normale Emoji\n\t`<a:Emoji-ID>` – animierte Emoji\n\tEs sind nur Emoji von Servern möglich, auf denen ich mich auch befinde!';
-			
-			msg.channel.send(cmdlist);
+			else {
+				var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
+				for ( var i = 0; i < cmds.length; i++ ) {
+					if ( cmds[i].admin && !cmds[i].hide ) {
+						cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+					}
+				}
+				
+				msg.channel.send(cmdlist);
+			}
 		}
 		else {
 			var cmdlist = ''
@@ -208,10 +219,12 @@ function cmd_pause(msg, args) {
 			msg.reply('ich bin wieder wach!');
 			console.log('Ich bin wieder wach!');
 			pause = false;
+			client.user.setStatus('online');
 		} else {
 			msg.reply('ich lege mich nun schlafen!');
 			console.log('Ich lege mich nun schlafen!');
 			pause = true;
+			client.user.setStatus('invisible');
 		}
 	} else if ( !pause ) {
 		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
@@ -738,8 +751,8 @@ function cmd_serverlist(msg, args) {
 	if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '>' ) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
-		guilds.forEach( function(value, key, map) {
-			serverlist += '"' + value.toString() + '" von ' + value.owner.toString() + ' mit ' + value.memberCount + ' Mitgliedern\n' + value.channels.find('type', 'text').toString() + '\n\n';
+		guilds.forEach( function(guild) {
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + '\n\n';
 		} );
 		msg.author.send(serverlist);
 	} else if ( !pause ) {
