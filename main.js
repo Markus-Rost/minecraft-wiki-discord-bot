@@ -115,6 +115,7 @@ function cmd_help(msg, args) {
 
 function cmd_say(msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+		args = emoji(args);
 		if ( args[0] == 'alarm' ) {
 			msg.channel.send('🚨 **' + args.slice(1).join(' ') + '** 🚨');
 		} else {
@@ -749,6 +750,7 @@ function cmd_umfrage(msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( args.length ) {
 			var reactions = [];
+			args = emoji(args);
 			for ( var i = 0; i < args.length; i++ ) {
 				var reaction = args[i];
 				var pattern = /^[\w\*]/
@@ -762,7 +764,8 @@ function cmd_umfrage(msg, args) {
 					break;
 				} else if ( reaction == '' ) {
 				} else {
-					if ( reaction.startsWith('<:') ) {
+						var custom = /^<a?:/
+						if ( custom.test(reaction) ) {
 						reaction = reaction.substring(reaction.lastIndexOf(':')+1, reaction.length-1);
 					}
 					reactions[i] = reaction;
@@ -774,6 +777,11 @@ function cmd_umfrage(msg, args) {
 	} else {
 		msg.react('❌');
 	}
+}
+
+function emoji(args) {
+	args = args.join(' ').replace(/(<a?:)(\d+>)/g, '$1Unbekanntes_Emoji:$2').split(' ');
+	return args;
 }
 
 
