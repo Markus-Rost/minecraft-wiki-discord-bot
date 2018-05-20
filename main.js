@@ -84,7 +84,7 @@ function cmd_help(msg, args) {
 		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = 'Dies sind alle Server-Emoji, die ich nutzen kann:\n';
-				var emojis = client.emojis
+				var emojis = client.emojis;
 				emojis.forEach( function(emoji) {
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`\n';
 				} );
@@ -767,7 +767,7 @@ function cmd_umfrage(msg, args) {
 			args = emoji(args);
 			for ( var i = 0; i < args.length; i++ ) {
 				var reaction = args[i];
-				var pattern = /^[\w\*]/
+				var pattern = /^[\w\*]/;
 				if ( pattern.test(reaction) ) {
 					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => { 
 						reactions.forEach( function(entry) {
@@ -778,7 +778,7 @@ function cmd_umfrage(msg, args) {
 					break;
 				} else if ( reaction == '' ) {
 				} else {
-						var custom = /^<a?:/
+						var custom = /^<a?:/;
 						if ( custom.test(reaction) ) {
 						reaction = reaction.substring(reaction.lastIndexOf(':')+1, reaction.length-1);
 					}
@@ -794,7 +794,21 @@ function cmd_umfrage(msg, args) {
 }
 
 function emoji(args) {
-	args = args.join(' ').replace(/(<a?:)(\d+>)/g, '$1Unbekanntes_Emoji:$2').split(' ');
+	var text = args.join(' ');
+	var regex = /(<a?:)(\d+)(>)/g;
+	if ( regex.test(text) ) {
+		regex.lastIndex = 0;
+		var emojis = client.emojis;
+		var entry;
+		while ( ( entry = regex.exec(text) ) !== null ) {
+			if ( entry[2] in emojis ) {
+				text = text.replace(entry[0], emojis[entry[2]].toString());
+			} else {
+				text = text.replace(entry[0], entry[1] + 'Unbekanntes_Emoji:' + entry[2] + entry[3]);
+			}
+		}
+		args = text.split(' ');
+	}
 	return args;
 }
 
