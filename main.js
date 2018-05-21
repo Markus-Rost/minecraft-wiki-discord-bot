@@ -769,10 +769,15 @@ function cmd_umfrage(msg, args) {
 				var reaction = args[i];
 				var pattern = /^[\w\*]/;
 				if ( pattern.test(reaction) ) {
-					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => { 
-						reactions.forEach( function(entry) {
-							poll.react(entry).catch( error => poll.react('440871715938238494') );
-						} );
+					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => {
+						if ( reactions.length ) {
+							reactions.forEach( function(entry) {
+								poll.react(entry).catch( error => poll.react('440871715938238494') );
+							} );
+						} else {
+							poll.react('448222377009086465');
+							poll.react('448222455425794059');
+						}
 					} );
 					msg.delete();
 					break;
