@@ -767,7 +767,7 @@ function cmd_umfrage(msg, args) {
 			args = emoji(args);
 			for ( var i = 0; i < args.length; i++ ) {
 				var reaction = args[i];
-				var pattern = /^[\w\s[:punct:]]{2,}/;
+				var pattern = /^[\w\s\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\`\{\|\}\~]{2,}/;
 				if ( pattern.test(reaction) ) {
 					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => {
 						if ( reactions.length ) {
