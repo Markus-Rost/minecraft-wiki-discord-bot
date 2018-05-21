@@ -767,7 +767,7 @@ function cmd_umfrage(msg, args) {
 			args = emoji(args);
 			for ( var i = 0; i < args.length; i++ ) {
 				var reaction = args[i];
-				var pattern = /^[\w\*]/;
+				var pattern = /^[\w\*]{2,}/;
 				if ( pattern.test(reaction) ) {
 					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => {
 						if ( reactions.length ) {
@@ -783,8 +783,8 @@ function cmd_umfrage(msg, args) {
 					break;
 				} else if ( reaction == '' ) {
 				} else {
-						var custom = /^<a?:/;
-						if ( custom.test(reaction) ) {
+					var custom = /^<a?:/;
+					if ( custom.test(reaction) ) {
 						reaction = reaction.substring(reaction.lastIndexOf(':')+1, reaction.length-1);
 					}
 					reactions[i] = reaction;
