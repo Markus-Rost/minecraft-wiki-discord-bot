@@ -669,11 +669,16 @@ function cmd_befehl(msg, befehl, args) {
 }
 
 function cmd_befehl2(msg, args) {
-	if ( args[0].startsWith('/') ) {
-		cmd_befehl(msg, args[0].substr(1), args.slice(1));
+	if ( args.length ) {
+		if ( args[0].startsWith('/') ) {
+			cmd_befehl(msg, args[0].substr(1), args.slice(1));
+		}
+		else {
+			cmd_befehl(msg, args[0], args.slice(1));
+		}
 	}
 	else {
-		cmd_befehl(msg, args[0], args.slice(1));
+		cmd_link(msg, cont.split(' ')[1], 'minecraft-de', '');
 	}
 }
 
