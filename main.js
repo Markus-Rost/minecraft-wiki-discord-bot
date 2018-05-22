@@ -678,7 +678,7 @@ function cmd_befehl2(msg, args) {
 		}
 	}
 	else {
-		cmd_link(msg, cont.split(' ')[1], 'minecraft-de', '');
+		cmd_link(msg, msg.content.split(' ')[1], 'minecraft-de', '');
 	}
 }
 
