@@ -816,11 +816,11 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 						msg.react('🤷');
 					}
 					else if ( body.query.searchinfo.totalhits == 1 ) {
-						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) );
+						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( / /g, '_' ) ) );
 					}
 					else {
-						if ( lang ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) + '\nNot the correct result? Use `' + process.env.prefix + cmd + 'search ' + title.replace( '_', ' ' ) + '` for a list of all hits or `' + process.env.prefix + cmd + 'page ' + title.replace( '_', ' ' ) + '` for a direct link!' );
-						else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + cmd + 'suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + cmd + 'seite ' + title.replace( '_', ' ' ) + '` für einen direkten Link!' );
+						if ( lang ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( / /g, '_' ) ) + '\nNot the correct result? Use `' + process.env.prefix + cmd + 'search ' + title.replace( /_/g, ' ' ) + '` for a list of all hits or `' + process.env.prefix + cmd + 'page ' + title.replace( /_/g, ' ' ) + '` for a direct link!' );
+						else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( / /g, '_' ) ) + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + cmd + 'suche ' + title.replace( /_/g, ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + cmd + 'seite ' + title.replace( /_/g, ' ' ) + '` für einen direkten Link!' );
 					}
 				}
 				
