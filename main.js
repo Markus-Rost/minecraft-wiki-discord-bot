@@ -5,6 +5,10 @@ var client = new Discord.Client();
 
 
 var pause = false;
+var english = [
+	'447104142729674753',
+	'422480985603571712'
+]
 
 
 client.on('ready', () => {
@@ -34,6 +38,18 @@ var cmdmap = {
 	poll: cmd_umfrage
 }
 
+var encmdmap = {
+	help: cmd_enhelp,
+	say: cmd_say,
+	test: cmd_test,
+	invite: cmd_invite,
+	stop: cmd_stop,
+	pause: cmd_pause,
+	delete: cmd_delete,
+	server: cmd_serverlist,
+	poll: cmd_umfrage
+}
+
 var pausecmdmap = {
 	say: cmd_say,
 	test: cmd_test,
@@ -43,7 +59,7 @@ var pausecmdmap = {
 	server: cmd_serverlist
 }
 
-function cmd_help(msg, args) {
+function cmd_help(lang, msg, args) {
 	var cmds = [
 		{ cmd: '<Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Minecraft Wiki.', unsearchable: true },
 		{ cmd: 'seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki.' },
@@ -125,7 +141,70 @@ function cmd_help(msg, args) {
 	}
 }
 
-function cmd_say(msg, args) {
+function cmd_enhelp(lang, msg, args) {
+	var cmds = [
+		{ cmd: '<search term>', desc: 'I answer with a link to a matching article in the Minecraft Wiki.', unsearchable: true },
+		{ cmd: 'page <page name>', desc: 'I answer with a link to the article in the Minecraft Wiki.' },
+		{ cmd: 'search <search term>', desc: 'I answer with a link to the search page for the article in the Minecraft Wiki.' },
+		{ cmd: 'help', desc: 'I list all commands.' },
+		{ cmd: 'help <command>', desc: 'Wonder how a command works.' },
+		{ cmd: 'help admin', desc: 'I list all commands for administrators.', admin: true },
+		{ cmd: 'help admin emoji', desc: 'I list all server emoji that I can use.', admin: true },
+		{ cmd: '!<wiki> <search term>', desc: 'I answer with a link to a matching article in the named Gamepedia wiki: `https://<wiki>.gamepedia.com/`', unsearchable: true },
+		{ cmd: 'poll [<emoji> <emoji> ...] <question as free text>', desc: 'I create a poll and react with the possible answers.', admin: true },
+		{ cmd: 'test', desc: 'If I\'m active, I\'ll answer! Otherwise not.' },
+		{ cmd: 'invite', desc: 'I send an Invite link for the server of Minecraft Wiki.' },
+		{ cmd: 'say <message>', desc: 'I write the given message.', admin: true },
+		{ cmd: 'say alarm <message>', desc: 'I write the given message already preformatted: 🚨 **<message>** 🚨', admin: true },
+		{ cmd: 'delete <count>', desc: 'I delete the recent messages in the channel, as long as they aren\'t older than 14 days.', admin: true }
+	]
+	
+	if ( args.length ) {
+		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
+				var cmdlist = 'These are all server emoji that I can use:\n';
+				var emojis = client.emojis;
+				emojis.forEach( function(emoji) {
+					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`\n';
+				} );
+				msg.channel.send(cmdlist);
+			}
+			else {
+				var cmdlist = 'These commands can only be performed by administrators:\n';
+				for ( var i = 0; i < cmds.length; i++ ) {
+					if ( cmds[i].admin && !cmds[i].hide ) {
+						cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+					}
+				}
+				
+				msg.channel.send(cmdlist);
+			}
+		}
+		else {
+			var cmdlist = ''
+			for ( var i = 0; i < cmds.length; i++ ) {
+				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( msg.channel.type != 'text' || !cmds[i].admin || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+				}
+			}
+			
+			if ( cmdlist == '' ) msg.react('❓');
+			else msg.channel.send(cmdlist);
+		}
+	}
+	else {
+		var cmdlist = 'So you want to know what I am made of? Here is a list of all commands that I understand:\n';
+		for ( var i = 0; i < cmds.length; i++ ) {
+			if ( !cmds[i].hide && !cmds[i].admin ) {
+				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+			}
+		}
+		
+		msg.channel.send(cmdlist);
+	}
+}
+
+function cmd_say(lang, msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		args = emoji(args);
 		if ( args[0] == 'alarm' ) {
@@ -139,38 +218,42 @@ function cmd_say(msg, args) {
 	}
 }
 
-function cmd_test(msg, args) {
+function cmd_test(lang, msg, args) {
 	if ( !pause ) {
-		var x = Math.floor((Math.random() * 10) + 1);
 		var text = '';
-		switch (x) {
-			case 1:
-				text = 'ich bin ja schon wach!';
-				break;
-			case 2:
-				text = 'du hast mich gerufen?';
-				break;
-			case 3:
-				text = 'hast du **Kekse** gesagt?';
-				break;
-			case 4:
-				text = 'ja ich funktioniere noch!';
-				break;
-			case 5:
-				text = 'hast du **Kekse** gesagt?';
-				break;
-			default: 
-				text = 'ich bin voll funktionsfähig!';
+		if ( lang ) text = 'I\'m fully functional!';
+		else {
+			var x = Math.floor((Math.random() * 10) + 1);
+			switch (x) {
+				case 1:
+					text = 'ich bin ja schon wach!';
+					break;
+				case 2:
+					text = 'du hast mich gerufen?';
+					break;
+				case 3:
+					text = 'hast du **Kekse** gesagt?';
+					break;
+				case 4:
+					text = 'ja ich funktioniere noch!';
+					break;
+				case 5:
+					text = 'hast du **Kekse** gesagt?';
+					break;
+				default: 
+					text = 'ich bin voll funktionsfähig!';
+			}
 		}
 		msg.reply(text);
 		console.log('Dies ist ein Test: Voll funktionsfähig!');
 	} else {
-		msg.reply('ich mache gerade eine Pause.');
+		if ( lang ) msg.reply('I\'m currently inactive');
+		else msg.reply('ich mache gerade eine Pause.');
 		console.log('Dies ist ein Test: Pausiert!');
 	}
 }
 
-function cmd_technik(msg, args) {
+function cmd_technik(lang, msg, args) {
 	if ( !args.length ) {
 		msg.channel.send( 'https://technic-de.gamepedia.com/Technik_Wiki' );
 	}
@@ -181,39 +264,49 @@ function cmd_technik(msg, args) {
 			var title = args.join('_');
 		}
 		
-		cmd_link(msg, title, 'technic-de', 'technik ');
+		cmd_link(lang, msg, title, 'technic-de', 'technik ');
 	}
 }
 
-function cmd_en(msg, args) {
-	cmd_link(msg, args.join('_'), 'minecraft', 'en ');
+function cmd_en(lang, msg, args) {
+	cmd_link(lang, msg, args.join('_'), 'minecraft', 'en ');
 }
 
-function cmd_uwmc(msg, args) {
+function cmd_uwmc(lang, msg, args) {
 	msg.channel.send('https://uwmc.de/' + args.join('-'));
 }
 
-function cmd_invite(msg, args) {
-	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
-		msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
-	} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
-		client.generateInvite(268954689).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n' + invite) );
+function cmd_invite(lang, msg, args) {
+	if ( lang ) {
+		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
+			msg.reply('here is the official Minecraft Discord:\nhttps://discord.gg/minecraft');
+		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
+			client.generateInvite(268954689).then( invite => msg.reply('use this link to invite me to another server:\n' + invite) );
+		} else {
+			msg.reply('use this link to invite other user:\nNo link set yet!');
+		}
 	} else {
-		msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
+		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
+			msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
+		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
+			client.generateInvite(268954689).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n' + invite) );
+		} else {
+			msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
+		}
 	}
 }
 
-function cmd_stop(msg, args) {
+function cmd_stop(lang, msg, args) {
 	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
 		msg.reply('ich schalte mich nun aus!');
 		console.log('Ich schalte mich nun aus!');
 		client.destroy();
 	} else if ( !pause ) {
-		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
-function cmd_pause(msg, args) {
+function cmd_pause(lang, msg, args) {
 	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
 		if ( pause ) {
 			msg.reply('ich bin wieder wach!');
@@ -227,7 +320,7 @@ function cmd_pause(msg, args) {
 			client.user.setStatus('invisible');
 		}
 	} else if ( !pause ) {
-		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
@@ -656,7 +749,7 @@ var aliase = {
 	'xp': 'experience'
 }
 
-function cmd_befehl(msg, befehl, args) {
+function cmd_befehl(lang, msg, befehl, args) {
 	var aliasCmd = ( befehl in aliase ) ? aliase[befehl] : befehl;
 	
 	if ( aliasCmd in befehle ) {
@@ -668,36 +761,38 @@ function cmd_befehl(msg, befehl, args) {
 	}
 }
 
-function cmd_befehl2(msg, args) {
+function cmd_befehl2(lang, msg, args) {
 	if ( args.length ) {
 		if ( args[0].startsWith('/') ) {
-			cmd_befehl(msg, args[0].substr(1), args.slice(1));
+			cmd_befehl(lang, msg, args[0].substr(1), args.slice(1));
 		}
 		else {
-			cmd_befehl(msg, args[0], args.slice(1));
+			cmd_befehl(lang, msg, args[0], args.slice(1));
 		}
 	}
 	else {
-		cmd_link(msg, msg.content.split(' ')[1], 'minecraft-de', '');
+		cmd_link(lang, msg, msg.content.split(' ')[1], 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
-function cmd_delete(msg, args) {
+function cmd_delete(lang, msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
-			msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
+			if ( lang ) msg.reply('the recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(5000) );
+			else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
 			console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
 		}
 		else {
-			msg.reply('du hast keine gültige Anzahl angegeben.');
+			if ( lang ) msg.reply('the specified number isn\'t valid');
+			else msg.reply('du hast keine gültige Anzahl angegeben.');
 		}
 	} else {
 		msg.react('❌');
 	}
 }
 
-function cmd_link(msg, title, wiki, cmd) {
+function cmd_link(lang, msg, title, wiki, cmd) {
 	var invoke = title.split('_')[0].toLowerCase();
 	var args = title.split('_').slice(1);
 	
@@ -724,7 +819,8 @@ function cmd_link(msg, title, wiki, cmd) {
 						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) );
 					}
 					else {
-						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + cmd + 'suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + cmd + 'seite ' + title.replace( '_', ' ' ) + '` für einen direkten Link!' );
+						if ( lang ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) + '\nNot the correct result? Use `' + process.env.prefix + cmd + 'search ' + title.replace( '_', ' ' ) + '` for a list of all hits or `' + process.env.prefix + cmd + 'page ' + title.replace( '_', ' ' ) + '` for a direct link!' );
+						else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( ' ', '_' ) ) + '\nNicht das richtige Ergebnis? Nutze `' + process.env.prefix + cmd + 'suche ' + title.replace( '_', ' ' ) + '` für eine Liste mit allen Treffern oder `' + process.env.prefix + cmd + 'seite ' + title.replace( '_', ' ' ) + '` für einen direkten Link!' );
 					}
 				}
 				
@@ -734,7 +830,7 @@ function cmd_link(msg, title, wiki, cmd) {
 	}
 }
 
-function cmd_info(msg, args) {
+function cmd_info(lang, msg, args) {
 	if ( msg.channel.type == 'text' && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
 		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
 			msg.member.removeRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
@@ -752,7 +848,7 @@ function cmd_info(msg, args) {
 	}
 }
 
-function cmd_serverlist(msg, args) {
+function cmd_serverlist(lang, msg, args) {
 	if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '>' ) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
@@ -761,11 +857,11 @@ function cmd_serverlist(msg, args) {
 		} );
 		msg.author.send(serverlist);
 	} else if ( !pause ) {
-		cmd_link(msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
-function cmd_umfrage(msg, args) {
+function cmd_umfrage(lang, msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( args.length ) {
 			var reactions = [];
@@ -775,7 +871,9 @@ function cmd_umfrage(msg, args) {
 				var custom = /^<a?:/;
 				var pattern = /^[\w\s!"#$%&'()*+,./:;<=>?@^`{|}~–[\]\-\\]{2,}/;
 				if ( !custom.test(reaction) && pattern.test(reaction) ) {
-					msg.channel.send('**Umfrage:**\n' + args.slice(i).join(' ')).then( poll => {
+					var poll = 'Umfrage';
+					if ( lang ) poll = 'Poll';
+					msg.channel.send('**' + poll + ':**\n' + args.slice(i).join(' ')).then( poll => {
 						if ( reactions.length ) {
 							reactions.forEach( function(entry) {
 								poll.react(entry).catch( error => poll.react('440871715938238494') );
@@ -796,7 +894,8 @@ function cmd_umfrage(msg, args) {
 				}
 			}
 		} else {
-			msg.reply('Schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<Emoji> <Emoji> ...] <Frage als Freitext>```');
+			if ( lang ) msg.reply('Write out the possible answers separated by a space and then your question:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<emoji> <emoji> ...] <question as free text>```');
+			else msg.reply('Schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<Emoji> <Emoji> ...] <Frage als Freitext>```');
 		}
 	} else {
 		msg.react('❌');
@@ -814,7 +913,7 @@ function emoji(args) {
 			if ( emojis.has(entry[2]) ) {
 				text = text.replace(entry[0], emojis.get(entry[2]).toString());
 			} else {
-				text = text.replace(entry[0], entry[1] + 'Unbekanntes_Emoji:' + entry[2] + entry[3]);
+				text = text.replace(entry[0], entry[1] + 'unknown_emoji:' + entry[2] + entry[3]);
 			}
 		}
 		args = text.split(' ');
@@ -830,19 +929,29 @@ client.on('message', msg => {
 	if ( cont.toLowerCase().startsWith(process.env.prefix) && !msg.webhookID && author.id != client.user.id ) {
 		var invoke = cont.split(' ')[1].toLowerCase();
 		var args = cont.split(' ').slice(2);
+		var lang = '';
+		if ( msg.channel.type == 'text' && english.includes(msg.guild.id) ) lang = 'en';
 		console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-		if ( !pause ) {
+		if ( !pause && !lang ) {
 			if ( invoke in cmdmap ) {
-				cmdmap[invoke](msg, args);
+				cmdmap[invoke](lang, msg, args);
 			} else if ( invoke.startsWith('/') ) {
-				cmd_befehl(msg, invoke.substr(1), args);
+				cmd_befehl(lang, msg, invoke.substr(1), args);
 			} else if ( invoke.startsWith('!') ) {
-				cmd_link(msg, args.join('_'), invoke.substr(1), invoke + ' ');
+				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 			} else {
-				cmd_link(msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+			}
+		} else if ( !pause && lang ) {
+			if ( invoke in encmdmap ) {
+				encmdmap[invoke](lang, msg, args);
+			} else if ( invoke.startsWith('!') ) {
+				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
+			} else {
+				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
 			}
 		} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
-			pausecmdmap[invoke](msg, args);
+			pausecmdmap[invoke](lang, msg, args);
 		}
 	}
 });
