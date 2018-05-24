@@ -283,7 +283,7 @@ function cmd_invite(lang, msg, args) {
 		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
 			client.generateInvite(268954689).then( invite => msg.reply('use this link to invite me to another server:\n' + invite) );
 		} else {
-			msg.reply('use this link to invite other user:\nNo link set yet!');
+			msg.reply('use this link to invite other user:\nhttps://discord.gg/fGdE5ZE');
 		}
 	} else {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
