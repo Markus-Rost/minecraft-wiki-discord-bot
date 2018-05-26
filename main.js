@@ -784,7 +784,7 @@ function cmd_befehl2(lang, msg, args) {
 function cmd_delete(lang, msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
-			if ( parseInt(args[0], 10) < 100 ) {
+			if ( parseInt(args[0], 10) > 99 ) {
 				if ( lang ) msg.reply('the specified number is too big. Max value is `99`!');
 				else msg.reply('deine angegebene Anzahl ist zu groß. Die maximale Anzahl ist `99`!');
 			}
