@@ -911,7 +911,7 @@ function cmd_umfrage(lang, msg, args) {
 }
 
 function cmd_user2(lang, msg, args) {
-	var invoke = msg.content.split(' ')[1].toLowerCase();
+	var invoke = args[0].toLowerCase();
 	if ( invoke.startsWith('benutzer:') ) {
 		cmd_user(lang, msg, args.join('_').substr(9));
 	} else if ( invoke.startsWith('benutzerin:') ) {
@@ -941,7 +941,6 @@ function cmd_user(lang, msg, username) {
 					msg.react('🤷');
 				}
 				else {
-					var name = body.query.users[0].name;
 					var gender = body.query.users[0].gender;
 					if ( !lang ) {
 						switch (gender) {
@@ -987,8 +986,8 @@ function cmd_user(lang, msg, username) {
 						if ( lang ) blockexpiry = 'infinite';
 						else blockexpiry = 'unbeschränkt';
 					}
-					if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + name + '>\n\nGender: ' + gender + '\nRegistration: ' + registration + '\nEditcount: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nAt ' + blockedtimestamp + ' from ' + blockedby + ' because of "' + blockreason + '"' : '' ));
-					else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + name + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nUm ' + blockedtimestamp + ' von ' + blockedby + ' wegen "' + blockreason + '"' : '' ));
+					if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGender: ' + gender + '\nRegistration: ' + registration + '\nEditcount: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nAt ' + blockedtimestamp + ' from ' + blockedby + ' because of "' + blockreason + '"' : '' ));
+					else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nUm ' + blockedtimestamp + ' von ' + blockedby + ' wegen "' + blockreason + '"' : '' ));
 				}
 			}
 			
