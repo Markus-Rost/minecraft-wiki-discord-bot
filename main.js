@@ -35,7 +35,10 @@ var cmdmap = {
 	info: cmd_info,
 	server: cmd_serverlist,
 	umfrage: cmd_umfrage,
-	poll: cmd_umfrage
+	poll: cmd_umfrage,
+	benutzer: cmd_user2,
+	benutzerin: cmd_user2,
+	user: cmd_user2
 }
 
 var encmdmap = {
@@ -47,7 +50,8 @@ var encmdmap = {
 	pause: cmd_pause,
 	delete: cmd_delete,
 	server: cmd_serverlist,
-	poll: cmd_umfrage
+	poll: cmd_umfrage,
+	user: cmd_user2
 }
 
 var pausecmdmap = {
@@ -85,6 +89,10 @@ function cmd_help(lang, msg, args) {
 		{ cmd: 'en seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im englischen Minecraft Wiki.', hide: true },
 		{ cmd: 'en suche <Suchbegriff>', desc: 'Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im englischen Minecraft Wiki.', hide: true },
 		{ cmd: '!<Wiki> <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im angegebenen Gamepedia-Wiki: `https://<Wiki>.gamepedia.com/`', unsearchable: true },
+		{ cmd: 'Benutzer:<Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', unsearchable: true },
+		{ cmd: 'benutzer <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.' },
+		{ cmd: 'benutzerin <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
+		{ cmd: 'user <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'umfrage [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
 		{ cmd: 'poll [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
@@ -902,6 +910,93 @@ function cmd_umfrage(lang, msg, args) {
 	}
 }
 
+function cmd_user2(lang, msg, args) {
+	var invoke = msg.content.split(' ')[1].toLowerCase();
+	if ( invoke.startsWith('benutzer:') ) {
+		cmd_user(lang, msg, args.join('_').substr(9));
+	} else if ( invoke.startsWith('benutzerin:') ) {
+		cmd_user(lang, msg, args.join('_').substr(11));
+	} else if ( invoke.startsWith('user:') ) {
+		cmd_user(lang, msg, args.join('_').substr(5));
+	} else {
+		cmd_user(lang, msg, args.join('_'));
+	}
+}
+
+function cmd_user(lang, msg, username) {
+	var wiki = 'minecraft' + ( lang ? '' : '-de' );
+	var hourglass;
+	msg.react('⏳').then( function( reaction ) {
+		hourglass = reaction;
+		request( {
+			uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=users&usprop=blockinfo|groups|editcount|registration|gender&ususers=' + username,
+			json: true
+		}, function( error, response, body ) {
+			if ( error || !response || !body || !body.query || !body.query.users[0] ) {
+				console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '.' ) : '.' ) ) );
+				msg.channel.send( 'https://' + wiki + '.gamepedia.com/UserProfile:' + username ).then( message => message.react('440871715938238494') );
+			}
+			else {
+				if ( body.query.users[0].missing == "" || body.query.users[0].invalid == "" ) {
+					msg.react('🤷');
+				}
+				else {
+					var name = body.query.users[0].name;
+					var gender = body.query.users[0].gender;
+					if ( !lang ) {
+						switch (gender) {
+							case 'male':
+								gender = 'Männlich';
+								break;
+							case 'female':
+								gender = 'Weiblich';
+								break;
+							default: 
+								gender = 'Unbekannt';
+						}
+					}
+					var registration = (new Date(body.query.users[0].registration)).toLocaleString(( lang ? 'en-US' : 'de-DE' ));
+					var editcount = body.query.users[0].editcount;
+					var groups = body.query.users[0].groups;
+					var group = '';
+					if ( lang ) {
+						if ( groups.includes('global_bot') ) group = 'Gamepedia bot';
+						else if ( groups.includes('global_sysop') ) group = 'Gamepedia staff';
+						else if ( groups.includes('bot') ) group = 'Bot';
+						else if ( groups.includes('bureaucrat') ) group = 'Bureaucrat';
+						else if ( groups.includes('sysop') ) group = 'Administrator';
+						else if ( groups.includes('grasp') ) group = 'GRASP';
+						else if ( groups.includes('directors') ) group = 'Director';
+						else if ( groups.includes('autopatrol') ) group = 'autopatrol';
+						else group = 'User';
+					} else {
+						if ( groups.includes('global_bot') ) group = 'Gamepedia-Bot';
+						else if ( groups.includes('global_sysop') ) group = 'Gamepedia-Mitarbeiter';
+						else if ( groups.includes('bot') ) group = 'Bot';
+						else if ( groups.includes('bureaucrat') ) group = 'Bürokrat';
+						else if ( groups.includes('sysop') ) group = 'Administrator';
+						else if ( groups.includes('grasp') ) group = 'GRASP';
+						else group = 'Benutzer';
+					}
+					var blockid = body.query.users[0].blockid;
+					var blockedtimestamp = (new Date(body.query.users[0].blockedtimestamp)).toLocaleString(( lang ? 'en-US' : 'de-DE' ));
+					var blockedby = body.query.users[0].blockedby;
+					var blockreason = body.query.users[0].blockreason;
+					var blockexpiry = body.query.users[0].blockexpiry;
+					if ( blockexpiry == 'infinity' ) {
+						if ( lang ) blockexpiry = 'infinite';
+						else blockexpiry = 'unbeschränkt';
+					}
+					if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + name + '>\n\nGender: ' + gender + '\nRegistration: ' + registration + '\nEditcount: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nAt ' + blockedtimestamp + ' from ' + blockedby + ' because of "' + blockreason + '"' : '' ));
+					else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + name + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nUm ' + blockedtimestamp + ' von ' + blockedby + ' wegen "' + blockreason + '"' : '' ));
+				}
+			}
+			
+			if ( hourglass != undefined ) hourglass.remove();
+		} );
+	} );
+}
+
 function emoji(args) {
 	var text = args.join(' ');
 	var regex = /(<a?:)(\d+)(>)/g;
@@ -939,6 +1034,12 @@ client.on('message', msg => {
 				cmd_befehl(lang, msg, invoke.substr(1), args);
 			} else if ( invoke.startsWith('!') ) {
 				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
+			} else if ( invoke.startsWith('benutzer:') ) {
+				cmd_user(lang, msg, cont.substr(15).replace( / /g, '_' ));
+			} else if ( invoke.startsWith('benutzerin:') ) {
+				cmd_user(lang, msg, cont.substr(17).replace( / /g, '_' ));
+			} else if ( invoke.startsWith('user:') ) {
+				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ));
 			} else {
 				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 			}
@@ -947,6 +1048,8 @@ client.on('message', msg => {
 				encmdmap[invoke](lang, msg, args);
 			} else if ( invoke.startsWith('!') ) {
 				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
+			} else if ( invoke.startsWith('user:') ) {
+				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ));
 			} else {
 				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
 			}
