@@ -784,13 +784,19 @@ function cmd_befehl2(lang, msg, args) {
 function cmd_delete(lang, msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
-			msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
-			if ( lang ) msg.reply('the recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(5000) );
-			else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
-			console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
+			if ( parseInt(args[0], 10) < 100 ) {
+				if ( lang ) msg.reply('the specified number is too big. Max value is `99`!');
+				else msg.reply('deine angegebene Anzahl ist zu groß. Die maximale Anzahl ist `99`!');
+			}
+			else {
+				msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
+				if ( lang ) msg.reply('the recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(5000) );
+				else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
+				console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
+			}
 		}
 		else {
-			if ( lang ) msg.reply('the specified number isn\'t valid');
+			if ( lang ) msg.reply('the specified number isn\'t valid.');
 			else msg.reply('du hast keine gültige Anzahl angegeben.');
 		}
 	} else {
