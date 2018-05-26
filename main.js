@@ -35,10 +35,7 @@ var cmdmap = {
 	info: cmd_info,
 	server: cmd_serverlist,
 	umfrage: cmd_umfrage,
-	poll: cmd_umfrage,
-	benutzer: cmd_user2,
-	benutzerin: cmd_user2,
-	user: cmd_user2
+	poll: cmd_umfrage
 }
 
 var encmdmap = {
@@ -50,8 +47,7 @@ var encmdmap = {
 	pause: cmd_pause,
 	delete: cmd_delete,
 	server: cmd_serverlist,
-	poll: cmd_umfrage,
-	user: cmd_user2
+	poll: cmd_umfrage
 }
 
 var pausecmdmap = {
@@ -809,7 +805,10 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	else if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
+	else if ( invoke == 'user' || invoke == 'benutzer' || invoke == 'benutzerin' ) cmd_user(lang, msg, args.join('_'), wiki);
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki);
+	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki);
+	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki);
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
@@ -910,20 +909,6 @@ function cmd_umfrage(lang, msg, args) {
 		}
 	} else {
 		msg.react('❌');
-	}
-}
-
-function cmd_user2(lang, msg, args) {
-	var wiki = 'minecraft' + ( lang ? '' : '-de' );
-	var invoke = args[0].toLowerCase();
-	if ( invoke.startsWith('benutzer:') ) {
-		cmd_user(lang, msg, args.join('_').substr(9), wiki);
-	} else if ( invoke.startsWith('benutzerin:') ) {
-		cmd_user(lang, msg, args.join('_').substr(11), wiki);
-	} else if ( invoke.startsWith('user:') ) {
-		cmd_user(lang, msg, args.join('_').substr(5), wiki);
-	} else {
-		cmd_user(lang, msg, args.join('_'), wiki);
 	}
 }
 
@@ -1045,12 +1030,6 @@ client.on('message', msg => {
 				cmd_befehl(lang, msg, invoke.substr(1), args);
 			} else if ( invoke.startsWith('!') ) {
 				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
-			} else if ( invoke.startsWith('benutzer:') ) {
-				cmd_user(lang, msg, cont.substr(15).replace( / /g, '_' ), 'minecraft-de');
-			} else if ( invoke.startsWith('benutzerin:') ) {
-				cmd_user(lang, msg, cont.substr(17).replace( / /g, '_' ), 'minecraft-de');
-			} else if ( invoke.startsWith('user:') ) {
-				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ), 'minecraft-de');
 			} else {
 				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 			}
@@ -1059,8 +1038,6 @@ client.on('message', msg => {
 				encmdmap[invoke](lang, msg, args);
 			} else if ( invoke.startsWith('!') ) {
 				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
-			} else if ( invoke.startsWith('user:') ) {
-				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ), 'minecraft');
 			} else {
 				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
 			}
