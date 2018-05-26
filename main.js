@@ -911,7 +911,7 @@ function cmd_umfrage(lang, msg, args) {
 			for ( var i = 0; i < args.length; i++ ) {
 				var reaction = args[i];
 				var custom = /^<a?:/;
-				var pattern = /^[\w\s!"#$%&'()*+,./:;<=>?@^`{|}~–[\]\-\\]{2,}/;
+				var pattern = /^[\w\säÄöÖüÜßẞ!"#$%&'()*+,./:;<=>?@^`{|}~–[\]\-\\]{2,}/;
 				if ( !custom.test(reaction) && pattern.test(reaction) ) {
 					var poll = 'Umfrage';
 					if ( lang ) poll = 'Poll';
