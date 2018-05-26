@@ -147,28 +147,28 @@ function cmd_help(lang, msg, args) {
 
 function cmd_enhelp(lang, msg, args) {
 	var cmds = [
-		{ cmd: '<search term>', desc: 'I answer with a link to a matching article in the Minecraft Wiki.', unsearchable: true },
-		{ cmd: 'page <page name>', desc: 'I answer with a link to the article in the Minecraft Wiki.' },
-		{ cmd: 'search <search term>', desc: 'I answer with a link to the search page for the article in the Minecraft Wiki.' },
-		{ cmd: 'User:<username>', desc: 'I show some information about the user.', unsearchable: true },
-		{ cmd: 'user <username>', desc: 'I show some information about the user.', hide: true },
-		{ cmd: 'help', desc: 'I list all commands.' },
-		{ cmd: 'help <command>', desc: 'Wonder how a command works.' },
-		{ cmd: 'help admin', desc: 'I list all commands for administrators.', admin: true },
-		{ cmd: 'help admin emoji', desc: 'I list all server emoji that I can use.', admin: true },
-		{ cmd: '!<wiki> <search term>', desc: 'I answer with a link to a matching article in the named Gamepedia wiki: `https://<wiki>.gamepedia.com/`', unsearchable: true },
-		{ cmd: 'poll [<emoji> <emoji> ...] <question as free text>', desc: 'I create a poll and react with the possible answers.', admin: true },
+		{ cmd: '<search term>', desc: 'I will answer with a link to a matching article in the Minecraft Wiki.', unsearchable: true },
+		{ cmd: 'page <page name>', desc: 'I will answer with a link to the article in the Minecraft Wiki.' },
+		{ cmd: 'search <search term>', desc: 'I will answer with a link to the search page for the article in the Minecraft Wiki.' },
+		{ cmd: 'User:<username>', desc: 'I will show some information about the user.', unsearchable: true },
+		{ cmd: 'user <username>', desc: 'I will show some information about the user.', hide: true },
+		{ cmd: 'help', desc: 'I will list all the commands that I understand.' },
+		{ cmd: 'help <command>', desc: 'Wonder how a command works? Let me explain it to you!' },
+		{ cmd: 'help admin', desc: 'I will list all administrator commands.', admin: true },
+		{ cmd: 'help admin emoji', desc: 'I will list all server emoji that I can use.', admin: true },
+		{ cmd: '!<wiki> <search term>', desc: 'I will answer with a link to a matching article in the named Gamepedia wiki: `https://<wiki>.gamepedia.com/`', unsearchable: true },
+		{ cmd: 'poll [<emoji> <emoji> ...] <question as free text>', desc: 'I will create a poll and react with the possible answers.', admin: true },
 		{ cmd: 'test', desc: 'If I\'m active, I\'ll answer! Otherwise not.' },
-		{ cmd: 'invite', desc: 'I send an Invite link for the server of Minecraft Wiki.' },
-		{ cmd: 'say <message>', desc: 'I write the given message.', admin: true },
-		{ cmd: 'say alarm <message>', desc: 'I write the given message already preformatted: 🚨 **<message>** 🚨', admin: true },
-		{ cmd: 'delete <count>', desc: 'I delete the recent messages in the channel, as long as they aren\'t older than 14 days.', admin: true }
+		{ cmd: 'invite', desc: 'I will send an invite link for the Minecraft Wiki Discord server.' },
+		{ cmd: 'say <message>', desc: 'I will write the given message.', admin: true },
+		{ cmd: 'say alarm <message>', desc: 'I will write the given message already preformatted: 🚨 **<message>** 🚨', admin: true },
+		{ cmd: 'delete <count>', desc: 'I will delete the recent messages in the channel, as long as they aren\'t older than 14 days.', admin: true }
 	]
 	
 	if ( args.length ) {
 		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
-				var cmdlist = 'These are all server emoji that I can use:\n';
+				var cmdlist = 'These are all the server emoji I can use:\n';
 				var emojis = client.emojis;
 				emojis.forEach( function(emoji) {
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`\n';
@@ -199,7 +199,7 @@ function cmd_enhelp(lang, msg, args) {
 		}
 	}
 	else {
-		var cmdlist = 'So you want to know what I am made of? Here is a list of all commands that I understand:\n';
+		var cmdlist = 'So, you want to know what things I can do? Here is a list of all commands that I understand:\n';
 		for ( var i = 0; i < cmds.length; i++ ) {
 			if ( !cmds[i].hide && !cmds[i].admin ) {
 				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
@@ -227,7 +227,25 @@ function cmd_say(lang, msg, args) {
 function cmd_test(lang, msg, args) {
 	if ( !pause ) {
 		var text = '';
-		if ( lang ) text = 'I\'m fully functional!';
+		if ( lang ) {
+			var x = Math.floor((Math.random() * 10) + 1);
+			switch (x) {
+				case 1:
+					text = 'I\'m still alive!';
+					break;
+				case 2:
+					text = 'and believe me, I am still alive.';
+					break;
+				case 3:
+					text = 'I\'m doing science and I\'m still alive.';
+					break;
+				case 4:
+					text = 'I feel fantastic and I\'m still alive.';
+					break;
+				default: 
+					text = 'I\'m fully functional!';
+			}
+		}
 		else {
 			var x = Math.floor((Math.random() * 10) + 1);
 			switch (x) {
@@ -241,7 +259,7 @@ function cmd_test(lang, msg, args) {
 					text = 'hast du **Kekse** gesagt?';
 					break;
 				case 4:
-					text = 'ja ich funktioniere noch!';
+					text = 'ja, ich funktioniere noch!';
 					break;
 				case 5:
 					text = 'hast du **Kekse** gesagt?';
@@ -253,7 +271,7 @@ function cmd_test(lang, msg, args) {
 		msg.reply(text);
 		console.log('Dies ist ein Test: Voll funktionsfähig!');
 	} else {
-		if ( lang ) msg.reply('I\'m currently inactive');
+		if ( lang ) msg.reply('I\'m currently inactive.');
 		else msg.reply('ich mache gerade eine Pause.');
 		console.log('Dies ist ein Test: Pausiert!');
 	}
@@ -285,11 +303,11 @@ function cmd_uwmc(lang, msg, args) {
 function cmd_invite(lang, msg, args) {
 	if ( lang ) {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
-			msg.reply('here is the official Minecraft Discord:\nhttps://discord.gg/minecraft');
+			msg.reply('you can join the official Minecraft Discord by clicking this link:\nhttps://discord.gg/minecraft');
 		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
 			client.generateInvite(268954689).then( invite => msg.reply('use this link to invite me to another server:\n' + invite) );
 		} else {
-			msg.reply('use this link to invite other user:\nhttps://discord.gg/fGdE5ZE');
+			msg.reply('use this link to invite other users to this server:\nhttps://discord.gg/fGdE5ZE');
 		}
 	} else {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
@@ -785,14 +803,14 @@ function cmd_delete(lang, msg, args) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			if ( parseInt(args[0], 10) > 99 ) {
-				if ( lang ) msg.reply('the specified number is too big. Max value is `99`!');
+				if ( lang ) msg.reply('the specified number is too big. The maximum is `99`!');
 				else msg.reply('deine angegebene Anzahl ist zu groß. Die maximale Anzahl ist `99`!');
 			}
 			else {
 				msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
-				if ( lang ) msg.reply('the recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(5000) );
+				if ( lang ) msg.reply('the most recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(5000) );
 				else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
-				console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
+				console.log('die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
 			}
 		}
 		else {
@@ -910,8 +928,8 @@ function cmd_umfrage(lang, msg, args) {
 				}
 			}
 		} else {
-			if ( lang ) msg.reply('Write out the possible answers separated by a space and then your question:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<emoji> <emoji> ...] <question as free text>```');
-			else msg.reply('Schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<Emoji> <Emoji> ...] <Frage als Freitext>```');
+			if ( lang ) msg.reply('write out the possible answers separated by a space and then your question:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<emoji> <emoji> ...] <question as free text>```');
+			else msg.reply('schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<Emoji> <Emoji> ...] <Frage als Freitext>```');
 		}
 	} else {
 		msg.react('❌');
