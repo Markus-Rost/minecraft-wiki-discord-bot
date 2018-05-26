@@ -154,6 +154,8 @@ function cmd_enhelp(lang, msg, args) {
 		{ cmd: '<search term>', desc: 'I answer with a link to a matching article in the Minecraft Wiki.', unsearchable: true },
 		{ cmd: 'page <page name>', desc: 'I answer with a link to the article in the Minecraft Wiki.' },
 		{ cmd: 'search <search term>', desc: 'I answer with a link to the search page for the article in the Minecraft Wiki.' },
+		{ cmd: 'User:<username>', desc: 'I show some information about the user.', unsearchable: true },
+		{ cmd: 'user <username>', desc: 'I show some information about the user.' },
 		{ cmd: 'help', desc: 'I list all commands.' },
 		{ cmd: 'help <command>', desc: 'Wonder how a command works.' },
 		{ cmd: 'help admin', desc: 'I list all commands for administrators.', admin: true },
