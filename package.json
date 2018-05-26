@@ -4,8 +4,8 @@
   "description": "Discord-Bot für den Server des Minecraft Wiki (DE)",
   "main": "main.js",
   "scripts": {
-    "test": "node main.js debug",
-    "start": "node main.js"
+    "test": "node --icu-data-dir=node_modules/full-icu main.js debug",
+    "start": "node --icu-data-dir=node_modules/full-icu main.js"
   },
   "author": "MarkusRost",
   "license": "ISC",
