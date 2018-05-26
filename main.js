@@ -110,7 +110,7 @@ function cmd_help(lang, msg, args) {
 					if ( i % 2 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 				} );
-				msg.channel.send(cmdlist, {split:{maxLength:1900}});
+				msg.channel.send(cmdlist, {split:{maxLength:1800}});
 			}
 			else {
 				var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
@@ -177,7 +177,7 @@ function cmd_enhelp(lang, msg, args) {
 					if ( i % 2 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 				} );
-				msg.channel.send(cmdlist, {split:{maxLength:1900}});
+				msg.channel.send(cmdlist, {split:{maxLength:1800}});
 			}
 			else {
 				var cmdlist = 'These commands can only be performed by administrators:\n';
