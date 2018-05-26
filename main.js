@@ -946,7 +946,7 @@ function cmd_user(lang, msg, username, wiki) {
 				else {
 					var options = {  
 						year: "numeric",
-						month: "short",
+						month: "numeric",
 						day: "numeric",
 						hour: "2-digit",
 						minute: "2-digit"
