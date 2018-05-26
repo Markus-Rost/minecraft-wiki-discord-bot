@@ -105,12 +105,14 @@ function cmd_help(lang, msg, args) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = 'Dies sind alle Server-Emoji, die ich nutzen kann:\n';
 				var emojis = client.emojis;
-				emojis.forEach( function(emoji, i) {
+				var i = 0;
+				emojis.forEach( function(emoji) {
 					var br = '\t\t';
 					if ( i % 2 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
+					i++;
 				} );
-				msg.channel.send(cmdlist, {split:{maxLength:1800}});
+				msg.channel.send(cmdlist, {split:true});
 			}
 			else {
 				var cmdlist = 'Diese Befehle können nur Administratoren ausführen:\n';
@@ -172,12 +174,14 @@ function cmd_enhelp(lang, msg, args) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = 'These are all the server emoji I can use:\n';
 				var emojis = client.emojis;
-				emojis.forEach( function(emoji, i) {
+				var i = 0;
+				emojis.forEach( function(emoji) {
 					var br = '\t\t';
 					if ( i % 2 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
+					i++;
 				} );
-				msg.channel.send(cmdlist, {split:{maxLength:1800}});
+				msg.channel.send(cmdlist, {split:true});
 			}
 			else {
 				var cmdlist = 'These commands can only be performed by administrators:\n';
