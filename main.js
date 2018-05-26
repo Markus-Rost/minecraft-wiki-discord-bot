@@ -809,6 +809,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	else if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
+	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki);
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
@@ -913,20 +914,20 @@ function cmd_umfrage(lang, msg, args) {
 }
 
 function cmd_user2(lang, msg, args) {
+	var wiki = 'minecraft' + ( lang ? '' : '-de' );
 	var invoke = args[0].toLowerCase();
 	if ( invoke.startsWith('benutzer:') ) {
-		cmd_user(lang, msg, args.join('_').substr(9));
+		cmd_user(lang, msg, args.join('_').substr(9), wiki);
 	} else if ( invoke.startsWith('benutzerin:') ) {
-		cmd_user(lang, msg, args.join('_').substr(11));
+		cmd_user(lang, msg, args.join('_').substr(11), wiki);
 	} else if ( invoke.startsWith('user:') ) {
-		cmd_user(lang, msg, args.join('_').substr(5));
+		cmd_user(lang, msg, args.join('_').substr(5), wiki);
 	} else {
-		cmd_user(lang, msg, args.join('_'));
+		cmd_user(lang, msg, args.join('_'), wiki);
 	}
 }
 
-function cmd_user(lang, msg, username) {
-	var wiki = 'minecraft' + ( lang ? '' : '-de' );
+function cmd_user(lang, msg, username, wiki) {
 	var hourglass;
 	msg.react('⏳').then( function( reaction ) {
 		hourglass = reaction;
@@ -1036,11 +1037,11 @@ client.on('message', msg => {
 			} else if ( invoke.startsWith('!') ) {
 				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 			} else if ( invoke.startsWith('benutzer:') ) {
-				cmd_user(lang, msg, cont.substr(15).replace( / /g, '_' ));
+				cmd_user(lang, msg, cont.substr(15).replace( / /g, '_' ), 'minecraft-de');
 			} else if ( invoke.startsWith('benutzerin:') ) {
-				cmd_user(lang, msg, cont.substr(17).replace( / /g, '_' ));
+				cmd_user(lang, msg, cont.substr(17).replace( / /g, '_' ), 'minecraft-de');
 			} else if ( invoke.startsWith('user:') ) {
-				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ));
+				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ), 'minecraft-de');
 			} else {
 				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 			}
@@ -1050,7 +1051,7 @@ client.on('message', msg => {
 			} else if ( invoke.startsWith('!') ) {
 				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 			} else if ( invoke.startsWith('user:') ) {
-				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ));
+				cmd_user(lang, msg, cont.substr(11).replace( / /g, '_' ), 'minecraft');
 			} else {
 				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
 			}
