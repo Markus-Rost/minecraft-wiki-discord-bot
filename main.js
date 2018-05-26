@@ -974,8 +974,6 @@ function cmd_user(lang, msg, username, wiki) {
 					}
 					var blockid = body.query.users[0].blockid;
 					var blockedtimestamp = (new Date(body.query.users[0].blockedtimestamp)).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
-					var blockedby = body.query.users[0].blockedby;
-					var blockreason = body.query.users[0].blockreason;
 					var blockexpiry = body.query.users[0].blockexpiry;
 					if ( blockexpiry == 'infinity' ) {
 						if ( lang ) blockexpiry = 'the end of all days';
@@ -983,8 +981,10 @@ function cmd_user(lang, msg, username, wiki) {
 					} else if ( blockexpiry ) {
 						blockexpiry = (new Date(blockexpiry.replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2,3})/, '$1-$2-$3T$4:$5:$6Z'))).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
 					}
-					if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGender: ' + gender + '\nRegistration: ' + registration + '\nEditcount: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nAt ' + blockedtimestamp + ' from ' + blockedby + ' because of "' + blockreason + '" until ' + blockexpiry + ' blocked.' : '' ));
-					else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nAm ' + blockedtimestamp + ' von ' + blockedby + ' wegen "' + blockreason + '" bis zum ' + blockexpiry + ' gesperrt.' : '' ));
+					var blockedby = body.query.users[0].blockedby;
+					var blockreason = body.query.users[0].blockreason;
+					if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGender: ' + gender + '\nRegistration: ' + registration + '\nEditcount: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nBlocked on ' + blockedtimestamp + ' until ' + blockexpiry + ' by ' + blockedby + ' for "' + blockreason + '".' : '' ));
+					else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nGesperrt am ' + blockedtimestamp + ' bis zum ' + blockexpiry + ' von ' + blockedby + ' wegen "' + blockreason + '".' : '' ));
 				}
 			}
 			
