@@ -105,8 +105,10 @@ function cmd_help(lang, msg, args) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = 'Dies sind alle Server-Emoji, die ich nutzen kann:\n';
 				var emojis = client.emojis;
-				emojis.forEach( function(emoji) {
-					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`\n';
+				emojis.forEach( function(emoji, i) {
+					var br = '\t\t';
+					if ( i % 2 ) br = '\n';
+					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 				} );
 				msg.channel.send(cmdlist, {split: true});
 			}
@@ -170,8 +172,10 @@ function cmd_enhelp(lang, msg, args) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = 'These are all the server emoji I can use:\n';
 				var emojis = client.emojis;
-				emojis.forEach( function(emoji) {
-					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`\n';
+				emojis.forEach( function(emoji, i) {
+					var br = '\t\t';
+					if ( i % 2 ) br = '\n';
+					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 				} );
 				msg.channel.send(cmdlist, {split: true});
 			}
