@@ -786,7 +786,7 @@ function cmd_befehl(lang, msg, befehl, args) {
 	
 	if ( aliasCmd in befehle ) {
 		var cmdSyntax = befehle[aliasCmd].join( '\n' ).replace( '/' + aliasCmd, '/' + befehl );
-		msg.channel.send('```markdown\n' + cmdSyntax + '\n```\nhttps://minecraft-de.gamepedia.com/Befehl/' + aliasCmd);
+		msg.channel.send('```markdown\n' + cmdSyntax + '\n```\n<https://minecraft-de.gamepedia.com/Befehl/' + aliasCmd + '>');
 	}
 	else {
 		msg.react('❓');
