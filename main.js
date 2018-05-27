@@ -89,6 +89,7 @@ function cmd_help(lang, msg, args) {
 		{ cmd: 'benutzer <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'benutzerin <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'user <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
+		{ cmd: 'diff <diff> [<oldid>]', desc: 'Ich verlinke auf eine Änderung im Minecraft Wiki.' },
 		{ cmd: 'umfrage [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
 		{ cmd: 'poll [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
@@ -156,6 +157,7 @@ function cmd_enhelp(lang, msg, args) {
 		{ cmd: 'search <search term>', desc: 'I will answer with a link to the search page for the article in the Minecraft Wiki.' },
 		{ cmd: 'User:<username>', desc: 'I will show some information about the user.', unsearchable: true },
 		{ cmd: 'user <username>', desc: 'I will show some information about the user.', hide: true },
+		{ cmd: 'diff <diff> [<oldid>]', desc: 'I will answer with a link to the diff in the Minecraft Wiki.' },
 		{ cmd: 'help', desc: 'I will list all the commands that I understand.' },
 		{ cmd: 'help <command>', desc: 'Wonder how a command works? Let me explain it to you!' },
 		{ cmd: 'help admin', desc: 'I will list all administrator commands.', admin: true },
@@ -841,6 +843,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki);
 	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki);
 	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki);
+	else if ( invoke == 'diff' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) );
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
