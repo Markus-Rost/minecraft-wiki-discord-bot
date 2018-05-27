@@ -954,7 +954,7 @@ function cmd_user(lang, msg, username, wiki) {
 		}, function( error, response, body ) {
 			if ( error || !response || !body || !body.query || !body.query.users[0] ) {
 				console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '.' ) : '.' ) ) );
-				msg.channel.send( 'https://' + wiki + '.gamepedia.com/UserProfile:' + username ).then( message => message.react('440871715938238494') );
+				msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>' ).then( message => message.react('440871715938238494') );
 			}
 			else {
 				if ( body.query.users[0].missing == "" || body.query.users[0].invalid == "" ) {
