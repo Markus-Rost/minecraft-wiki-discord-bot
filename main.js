@@ -23,7 +23,6 @@ var cmdmap = {
 	befehl: cmd_befehl2,
 	command: cmd_befehl2,
 	cmd: cmd_befehl2,
-	say: cmd_say,
 	test: cmd_test,
 	technik: cmd_technik,
 	en: cmd_en,
@@ -33,25 +32,26 @@ var cmdmap = {
 	pause: cmd_pause,
 	delete: cmd_delete,
 	info: cmd_info,
-	server: cmd_serverlist,
-	umfrage: cmd_umfrage,
-	poll: cmd_umfrage
+	server: cmd_serverlist
 }
 
 var encmdmap = {
 	help: cmd_enhelp,
-	say: cmd_say,
 	test: cmd_test,
 	invite: cmd_invite,
 	stop: cmd_stop,
 	pause: cmd_pause,
 	delete: cmd_delete,
-	server: cmd_serverlist,
+	server: cmd_serverlist
+}
+
+var multilinecmdmap = {
+	say: cmd_say,
+	umfrage: cmd_umfrage,
 	poll: cmd_umfrage
 }
 
 var pausecmdmap = {
-	say: cmd_say,
 	test: cmd_test,
 	stop: cmd_stop,
 	pause: cmd_pause,
@@ -221,7 +221,6 @@ function cmd_enhelp(lang, msg, args) {
 }
 
 function cmd_say(lang, msg, args) {
-	args = msg.content.split(' ').slice(2);
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		args = emoji(args);
 		if ( args[0] == 'alarm' ) {
@@ -907,7 +906,6 @@ function cmd_serverlist(lang, msg, args) {
 }
 
 function cmd_umfrage(lang, msg, args) {
-	args = msg.content.split(' ').slice(2);
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( args.length ) {
 			var reactions = [];
@@ -1053,32 +1051,34 @@ client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.author;
 	var channel = msg.channel;
-	if ( cont.toLowerCase().startsWith(process.env.prefix) && !msg.webhookID && author.id != client.user.id ) {
-		var invoke = cont.split(' ')[1].toLowerCase();
-		var args = cont.split('\n')[0].split(' ').slice(2);
-		var lang = '';
-		if ( msg.channel.type == 'text' && english.includes(msg.guild.id) ) lang = 'en';
-		console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-		if ( !pause && !lang ) {
-			if ( invoke in cmdmap ) {
-				cmdmap[invoke](lang, msg, args);
-			} else if ( invoke.startsWith('/') ) {
-				cmd_befehl(lang, msg, invoke.substr(1), args);
-			} else if ( invoke.startsWith('!') ) {
-				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
-			} else {
-				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
-			}
-		} else if ( !pause && lang ) {
-			if ( invoke in encmdmap ) {
-				encmdmap[invoke](lang, msg, args);
-			} else if ( invoke.startsWith('!') ) {
-				cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
-			} else {
-				cmd_link(lang, msg, cont.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
-			}
-		} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
-			pausecmdmap[invoke](lang, msg, args);
+	var lang = '';
+	if ( msg.channel.type == 'text' && english.includes(msg.guild.id) ) lang = 'en';
+	if ( !msg.webhookID && author.id != client.user.id ) {
+		if ( cont.toLowerCase().startsWith(process.env.prefix) && cont.split(' ')[1].toLowerCase() in multilinecmdmap ) {
+			var invoke = cont.split(' ')[1].toLowerCase();
+			var args = cont.split(' ').slice(2);
+			console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
+			if ( !pause ||  author.id == process.env.owner ) cmdmap[invoke](lang, msg, args);
+		} else {
+			cont.split('\n').forEach( function(line) {
+				if ( line.toLowerCase().startsWith(process.env.prefix) ) {
+					var invoke = line.split(' ')[1].toLowerCase();
+					var args = line.split(' ').slice(2);
+					console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
+					if ( !pause && !lang ) {
+						if ( invoke in cmdmap ) cmdmap[invoke](lang, msg, args);
+						else if ( invoke.startsWith('/') ) cmd_befehl(lang, msg, invoke.substr(1), args);
+						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
+						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
+					} else if ( !pause && lang ) {
+						if ( invoke in encmdmap ) encmdmap[invoke](lang, msg, args);
+						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
+						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
+					} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
+						pausecmdmap[invoke](lang, msg, args);
+					}
+				}
+			} );
 		}
 	}
 });
