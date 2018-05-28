@@ -30,9 +30,12 @@ var cmdmap = {
 	invite: cmd_invite,
 	stop: cmd_stop,
 	pause: cmd_pause,
-	delete: cmd_delete,
 	info: cmd_info,
-	server: cmd_serverlist
+	server: cmd_serverlist,
+	say: cmd_multiline,
+	delete: cmd_multiline,
+	umfrage: cmd_multiline,
+	poll: cmd_multiline
 }
 
 var encmdmap = {
@@ -41,12 +44,15 @@ var encmdmap = {
 	invite: cmd_invite,
 	stop: cmd_stop,
 	pause: cmd_pause,
-	delete: cmd_delete,
-	server: cmd_serverlist
+	server: cmd_serverlist,
+	say: cmd_multiline,
+	delete: cmd_multiline,
+	poll: cmd_multiline
 }
 
 var multilinecmdmap = {
 	say: cmd_say,
+	delete: cmd_delete,
 	umfrage: cmd_umfrage,
 	poll: cmd_umfrage
 }
@@ -55,8 +61,9 @@ var pausecmdmap = {
 	test: cmd_test,
 	stop: cmd_stop,
 	pause: cmd_pause,
-	delete: cmd_delete,
-	server: cmd_serverlist
+	server: cmd_serverlist,
+	say: cmd_multiline,
+	delete: cmd_multiline
 }
 
 function cmd_help(lang, msg, args) {
@@ -1025,6 +1032,10 @@ function cmd_user(lang, msg, username, wiki) {
 			if ( hourglass != undefined ) hourglass.remove();
 		} );
 	} );
+}
+
+function cmd_multiline(lang, msg, args) {
+	msg.react('440871715938238494');
 }
 
 function emoji(args) {
