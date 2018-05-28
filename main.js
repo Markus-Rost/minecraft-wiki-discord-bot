@@ -714,8 +714,8 @@ var befehle = {
 					'/teleport <Selektor> <Ziel-Position>',
 					'/teleport <Selektor> <Ziel-Position> <Drehung> <Kopfneigung>',
 					'/teleport <Selektor> <Ziel-Position> facing <Position>',
-					'/teleport <Selektor> <Ziel-Position> facing <Selektor> eyes',
-					'/teleport <Selektor> <Ziel-Position> facing <Selektor> feet'
+					'/teleport <Selektor> <Ziel-Position> facing entity <Selektor> eyes',
+					'/teleport <Selektor> <Ziel-Position> facing entity <Selektor> feet'
 				],
 	'tellraw':		[
 					'/tellraw <Selektor> <Nachricht im JSON-Format>'
@@ -795,7 +795,8 @@ function cmd_befehl(lang, msg, befehl, args) {
 	var aliasCmd = ( befehl in aliase ) ? aliase[befehl] : befehl;
 	
 	if ( aliasCmd in befehle ) {
-		var cmdSyntax = befehle[aliasCmd].join( '\n' ).replace( '/' + aliasCmd, '/' + befehl );
+		var regex = new RegExp('/' + aliasCmd, 'g');
+		var cmdSyntax = befehle[aliasCmd].join( '\n' ).replace( regex, '/' + befehl );
 		msg.channel.send('```markdown\n' + cmdSyntax + '\n```\n<https://minecraft-de.gamepedia.com/Befehl/' + aliasCmd + '>');
 	}
 	else {
