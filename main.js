@@ -1004,7 +1004,7 @@ function cmd_user(lang, msg, username, wiki) {
 						var group = '';
 						if ( lang ) {
 							if ( groups.includes('global_bot') ) group = 'Gamepedia bot';
-							else if ( groups.includes('global_sysop') ) group = 'Gamepedia staff';
+							else if ( groups.includes('hydra_staff') ) group = 'Gamepedia staff';
 							else if ( groups.includes('bot') ) group = 'Bot';
 							else if ( groups.includes('bureaucrat') ) group = 'Bureaucrat';
 							else if ( groups.includes('sysop') ) group = 'Administrator';
@@ -1014,7 +1014,7 @@ function cmd_user(lang, msg, username, wiki) {
 							else group = 'User';
 						} else {
 							if ( groups.includes('global_bot') ) group = 'Gamepedia-Bot';
-							else if ( groups.includes('global_sysop') ) group = 'Gamepedia-Mitarbeiter';
+							else if ( groups.includes('hydra_staff') ) group = 'Gamepedia-Mitarbeiter';
 							else if ( groups.includes('bot') ) group = 'Bot';
 							else if ( groups.includes('bureaucrat') ) group = 'Bürokrat';
 							else if ( groups.includes('sysop') ) group = 'Administrator';
