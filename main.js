@@ -985,6 +985,7 @@ function cmd_user(lang, msg, username, wiki) {
 							hour: "2-digit",
 							minute: "2-digit"
 						}
+						username = body.query.users[0].name;
 						var gender = body.query.users[0].gender;
 						if ( !lang ) {
 							switch (gender) {
