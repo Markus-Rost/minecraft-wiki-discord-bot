@@ -1069,7 +1069,7 @@ client.on('message', msg => {
 			var invoke = cont.split(' ')[1].toLowerCase();
 			var args = cont.split(' ').slice(2);
 			console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-			if ( !pause ||  author.id == process.env.owner ) cmdmap[invoke](lang, msg, args);
+			if ( !pause ||  author.id == process.env.owner ) multilinecmdmap[invoke](lang, msg, args);
 		} else {
 			cont.split('\n').forEach( function(line) {
 				if ( line.toLowerCase().startsWith(process.env.prefix) ) {
