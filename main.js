@@ -221,6 +221,7 @@ function cmd_enhelp(lang, msg, args) {
 }
 
 function cmd_say(lang, msg, args) {
+	args = msg.content.split(' ').slice(2);
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		args = emoji(args);
 		if ( args[0] == 'alarm' ) {
@@ -357,7 +358,6 @@ function cmd_pause(lang, msg, args) {
 		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
-
 
 var befehle = {
 	'advancement':		[
@@ -843,7 +843,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki);
 	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki);
 	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki);
-	else if ( invoke == 'diff' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) );
+	else if ( invoke == 'diff' ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) + '>' );
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
@@ -907,6 +907,7 @@ function cmd_serverlist(lang, msg, args) {
 }
 
 function cmd_umfrage(lang, msg, args) {
+	args = msg.content.split(' ').slice(2);
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( args.length ) {
 			var reactions = [];
@@ -1054,7 +1055,7 @@ client.on('message', msg => {
 	var channel = msg.channel;
 	if ( cont.toLowerCase().startsWith(process.env.prefix) && !msg.webhookID && author.id != client.user.id ) {
 		var invoke = cont.split(' ')[1].toLowerCase();
-		var args = cont.split(' ').slice(2);
+		var args = cont.split('\n')[0].split(' ').slice(2);
 		var lang = '';
 		if ( msg.channel.type == 'text' && english.includes(msg.guild.id) ) lang = 'en';
 		console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
