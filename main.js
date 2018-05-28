@@ -843,14 +843,14 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	var invoke = title.split('_')[0].toLowerCase();
 	var args = title.split('_').slice(1);
 	
-	if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
-	else if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
+	if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
+	else if ( invoke == 'diff' ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) + '>' );
+	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	else if ( invoke == 'user' || invoke == 'benutzer' || invoke == 'benutzerin' ) cmd_user(lang, msg, args.join('_'), wiki);
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki);
 	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki);
 	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki);
-	else if ( invoke == 'diff' ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) + '>' );
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
@@ -955,84 +955,90 @@ function cmd_umfrage(lang, msg, args) {
 }
 
 function cmd_user(lang, msg, username, wiki) {
-	var hourglass;
-	msg.react('⏳').then( function( reaction ) {
-		hourglass = reaction;
-		request( {
-			uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=users&usprop=blockinfo|groups|editcount|registration|gender&ususers=' + username,
-			json: true
-		}, function( error, response, body ) {
-			if ( error || !response || !body || !body.query || !body.query.users[0] ) {
-				console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '.' ) : '.' ) ) );
-				msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>' ).then( message => message.react('440871715938238494') );
-			}
-			else {
-				if ( body.query.users[0].missing == "" || body.query.users[0].invalid == "" ) {
-					msg.react('🤷');
+	if ( !username || username.toLowerCase().startsWith('talk:') || username.toLowerCase().startsWith('diskussion:') ) {
+		var invoke = msg.content.split(' ')[1].toLowerCase();
+		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(1).join(_) );
+		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(2).join(_) );
+	} else {
+		var hourglass;
+		msg.react('⏳').then( function( reaction ) {
+			hourglass = reaction;
+			request( {
+				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=users&usprop=blockinfo|groups|editcount|registration|gender&ususers=' + username,
+				json: true
+			}, function( error, response, body ) {
+				if ( error || !response || !body || !body.query || !body.query.users[0] ) {
+					console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '.' ) : '.' ) ) );
+					msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>' ).then( message => message.react('440871715938238494') );
 				}
 				else {
-					var options = {  
-						year: "numeric",
-						month: "short",
-						day: "numeric",
-						hour: "2-digit",
-						minute: "2-digit"
+					if ( body.query.users[0].missing == "" || body.query.users[0].invalid == "" ) {
+						msg.react('🤷');
 					}
-					var gender = body.query.users[0].gender;
-					if ( !lang ) {
-						switch (gender) {
-							case 'male':
-								gender = 'Männlich';
-								break;
-							case 'female':
-								gender = 'Weiblich';
-								break;
-							default: 
-								gender = 'Unbekannt';
+					else {
+						var options = {  
+							year: "numeric",
+							month: "short",
+							day: "numeric",
+							hour: "2-digit",
+							minute: "2-digit"
 						}
+						var gender = body.query.users[0].gender;
+						if ( !lang ) {
+							switch (gender) {
+								case 'male':
+									gender = 'Männlich';
+									break;
+								case 'female':
+									gender = 'Weiblich';
+									break;
+								default: 
+									gender = 'Unbekannt';
+							}
+						}
+						var registration = (new Date(body.query.users[0].registration)).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
+						var editcount = body.query.users[0].editcount;
+						var groups = body.query.users[0].groups;
+						var group = '';
+						if ( lang ) {
+							if ( groups.includes('global_bot') ) group = 'Gamepedia bot';
+							else if ( groups.includes('global_sysop') ) group = 'Gamepedia staff';
+							else if ( groups.includes('bot') ) group = 'Bot';
+							else if ( groups.includes('bureaucrat') ) group = 'Bureaucrat';
+							else if ( groups.includes('sysop') ) group = 'Administrator';
+							else if ( groups.includes('grasp') ) group = 'GRASP';
+							else if ( groups.includes('directors') ) group = 'Director';
+							else if ( groups.includes('autopatrol') ) group = 'autopatrol';
+							else group = 'User';
+						} else {
+							if ( groups.includes('global_bot') ) group = 'Gamepedia-Bot';
+							else if ( groups.includes('global_sysop') ) group = 'Gamepedia-Mitarbeiter';
+							else if ( groups.includes('bot') ) group = 'Bot';
+							else if ( groups.includes('bureaucrat') ) group = 'Bürokrat';
+							else if ( groups.includes('sysop') ) group = 'Administrator';
+							else if ( groups.includes('grasp') ) group = 'GRASP';
+							else group = 'Benutzer';
+						}
+						var blockid = body.query.users[0].blockid;
+						var blockedtimestamp = (new Date(body.query.users[0].blockedtimestamp)).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
+						var blockexpiry = body.query.users[0].blockexpiry;
+						if ( blockexpiry == 'infinity' ) {
+							if ( lang ) blockexpiry = 'the end of all days';
+							else blockexpiry = 'Ende aller Tage';
+						} else if ( blockexpiry ) {
+							blockexpiry = (new Date(blockexpiry.replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2,3})/, '$1-$2-$3T$4:$5:$6Z'))).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
+						}
+						var blockedby = body.query.users[0].blockedby;
+						var blockreason = body.query.users[0].blockreason;
+						if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGender: ' + gender + '\nRegistration date: ' + registration + '\nEdit count: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nBlocked on ' + blockedtimestamp + ' until ' + blockexpiry + ' by ' + blockedby + ' with reason "' + blockreason + '".' : '' ));
+						else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nGesperrt am ' + blockedtimestamp + ' bis zum ' + blockexpiry + ' von ' + blockedby + ' mit der Begründung "' + blockreason + '".' : '' ));
 					}
-					var registration = (new Date(body.query.users[0].registration)).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
-					var editcount = body.query.users[0].editcount;
-					var groups = body.query.users[0].groups;
-					var group = '';
-					if ( lang ) {
-						if ( groups.includes('global_bot') ) group = 'Gamepedia bot';
-						else if ( groups.includes('global_sysop') ) group = 'Gamepedia staff';
-						else if ( groups.includes('bot') ) group = 'Bot';
-						else if ( groups.includes('bureaucrat') ) group = 'Bureaucrat';
-						else if ( groups.includes('sysop') ) group = 'Administrator';
-						else if ( groups.includes('grasp') ) group = 'GRASP';
-						else if ( groups.includes('directors') ) group = 'Director';
-						else if ( groups.includes('autopatrol') ) group = 'autopatrol';
-						else group = 'User';
-					} else {
-						if ( groups.includes('global_bot') ) group = 'Gamepedia-Bot';
-						else if ( groups.includes('global_sysop') ) group = 'Gamepedia-Mitarbeiter';
-						else if ( groups.includes('bot') ) group = 'Bot';
-						else if ( groups.includes('bureaucrat') ) group = 'Bürokrat';
-						else if ( groups.includes('sysop') ) group = 'Administrator';
-						else if ( groups.includes('grasp') ) group = 'GRASP';
-						else group = 'Benutzer';
-					}
-					var blockid = body.query.users[0].blockid;
-					var blockedtimestamp = (new Date(body.query.users[0].blockedtimestamp)).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
-					var blockexpiry = body.query.users[0].blockexpiry;
-					if ( blockexpiry == 'infinity' ) {
-						if ( lang ) blockexpiry = 'the end of all days';
-						else blockexpiry = 'Ende aller Tage';
-					} else if ( blockexpiry ) {
-						blockexpiry = (new Date(blockexpiry.replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2,3})/, '$1-$2-$3T$4:$5:$6Z'))).toLocaleString(( lang ? 'en-US' : 'de-DE' ), options);
-					}
-					var blockedby = body.query.users[0].blockedby;
-					var blockreason = body.query.users[0].blockreason;
-					if ( lang ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGender: ' + gender + '\nRegistration date: ' + registration + '\nEdit count: ' + editcount + '\nGroup: ' + group + ( blockid ? '\n\n**This user is currently blocked!**\nBlocked on ' + blockedtimestamp + ' until ' + blockexpiry + ' by ' + blockedby + ' with reason "' + blockreason + '".' : '' ));
-					else msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\nGeschlecht: ' + gender + '\nRegistiert: ' + registration + '\nBearbeitungen: ' + editcount + '\nGruppe: ' + group + ( blockid ? '\n\n**Dieser Benutzer ist derzeit gesperrt!**\nGesperrt am ' + blockedtimestamp + ' bis zum ' + blockexpiry + ' von ' + blockedby + ' mit der Begründung "' + blockreason + '".' : '' ));
 				}
-			}
-			
-			if ( hourglass != undefined ) hourglass.remove();
+				
+				if ( hourglass != undefined ) hourglass.remove();
+			} );
 		} );
-	} );
+	}
 }
 
 function cmd_multiline(lang, msg, args) {
