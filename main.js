@@ -7,7 +7,8 @@ var client = new Discord.Client();
 var pause = false;
 var english = [
 	'447104142729674753',
-	'422480985603571712'
+	'422480985603571712',
+	'439427347771293717'
 ]
 
 
