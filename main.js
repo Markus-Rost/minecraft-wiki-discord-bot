@@ -957,8 +957,8 @@ function cmd_umfrage(lang, msg, args) {
 function cmd_user(lang, msg, username, wiki) {
 	if ( !username || username.toLowerCase().startsWith('talk:') || username.toLowerCase().startsWith('diskussion:') ) {
 		var invoke = msg.content.split(' ')[1].toLowerCase();
-		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(1).join(_) );
-		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(2).join(_) );
+		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(1).join('_') );
+		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(2).join('_') );
 	} else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
