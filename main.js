@@ -854,7 +854,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
 	else if ( invoke == 'diff' ) {
-		if ( args[0] ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/' + ( parseInt(args[0], 10) ? '?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) : args[0] + '?diff=' + ( args[0] ? args[0] + ( args[1] ? '&oldid=' + args[1] ) ) ) + '>' );
+		if ( args[0] ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/' + ( parseInt(args[0], 10) ? '?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) : args[0] + '?diff=' + ( args[1] ? args[1] + ( args[2] ? '&oldid=' + args[2] : '' ) : '' ) ) + '>' );
 		else msg.react('440871715938238494');
 	}
 	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
