@@ -963,7 +963,7 @@ function cmd_umfrage(lang, msg, args) {
 }
 
 function cmd_user(lang, msg, username, wiki) {
-	if ( !username || title.indexOf( '/' ) != -1 || username.toLowerCase().startsWith('talk:') || username.toLowerCase().startsWith('diskussion:') ) {
+	if ( !username || username.indexOf( '/' ) != -1 || username.toLowerCase().startsWith('talk:') || username.toLowerCase().startsWith('diskussion:') ) {
 		var invoke = msg.content.split(' ')[1].toLowerCase();
 		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(1).join('_') );
 		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(2).join('_') );
