@@ -855,10 +855,10 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
 	else if ( invoke == 'diff' ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) + '>' );
 	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
-	else if ( invoke == 'user' || invoke == 'benutzer' || invoke == 'benutzerin' ) cmd_user(lang, msg, args.join('_'), wiki);
-	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki);
-	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki);
-	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki);
+	else if ( invoke == 'user' || invoke == 'benutzer' || invoke == 'benutzerin' ) cmd_user(lang, msg, args.join('_'), wiki, title);
+	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title);
+	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki, title);
+	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki, title);
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
@@ -962,11 +962,11 @@ function cmd_umfrage(lang, msg, args) {
 	}
 }
 
-function cmd_user(lang, msg, username, wiki) {
+function cmd_user(lang, msg, username, wiki, title) {
 	if ( !username || username.indexOf( '/' ) != -1 || username.toLowerCase().startsWith('talk:') || username.toLowerCase().startsWith('diskussion:') ) {
 		var invoke = msg.content.split(' ')[1].toLowerCase();
-		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(1).join('_') );
-		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + msg.content.split(' ').slice(2).join('_') );
+		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
+		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	} else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
