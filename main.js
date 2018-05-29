@@ -1055,7 +1055,7 @@ function cmd_user(lang, msg, username, wiki, title) {
 function cmd_diff(lang, msg, args, wiki) {
 	if ( args[0] ){
 		var title = '';
-		var x = 0;
+		var x;
 		for ( var i = 0; i < args.length; i++ ) {
 			if ( parseInt(args[i], 10) ) {
 				x = i;
