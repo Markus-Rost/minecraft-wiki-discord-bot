@@ -853,7 +853,10 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	
 	if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
-	else if ( invoke == 'diff' ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) + '>' );
+	else if ( invoke == 'diff' ) {
+		if ( args[0] ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/' + ( parseInt(args[0], 10) ? '?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) : args[0] + '?diff=' + ( args[0] ? args[0] + ( args[1] ? '&oldid=' + args[1] ) ) + '>' );
+		else msg.react('440871715938238494');
+	}
 	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	else if ( invoke == 'user' || invoke == 'benutzer' || invoke == 'benutzerin' ) cmd_user(lang, msg, args.join('_'), wiki, title);
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title);
