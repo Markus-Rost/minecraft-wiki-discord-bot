@@ -101,7 +101,9 @@ function cmd_help(lang, msg, args) {
 		{ cmd: 'benutzer <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'benutzerin <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'user <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
+		{ cmd: 'diff <Seitenname>', desc: 'Ich verlinke auf die letzte Änderung an der Seite im Minecraft Wiki.' },
 		{ cmd: 'diff <diff> [<oldid>]', desc: 'Ich verlinke auf eine Änderung im Minecraft Wiki.' },
+		{ cmd: 'diff <Seitenname> [<diff>] [<oldid>]', desc: 'Ich verlinke auf eine Änderung an der Seite im Minecraft Wiki.', hide: true },
 		{ cmd: 'umfrage [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
 		{ cmd: 'poll [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
@@ -170,7 +172,9 @@ function cmd_enhelp(lang, msg, args) {
 		{ cmd: 'search <search term>', desc: 'I will answer with a link to the search page for the article in the Minecraft Wiki.' },
 		{ cmd: 'User:<username>', desc: 'I will show some information about the user.', unsearchable: true },
 		{ cmd: 'user <username>', desc: 'I will show some information about the user.', hide: true },
+		{ cmd: 'diff <Seitenname>', desc: 'I will answer with a link to the last diff on the article in the Minecraft Wiki.' },
 		{ cmd: 'diff <diff> [<oldid>]', desc: 'I will answer with a link to the diff in the Minecraft Wiki.' },
+		{ cmd: 'diff <Seitenname> [<diff>] [<oldid>]', desc: 'I will answer with a link to the diff on the article in the Minecraft Wiki.', hide: true },
 		{ cmd: 'help', desc: 'I will list all the commands that I understand.' },
 		{ cmd: 'help <command>', desc: 'Wonder how a command works? Let me explain it to you!' },
 		{ cmd: 'help admin', desc: 'I will list all administrator commands.', admin: true },
@@ -853,10 +857,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	
 	if ( invoke == 'seite' || invoke == 'page' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'suche' || invoke == 'search' ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
-	else if ( invoke == 'diff' ) {
-		if ( args[0] ) msg.channel.send( '<https://' + wiki + '.gamepedia.com/' + ( parseInt(args[0], 10) ? '?diff=' + args[0] + ( args[1] ? '&oldid=' + args[1] : '' ) : args[0] + '?diff=' + ( args[1] ? args[1] + ( args[2] ? '&oldid=' + args[2] : '' ) : '' ) ) + '>' );
-		else msg.react('440871715938238494');
-	}
+	else if ( invoke == 'diff' ) cmd_diff(lang, msg, args, wiki);
 	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	else if ( invoke == 'user' || invoke == 'benutzer' || invoke == 'benutzerin' ) cmd_user(lang, msg, args.join('_'), wiki, title);
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title);
@@ -1049,6 +1050,24 @@ function cmd_user(lang, msg, username, wiki, title) {
 			} );
 		} );
 	}
+}
+
+function cmd_diff(lang, msg, args, wiki) {
+	if ( args[0] ){
+		var title = '';
+		var x = 0;
+		for ( var i = 0; i < args.length; i++ ) {
+			if ( parseInt(args[i], 10) ) {
+				x = i;
+				i = args.length;
+			} else {
+				if ( title ) title += '_';
+				title += args[i];
+			}
+		}
+		msg.channel.send( '<https://' + wiki + '.gamepedia.com/' + title + '?diff=' + ( args[x] ? args[x] + ( args[x+1] ? '&oldid=' + args[x+1] : '' ) : '' ) + '>' );
+	}
+	else msg.react('440871715938238494');
 }
 
 function cmd_multiline(lang, msg, args) {
