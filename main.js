@@ -35,6 +35,7 @@ var cmdmap = {
 	server: cmd_serverlist,
 	say: cmd_multiline,
 	delete: cmd_multiline,
+	purge: cmd_multiline,
 	umfrage: cmd_multiline,
 	poll: cmd_multiline
 }
@@ -48,12 +49,14 @@ var encmdmap = {
 	server: cmd_serverlist,
 	say: cmd_multiline,
 	delete: cmd_multiline,
+	purge: cmd_multiline,
 	poll: cmd_multiline
 }
 
 var multilinecmdmap = {
 	say: cmd_say,
 	delete: cmd_delete,
+	purge: cmd_delete,
 	umfrage: cmd_umfrage,
 	poll: cmd_umfrage
 }
@@ -64,7 +67,8 @@ var pausecmdmap = {
 	pause: cmd_pause,
 	server: cmd_serverlist,
 	say: cmd_multiline,
-	delete: cmd_multiline
+	delete: cmd_multiline,
+	purge: cmd_multiline
 }
 
 function cmd_help(lang, msg, args) {
@@ -106,6 +110,7 @@ function cmd_help(lang, msg, args) {
 		{ cmd: 'say <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht.', admin: true },
 		{ cmd: 'say alarm <Nachricht>', desc: 'Ich schreibe die angegebene Nachricht bereits vorformatiert: 🚨 **<Nachricht>** 🚨', admin: true },
 		{ cmd: 'delete <Anzahl>', desc: 'Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.', admin: true },
+		{ cmd: 'purge <Anzahl>', desc: 'Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.', hide: true, admin: true },
 		{ cmd: 'info', desc: 'Du wirst bei neuen Entwicklungsversionen auf dem Server des deutschen Minecraft Wiki erwähnt.' }
 	]
 	
@@ -176,7 +181,8 @@ function cmd_enhelp(lang, msg, args) {
 		{ cmd: 'invite', desc: 'I will send an invite link for the Minecraft Wiki Discord server.' },
 		{ cmd: 'say <message>', desc: 'I will write the given message.', admin: true },
 		{ cmd: 'say alarm <message>', desc: 'I will write the given message already preformatted: 🚨 **<message>** 🚨', admin: true },
-		{ cmd: 'delete <count>', desc: 'I will delete the recent messages in the channel, as long as they aren\'t older than 14 days.', admin: true }
+		{ cmd: 'delete <count>', desc: 'I will delete the recent messages in the channel, as long as they aren\'t older than 14 days.', admin: true },
+		{ cmd: 'purge <count>', desc: 'I will delete the recent messages in the channel, as long as they aren\'t older than 14 days.', hide: true, admin: true }
 	]
 	
 	if ( args.length ) {
@@ -985,7 +991,6 @@ function cmd_user(lang, msg, username, wiki) {
 							hour: "2-digit",
 							minute: "2-digit"
 						}
-						username = body.query.users[0].name;
 						var gender = body.query.users[0].gender;
 						if ( !lang ) {
 							switch (gender) {
