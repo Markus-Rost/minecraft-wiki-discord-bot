@@ -859,6 +859,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title);
 	else if ( invoke.startsWith('benutzer:') ) cmd_user(lang, msg, title.substr(9), wiki, title);
 	else if ( invoke.startsWith('benutzerin:') ) cmd_user(lang, msg, title.substr(11), wiki, title);
+	else if ( invoke.startsWith('userprofile:') ) cmd_user(lang, msg, title.substr(12), wiki, title);
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
