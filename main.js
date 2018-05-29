@@ -964,9 +964,7 @@ function cmd_umfrage(lang, msg, args) {
 
 function cmd_user(lang, msg, username, wiki, title) {
 	if ( !username || username.indexOf( '/' ) != -1 || username.toLowerCase().startsWith('talk:') || username.toLowerCase().startsWith('diskussion:') ) {
-		var invoke = msg.content.split(' ')[1].toLowerCase();
-		if ( invoke.startsWith('user') || invoke.startsWith('benutzer') ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
-		else msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
+		msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
 	} else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
