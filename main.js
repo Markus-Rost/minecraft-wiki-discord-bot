@@ -37,7 +37,9 @@ var cmdmap = {
 	delete: cmd_multiline,
 	purge: cmd_multiline,
 	umfrage: cmd_multiline,
-	poll: cmd_multiline
+	poll: cmd_multiline,
+	fehler: cmd_bug,
+	bug: cmd_bug
 }
 
 var encmdmap = {
@@ -50,7 +52,8 @@ var encmdmap = {
 	say: cmd_multiline,
 	delete: cmd_multiline,
 	purge: cmd_multiline,
-	poll: cmd_multiline
+	poll: cmd_multiline,
+	bug: cmd_bug
 }
 
 var multilinecmdmap = {
@@ -71,7 +74,7 @@ var pausecmdmap = {
 	purge: cmd_multiline
 }
 
-function cmd_help(lang, msg, args) {
+function cmd_help(lang, msg, args, line) {
 	var cmds = [
 		{ cmd: '<Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Minecraft Wiki.', unsearchable: true },
 		{ cmd: 'seite <Seitenname>', desc: 'Ich antworte mit einem Link zu der angegebenen Seite im Minecraft Wiki.' },
@@ -102,8 +105,10 @@ function cmd_help(lang, msg, args) {
 		{ cmd: 'benutzerin <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'user <Benutzername>', desc: 'Ich liste ein paar Informationen über den Benutzer auf.', hide: true },
 		{ cmd: 'diff <Seitenname>', desc: 'Ich verlinke auf die letzte Änderung an der Seite im Minecraft Wiki.' },
-		{ cmd: 'diff <diff> [<oldid>]', desc: 'Ich verlinke auf eine Änderung im Minecraft Wiki.' },
-		{ cmd: 'diff <Seitenname> <diff> [<oldid>]', desc: 'Ich verlinke auf eine Änderung an der Seite im Minecraft Wiki.', hide: true },
+		{ cmd: 'diff <diff> [<oldid>]', desc: 'Ich verlinke auf die Änderung im Minecraft Wiki.' },
+		{ cmd: 'diff <Seitenname> <diff> [<oldid>]', desc: 'Ich verlinke auf die Änderung an der Seite im Minecraft Wiki.', hide: true },
+		{ cmd: 'fehler <Fehler>', desc: 'Ich verlinke auf den Fehler im Bugtracker.' },
+		{ cmd: 'bug <Fehler>', desc: 'Ich verlinke auf den Fehler im Bugtracker.', hide: true },
 		{ cmd: 'umfrage [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', admin: true },
 		{ cmd: 'poll [<Emoji> <Emoji> ...] <Frage als Freitext>', desc: 'Ich erstelle eine Umfrage und reagiere mit den möglichen Antworten.', hide: true, admin: true },
 		{ cmd: 'test', desc: 'Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht.' },
@@ -165,7 +170,7 @@ function cmd_help(lang, msg, args) {
 	}
 }
 
-function cmd_enhelp(lang, msg, args) {
+function cmd_enhelp(lang, msg, args, line) {
 	var cmds = [
 		{ cmd: '<search term>', desc: 'I will answer with a link to a matching article in the Minecraft Wiki.', unsearchable: true },
 		{ cmd: 'page <page name>', desc: 'I will answer with a link to the article in the Minecraft Wiki.' },
@@ -175,6 +180,7 @@ function cmd_enhelp(lang, msg, args) {
 		{ cmd: 'diff <page name>', desc: 'I will answer with a link to the last diff on the article in the Minecraft Wiki.' },
 		{ cmd: 'diff <diff> [<oldid>]', desc: 'I will answer with a link to the diff in the Minecraft Wiki.' },
 		{ cmd: 'diff <page name> <diff> [<oldid>]', desc: 'I will answer with a link to the diff on the article in the Minecraft Wiki.', hide: true },
+		{ cmd: 'bug <bug>', desc: 'I will answer with a link to the bug in the bug tracker.' },
 		{ cmd: 'help', desc: 'I will list all the commands that I understand.' },
 		{ cmd: 'help <command>', desc: 'Wonder how a command works? Let me explain it to you!' },
 		{ cmd: 'help admin', desc: 'I will list all administrator commands.', admin: true },
@@ -238,7 +244,7 @@ function cmd_enhelp(lang, msg, args) {
 	}
 }
 
-function cmd_say(lang, msg, args) {
+function cmd_say(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		args = emoji(args);
 		if ( args[0] == 'alarm' ) {
@@ -252,7 +258,7 @@ function cmd_say(lang, msg, args) {
 	}
 }
 
-function cmd_test(lang, msg, args) {
+function cmd_test(lang, msg, args, line) {
 	if ( !pause ) {
 		var text = '';
 		if ( lang ) {
@@ -305,7 +311,7 @@ function cmd_test(lang, msg, args) {
 	}
 }
 
-function cmd_technik(lang, msg, args) {
+function cmd_technik(lang, msg, args, line) {
 	if ( !args.length ) {
 		msg.channel.send( 'https://technic-de.gamepedia.com/Technik_Wiki' );
 	}
@@ -320,15 +326,15 @@ function cmd_technik(lang, msg, args) {
 	}
 }
 
-function cmd_en(lang, msg, args) {
+function cmd_en(lang, msg, args, line) {
 	cmd_link(lang, msg, args.join('_'), 'minecraft', 'en ');
 }
 
-function cmd_uwmc(lang, msg, args) {
+function cmd_uwmc(lang, msg, args, line) {
 	msg.channel.send('https://uwmc.de/' + args.join('-'));
 }
 
-function cmd_invite(lang, msg, args) {
+function cmd_invite(lang, msg, args, line) {
 	if ( lang ) {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 			msg.reply('you can join the official Minecraft Discord by clicking this link:\nhttps://discord.gg/minecraft');
@@ -348,17 +354,17 @@ function cmd_invite(lang, msg, args) {
 	}
 }
 
-function cmd_stop(lang, msg, args) {
+function cmd_stop(lang, msg, args, line) {
 	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
 		msg.reply('ich schalte mich nun aus!');
 		console.log('Ich schalte mich nun aus!');
 		client.destroy();
 	} else if ( !pause ) {
-		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
+		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
-function cmd_pause(lang, msg, args) {
+function cmd_pause(lang, msg, args, line) {
 	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
 		if ( pause ) {
 			msg.reply('ich bin wieder wach!');
@@ -372,7 +378,7 @@ function cmd_pause(lang, msg, args) {
 			client.user.setStatus('invisible');
 		}
 	} else if ( !pause ) {
-		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
+		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
@@ -814,7 +820,7 @@ function cmd_befehl(lang, msg, befehl, args) {
 	}
 }
 
-function cmd_befehl2(lang, msg, args) {
+function cmd_befehl2(lang, msg, args, line) {
 	if ( args.length ) {
 		if ( args[0].startsWith('/') ) {
 			cmd_befehl(lang, msg, args[0].substr(1), args.slice(1));
@@ -824,11 +830,11 @@ function cmd_befehl2(lang, msg, args) {
 		}
 	}
 	else {
-		cmd_link(lang, msg, msg.content.split(' ')[1], 'minecraft' + (lang ? '' : '-de'), '');
+		cmd_link(lang, msg, line.split(' ')[1], 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
-function cmd_delete(lang, msg, args) {
+function cmd_delete(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( parseInt(args[0], 10) + 1 > 0 ) {
 			if ( parseInt(args[0], 10) > 99 ) {
@@ -895,7 +901,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	}
 }
 
-function cmd_info(lang, msg, args) {
+function cmd_info(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
 		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
 			msg.member.removeRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
@@ -913,7 +919,7 @@ function cmd_info(lang, msg, args) {
 	}
 }
 
-function cmd_serverlist(lang, msg, args) {
+function cmd_serverlist(lang, msg, args, line) {
 	if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '>' ) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
@@ -922,11 +928,11 @@ function cmd_serverlist(lang, msg, args) {
 		} );
 		msg.author.send(serverlist);
 	} else if ( !pause ) {
-		cmd_link(lang, msg, msg.content.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
+		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
 }
 
-function cmd_umfrage(lang, msg, args) {
+function cmd_umfrage(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		if ( args.length ) {
 			var reactions = [];
@@ -959,8 +965,8 @@ function cmd_umfrage(lang, msg, args) {
 				}
 			}
 		} else {
-			if ( lang ) msg.reply('write out the possible answers separated by a space and then your question:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<emoji> <emoji> ...] <question as free text>```');
-			else msg.reply('schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + msg.content.split(' ')[1] + ' [<Emoji> <Emoji> ...] <Frage als Freitext>```');
+			if ( lang ) msg.reply('write out the possible answers separated by a space and then your question:```markdown\n' + process.env.prefix + line.split(' ')[1] + ' [<emoji> <emoji> ...] <question as free text>```');
+			else msg.reply('schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n' + process.env.prefix + line.split(' ')[1] + ' [<Emoji> <Emoji> ...] <Frage als Freitext>```');
 		}
 	} else {
 		msg.react('❌');
@@ -1070,8 +1076,19 @@ function cmd_diff(lang, msg, args, wiki) {
 	else msg.react('440871715938238494');
 }
 
-function cmd_multiline(lang, msg, args) {
+function cmd_multiline(lang, msg, args, line) {
 	msg.react('440871715938238494');
+}
+
+function cmd_bug(lang, msg, args, line) {
+	if ( args.length ) {
+		var project = '';
+		if ( parseInt(args[0], 10) ) project = 'MC-';
+		msg.channel.send( 'https://bugs.mojang.com/browse/' + project + args[0] );
+	}
+	else {
+		cmd_link(lang, msg, line.split(' ')[1], 'minecraft' + (lang ? '' : '-de'), '');
+	}
 }
 
 function emoji(args) {
@@ -1105,7 +1122,7 @@ client.on('message', msg => {
 			var invoke = cont.split(' ')[1].toLowerCase();
 			var args = cont.split(' ').slice(2);
 			console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-			if ( !pause ||  author.id == process.env.owner ) multilinecmdmap[invoke](lang, msg, args);
+			if ( !pause || ( author.id == process.env.owner && invoke in pausecmdmap ) ) multilinecmdmap[invoke](lang, msg, args, cont);
 		} else {
 			cont.split('\n').forEach( function(line) {
 				if ( line.toLowerCase().startsWith(process.env.prefix) ) {
@@ -1113,16 +1130,16 @@ client.on('message', msg => {
 					var args = line.split(' ').slice(2);
 					console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
 					if ( !pause && !lang ) {
-						if ( invoke in cmdmap ) cmdmap[invoke](lang, msg, args);
+						if ( invoke in cmdmap ) cmdmap[invoke](lang, msg, args, line);
 						else if ( invoke.startsWith('/') ) cmd_befehl(lang, msg, invoke.substr(1), args);
 						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 					} else if ( !pause && lang ) {
-						if ( invoke in encmdmap ) encmdmap[invoke](lang, msg, args);
+						if ( invoke in encmdmap ) encmdmap[invoke](lang, msg, args, line);
 						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
 					} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
-						pausecmdmap[invoke](lang, msg, args);
+						pausecmdmap[invoke](lang, msg, args, line);
 					}
 				}
 			} );
