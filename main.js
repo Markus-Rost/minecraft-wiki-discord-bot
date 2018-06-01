@@ -1063,7 +1063,7 @@ function cmd_diff(lang, msg, args, wiki) {
 		var title = '';
 		var x;
 		for ( var i = 0; i < args.length; i++ ) {
-			if ( parseInt(args[i], 10) ) {
+			if ( parseInt(args[i], 10) || args[i] == 'next' || args[i] == 'prev' ) {
 				x = i;
 				i = args.length;
 			} else {
