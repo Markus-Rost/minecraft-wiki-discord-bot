@@ -44,6 +44,8 @@ var cmdmap = {
 
 var encmdmap = {
 	help: cmd_enhelp,
+	command: cmd_befehl2,
+	cmd: cmd_befehl2,
 	test: cmd_test,
 	invite: cmd_invite,
 	stop: cmd_stop,
@@ -175,6 +177,9 @@ function cmd_enhelp(lang, msg, args, line) {
 		{ cmd: '<search term>', desc: 'I will answer with a link to a matching article in the Minecraft Wiki.', unsearchable: true },
 		{ cmd: 'page <page name>', desc: 'I will answer with a link to the article in the Minecraft Wiki.' },
 		{ cmd: 'search <search term>', desc: 'I will answer with a link to the search page for the article in the Minecraft Wiki.' },
+		{ cmd: '/<Minecraft command>', desc: 'I will answer with the syntax of the Minecraft command and a link to the article for the command in the Minecraft Wiki.', unsearchable: true },
+		{ cmd: 'command <Minecraft command>', desc: 'I will answer with the syntax of the Minecraft command and a link to the article for the command in the Minecraft Wiki.', hide: true },
+		{ cmd: 'cmd <Minecraft command>', desc: 'I will answer with the syntax of the Minecraft command and a link to the article for the command in the Minecraft Wiki.', hide: true },
 		{ cmd: 'User:<username>', desc: 'I will show some information about the user.', unsearchable: true },
 		{ cmd: 'user <username>', desc: 'I will show some information about the user.', hide: true },
 		{ cmd: 'diff <diff> [<oldid>]', desc: 'I will answer with a link to the diff in the Minecraft Wiki.' },
@@ -494,45 +499,48 @@ var befehle = {
 					'/effect give <Selektor> <Effekt-ID> <Zeit in Sekunden> <Verstärkung> <Partikelunsichtbarkeit>'
 				],
 	'enchant':		[
-					'/enchant <Selektor> <Verzauberungs-ID> [<Stufe>]'
+					'/enchant <Selektor> <Verzauberungs-ID>',
+					'/enchant <Selektor> <Verzauberungs-ID> <Stufe>'
 				],
 	'execute':		[
-					'/execute <Unterbefehl>',
+					'/execute < Unterbefehl >',
 					'\nUnterbefehle:\n=============',
 					'run <Befehl>',
-					'align <Achsen> <Unterbefehl>',
-					'anchored eyes <Unterbefehl>',
-					'anchored feet <Unterbefehl>',
-					'as <Selektor> <Unterbefehl>',
-					'at <Selektor> <Unterbefehl>',
-					'facing <Position> <Unterbefehl>',
-					'facing entity <Selektor> eyes <Unterbefehl>',
-					'facing entity <Selektor> feet <Unterbefehl>',
-					'if block <Position> <Block> <Unterbefehl>',
-					'unless block <Position> <Block> <Unterbefehl>',
-					'if blocks <Position1> <Position2> <Ziel-Position> <Block> <Unterbefehl>',
-					'unless blocks <Position1> <Position2> <Ziel-Position> <Block> <Unterbefehl>',
-					'if entity <Selektor> <Unterbefehl>',
-					'unless entity <Selektor> <Unterbefehl>',
-					'if score <Selektor> <Ziel> <Operation> <Selektor> <Ziel> <Unterbefehl>',
-					'unless score <Selektor> <Ziel> <Operator> <Selektor> <Ziel> <Unterbefehl>',
-					'if score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>',
-					'unless score <Selektor> <Ziel> matches <Punktebereich> <Unterbefehl>',
-					'in <Dimension> <Unterbefehl>',
-					'positioned <Position> <Unterbefehl>',
-					'positioned as <Selektor> <Unterbefehl>',
-					'rotated <Rotation> <Unterbefehl>',
-					'rotated as <Selektor> <Unterbefehl>',
-					'store result block <Position> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store success block <Position> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store result bossbar <Name> max <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store success bossbar <Name> max <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store result bossbar <Name> value <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store success bossbar <Name> value <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store result entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store success entity <Selektor> <Pfad> <Typ> <Skalierung> <Unterbefehl>',
-					'store result score <Selektor> <Ziel> <Unterbefehl>',
-					'store success score <Selektor> <Ziel> <Unterbefehl>'
+					'align <Achsen> < Unterbefehl >',
+					'anchored eyes < Unterbefehl >',
+					'anchored feet < Unterbefehl >',
+					'as <Selektor> < Unterbefehl >',
+					'at <Selektor> < Unterbefehl >',
+					'facing entity <Selektor> eyes < Unterbefehl >',
+					'facing entity <Selektor> feet < Unterbefehl >',
+					'facing <Position> < Unterbefehl >',
+					'if block <Position> <Block> < Unterbefehl >',
+					'if blocks <Position1> <Position2> <Ziel-Position> all < Unterbefehl >',
+					'if blocks <Position1> <Position2> <Ziel-Position> masked < Unterbefehl >',
+					'if entity <Selektor> < Unterbefehl >',
+					'if score <Selektor> <Ziel> <Operation> <Selektor> <Ziel> < Unterbefehl >',
+					'if score <Selektor> <Ziel> matches <Punktebereich> < Unterbefehl >',
+					'unless block <Position> <Block> < Unterbefehl >',
+					'unless blocks <Position1> <Position2> <Ziel-Position> all < Unterbefehl >',
+					'unless blocks <Position1> <Position2> <Ziel-Position> masked < Unterbefehl >',
+					'unless entity <Selektor> < Unterbefehl >',
+					'unless score <Selektor> <Ziel> <Operator> <Selektor> <Ziel> < Unterbefehl >',
+					'unless score <Selektor> <Ziel> matches <Punktebereich> < Unterbefehl >',
+					'in <Dimension> < Unterbefehl >',
+					'positioned as <Selektor> < Unterbefehl >',
+					'positioned <Position> < Unterbefehl >',
+					'rotated as <Selektor> < Unterbefehl >',
+					'rotated <Rotation> < Unterbefehl >',
+					'store result block <Position> <Pfad> <Datentyp> <Skalierung> < Unterbefehl >',
+					'store result bossbar <Name> max < Unterbefehl >',
+					'store result bossbar <Name> value < Unterbefehl >',
+					'store result entity <Selektor> <Pfad> <Datentyp> <Skalierung> < Unterbefehl >',
+					'store result score <Selektor> <Ziel> < Unterbefehl >',
+					'store success block <Position> <Pfad> <Datentyp> <Skalierung> < Unterbefehl >',
+					'store success bossbar <Name> max < Unterbefehl >',
+					'store success bossbar <Name> value < Unterbefehl >',
+					'store success entity <Selektor> <Pfad> <Datentyp> <Skalierung> < Unterbefehl >',
+					'store success score <Selektor> <Ziel> < Unterbefehl >'
 				],
 	'experience':		[
 					'/experience add <Selektor> <Menge>',
@@ -586,7 +594,8 @@ var befehle = {
 					'/kill <Selektor>'
 				],
 	'list':			[
-					'/list'
+					'/list',
+					'/list uuids'
 				],
 	'locate':		[
 					'/locate <Bauwerk>'
@@ -754,7 +763,9 @@ var befehle = {
 					'/time query daytime',
 					'/time query gametime',
 					'/time set day',
+					'/time set midnight',
 					'/time set night',
+					'/time set noon',
 					'/time set <Zeit>'
 				],
 	'title':		[
@@ -800,7 +811,442 @@ var befehle = {
 				]
 }
 
+var enbefehle = {
+	'advancement':		[
+					'/advancement grant <targets> everything',
+					'/advancement grant <targets> from <advancement>',
+					'/advancement grant <targets> only <advancement>',
+					'/advancement grant <targets> only <advancement> <criterion>',
+					'/advancement grant <targets> through <advancement>',
+					'/advancement grant <targets> until <advancement>',
+					'/advancement revoke <targets> everything',
+					'/advancement revoke <targets> from <advancement>',
+					'/advancement revoke <targets> only <advancement>',
+					'/advancement revoke <targets> only <advancement> <criterion>',
+					'/advancement revoke <targets> through <advancement>',
+					'/advancement revoke <targets> until <advancement>'
+				],
+	'ban':			[
+					'/ban <targets>',
+					'/ban <targets> <reason>'
+				],
+	'ban-ip':		[
+					'/ban-ip <target>',
+					'/ban-ip <target> <reason>'
+				],
+	'banlist':		[
+					'/banlist',
+					'/banlist ips',
+					'/banlist players'
+				],
+	'bossbar':		[
+					'/bossbar add <id> <name>',
+					'/bossbar get <id> max',
+					'/bossbar get <id> players',
+					'/bossbar get <id> value',
+					'/bossbar get <id> visible',
+					'/bossbar list',
+					'/bossbar remove <id>',
+					'/bossbar set <id> color <color>',
+					'/bossbar set <id> max <max>',
+					'/bossbar set <id> name <name>',
+					'/bossbar set <id> players',
+					'/bossbar set <id> players <targets>',
+					'/bossbar set <id> style <style>',
+					'/bossbar set <id> value <value>',
+					'/bossbar set <id> visible <visible>'
+				],
+	'clear':		[
+					'/clear',
+					'/clear <targets>',
+					'/clear <targets> <item>',
+					'/clear <targets> <item> <maxCount>'
+				],
+	'clone':		[
+					'/clone <begin> <end> <destination>',
+					'/clone <begin> <end> <destination> filtered <filter>',
+					'/clone <begin> <end> <destination> filtered <filter> <mode>',
+					'/clone <begin> <end> <destination> masked',
+					'/clone <begin> <end> <destination> masked <mode>',
+					'/clone <begin> <end> <destination> replace',
+					'/clone <begin> <end> <destination> replace <mode>'
+				],
+	'data':			[
+					'/data get block <pos>',
+					'/data get block <pos> <path>',
+					'/data get block <pos> <path> <scale>',
+					'/data get entity <target>',
+					'/data get entity <target> <path>',
+					'/data get entity <target> <path> <scale>',
+					'/data merge block <pos> <nbt>',
+					'/data merge entity <target> <nbt>',
+					'/data remove block <pos> <path>',
+					'/data remove entity <target> <path>'
+				],
+	'datapack':		[
+					'/datapack disable <name>',
+					'/datapack enable <name>',
+					'/datapack enable <name> after <existing>',
+					'/datapack enable <name> before <existing>',
+					'/datapack enable <name> first',
+					'/datapack enable <name> last',
+					'/datapack list',
+					'/datapack list available',
+					'/datapack list enabled'
+				],
+	'debug':		[
+					'/debug start',
+					'/debug stop'
+				],
+	'defaultgamemode':	[
+					'/defaultgamemode adventure',
+					'/defaultgamemode creative',
+					'/defaultgamemode spectator',
+					'/defaultgamemode survival'
+				],
+	'deop':			[
+					'/deop <targets>'
+				],
+	'difficulty':		[
+					'/difficulty',
+					'/difficulty easy',
+					'/difficulty hard',
+					'/difficulty normal',
+					'/difficulty peaceful'
+				],
+	'effect':		[
+					'/effect clear <targets>',
+					'/effect clear <targets> <effect>',
+					'/effect give <targets> <effect>',
+					'/effect give <targets> <effect> <seconds>',
+					'/effect give <targets> <effect> <seconds> <amplifier>',
+					'/effect give <targets> <effect> <seconds> <amplifier> <hideParticles>'
+				],
+	'enchant':		[
+					'/enchant <targets> <enchantment>',
+					'/enchant <targets> <enchantment> <level>'
+				],
+	'execute':		[
+					'/execute < subcommand >',
+					'\nSubcommands:\n=============',
+					'run <command>',
+					'align <axes> < subcommand >',
+					'anchored eyes < subcommand >',
+					'anchored feet < subcommand >',
+					'as <targets> < subcommand >',
+					'at <targets> < subcommand >',
+					'facing entity <targets> eyes < subcommand >',
+					'facing entity <targets> feet < subcommand >',
+					'facing <pos> < subcommand >',
+					'if block <pos> <block> < subcommand >',
+					'if blocks <start> <end> <destination> all < subcommand >',
+					'if blocks <start> <end> <destination> masked < subcommand >',
+					'if entity <entities> < subcommand >',
+					'if score <target> <targetObjective> <operation> <source> <sourceObjective> < subcommand >',
+					'if score <target> <targetObjective> matches <range> < subcommand >',
+					'unless block <pos> <block> < subcommand >',
+					'unless blocks <start> <end> <destination> all < subcommand >',
+					'unless blocks <start> <end> <destination> masked < subcommand >',
+					'unless entity <entities> < subcommand >',
+					'unless score <target> <targetObjective> <operation> <source> <sourceObjective> < subcommand >',
+					'unless score <target> <targetObjective> matches <range> < subcommand >',
+					'in <dimension> < subcommand >',
+					'positioned as <targets> < subcommand >',
+					'positioned <pos> < subcommand >',
+					'rotated as <targets> < subcommand >',
+					'rotated <rot> < subcommand >',
+					'store result block <pos> <path> <dataType> <scale> < subcommand >',
+					'store result bossbar <id> max < subcommand >',
+					'store result bossbar <id> value < subcommand >',
+					'store result entity <targets> <path> <dataType> <scale> < subcommand >',
+					'store result score <targets> <objective> < subcommand >',
+					'store success block <pos> <path> <dataType> <scale> < subcommand >',
+					'store success bossbar <id> max < subcommand >',
+					'store success bossbar <id> value < subcommand >',
+					'store success entity <targets> <path> <dataType> <scale> < subcommand >',
+					'store success score <targets> <objective> < subcommand >'
+				],
+	'experience':		[
+					'/experience add <targets> <amount>',
+					'/experience add <targets> <amount> levels',
+					'/experience add <targets> <amount> points',
+					'/experience query <targets> levels',
+					'/experience query <targets> points',
+					'/experience set <targets> <amount>',
+					'/experience set <targets> <amount> levels',
+					'/experience set <targets> <amount> points'
+				],
+	'fill':			[
+					'/fill <from> <to> <block>',
+					'/fill <from> <to> <block> destroy',
+					'/fill <from> <to> <block> hollow',
+					'/fill <from> <to> <block> keep',
+					'/fill <from> <to> <block> outline',
+					'/fill <from> <to> <block> replace',
+					'/fill <from> <to> <block> replace <filter>'
+				],
+	'function':		[
+					'/function <name>'
+				],
+	'gamemode':		[
+					'/gamemode adventure',
+					'/gamemode adventure <target>',
+					'/gamemode creative',
+					'/gamemode creative <target>',
+					'/gamemode spectator',
+					'/gamemode spectator <target>',
+					'/gamemode survival',
+					'/gamemode survival <target>'
+				],
+	'gamerule':		[
+					'/gamerule <rule>',
+					'/gamerule <rule> <value>'
+				],
+	'give':			[
+					'/give <targets> <item>',
+					'/give <targets> <item> <count>'
+				],
+	'help':			[
+					'/help',
+					'/help <command>'
+				],
+	'kick':			[
+					'/kick <targets>',
+					'/kick <targets> <reason>'
+				],
+	'kill':			[
+					'/kill <targets>'
+				],
+	'list':			[
+					'/list',
+					'/list uuids'
+				],
+	'locate':		[
+					'/locate <structure>'
+				],
+	'me':			[
+					'/me <action>'
+				],
+	'msg':			[
+					'/msg <targets> <message>'
+				],
+	'op':			[
+					'/op <targets>'
+				],
+	'pardon':		[
+					'/pardon <targets>'
+				],
+	'pardon-ip':		[
+					'/pardon-ip <target>'
+				],
+	'particle':		[
+					'/particle <name>',
+					'/particle <name> <pos> <delta> <speed> <count>',
+					'/particle <name> <pos> <delta> <speed> <count> force',
+					'/particle <name> <pos> <delta> <speed> <count> force <viewers>',
+					'/particle <name> <pos> <delta> <speed> <count> normal',
+					'/particle <name> <pos> <delta> <speed> <count> normal <viewers>'
+				],
+	'playsound':		[
+					'/playsound <sound> <source> <targets>',
+					'/playsound <sound> <source> <targets> <pos>',
+					'/playsound <sound> <source> <targets> <pos> <volume>',
+					'/playsound <sound> <source> <targets> <pos> <volume> <pitch>',
+					'/playsound <sound> <source> <targets> <pos> <volume> <pitch> <minVolume>'
+				],
+	'publish':		[
+					'/publish',
+					'/publish <port>'
+				],
+	'recipe':		[
+					'/recipe give <targets> *',
+					'/recipe give <targets> <recipe>',
+					'/recipe take <targets> *',
+					'/recipe take <targets> <recipe>'
+				],
+	'reload':		[
+					'/reload'
+				],
+	'replaceitem':		[
+					'/replaceitem block <pos> <slot> <item>',
+					'/replaceitem block <pos> <slot> <item> <count>',
+					'/replaceitem entity <targets> <slot> <item>',
+					'/replaceitem entity <targets> <slot> <item> <count>'
+				],
+	'save-all':		[
+					'/save-all',
+					'/save-all flush'
+				],
+	'save-off':		[
+					'/save-off'
+				],
+	'save-on':		[
+					'/save-on'
+				],
+	'say':			[
+					'/say <message>'
+				],
+	'scoreboard':		[
+					'/scoreboard objectives add <objective> <criteria>',
+					'/scoreboard objectives add <objective> <criteria> <displayName>',
+					'/scoreboard objectives list',
+					'/scoreboard objectives remove <objective>',
+					'/scoreboard objectives setdisplay <slot>',
+					'/scoreboard objectives setdisplay <slot> <objective>',
+					'/scoreboard players add <targets> <objective> <score>',
+					'/scoreboard players enable <targets> <objective>',
+					'/scoreboard players get <target> <objective>',
+					'/scoreboard players list',
+					'/scoreboard players list <target>',
+					'/scoreboard players operation <targets> <targetObjective> <operation> <source> <sourceObjective>',
+					'/scoreboard players remove <targets> <objective> <score>',
+					'/scoreboard players reset <targets>',
+					'/scoreboard players reset <targets> <objective>',
+					'/scoreboard players set <targets> <objective> <score>'
+				],
+	'seed':			[
+					'/seed'
+				],
+	'setblock':		[
+					'/setblock <pos> <block>',
+					'/setblock <pos> <block> destroy',
+					'/setblock <pos> <block> keep',
+					'/setblock <pos> <block> replace'
+				],
+	'setidletimeout':	[
+					'/setidletimeout <seconds>'
+				],
+	'setworldspawn':	[
+					'/setworldspawn',
+					'/setworldspawn <pos>'
+				],
+	'spawnpoint':		[
+					'/spawnpoint',
+					'/spawnpoint <targets>',
+					'/spawnpoint <targets> <pos>'
+				],
+	'spreadplayers':	[
+					'/spreadplayers <center> <spreadDistance> <maxRange> <respectTeams> <targets>'
+				],
+	'stop':			[
+					'/stop'
+				],
+	'stopsound':		[
+					'/stopsound <targets>',
+					'/stopsound <targets> <source>',
+					'/stopsound <targets> <source> <sound>'
+				],
+	'summon':		[
+					'/summon <entity>',
+					'/summon <entity> <pos>',
+					'/summon <entity> <pos> <nbt>'
+				],
+	'tag':			[
+					'/tag <targets> add <name>',
+					'/tag <targets> list',
+					'/tag <targets> remove <name>'
+				],
+	'team':			[
+					'/team add <team>',
+					'/team add <team> <displayName>',
+					'/team empty <team>',
+					'/team join <team>',
+					'/team join <team> <members>',
+					'/team leave <members>',
+					'/team list',
+					'/team list <team>',
+					'/team option <team> <option> <value>',
+					'/team remove <team>'
+				],
+	'teleport':		[
+					'/teleport <destination>',
+					'/teleport <location>',
+					'/teleport <targets> <destination>',
+					'/teleport <targets> <location>',
+					'/teleport <targets> <location> <rotation>',
+					'/teleport <targets> <location> facing <facingLocation>',
+					'/teleport <targets> <location> facing entity <facingEntity> eyes',
+					'/teleport <targets> <location> facing entity <facingEntity> feet'
+				],
+	'tellraw':		[
+					'/tellraw <targets> <message>'
+				],
+	'tickingarea':		[
+					'/* This command is Bedrock Edition only */',
+					'/tickingarea add <from: x y z> <to: x y z>',
+					'/tickingarea add <from: x y z> <to: x y z> <name: string>',
+					'/tickingarea add circle <center: x y z> <radius: int>',
+					'/tickingarea add circle <center: x y z> <radius: int> <name: string>',
+					'/tickingarea remove <name: string>',
+					'/tickingarea remove <position: x y z>',
+					'/tickingarea remove_all',
+					'/tickingarea list',
+					'/tickingarea list all-dimensions'
+				],
+	'time':			[
+					'/time add <time>',
+					'/time query day',
+					'/time query daytime',
+					'/time query gametime',
+					'/time set day',
+					'/time set midnight',
+					'/time set night',
+					'/time set noon',
+					'/time set <time>'
+				],
+	'title':		[
+					'/title <targets> actionbar <title>',
+					'/title <targets> clear',
+					'/title <targets> reset',
+					'/title <targets> subtitle <title>',
+					'/title <targets> times <fadeIn> <stay> <fadeOut>',
+					'/title <targets> title <title>'
+				],
+	'transferserver':		[
+					'/* This command is Bedrock Edition only */',
+					'/transferserver <server: string> <port: int>'
+				],
+	'trigger':		[
+					'/trigger <objective>',
+					'/trigger <objective> add <value>',
+					'/trigger <objective> set <value>'
+				],
+	'weather':		[
+					'/weather clear',
+					'/weather clear <duration>',
+					'/weather rain',
+					'/weather rain <duration>',
+					'/weather thunder',
+					'/weather thunder <duration>'
+				],
+	'whitelist':		[
+					'/whitelist add <targets>',
+					'/whitelist list',
+					'/whitelist off',
+					'/whitelist on',
+					'/whitelist reload',
+					'/whitelist remove <targets>'
+				],
+	'worldborder':		[
+					'/worldborder add <distance>',
+					'/worldborder add <distance> <time>',
+					'/worldborder center <pos>',
+					'/worldborder damage amount <damagePerBlock>',
+					'/worldborder damage buffer <distance>',
+					'/worldborder get',
+					'/worldborder set <distance>',
+					'/worldborder set <distance> <time>',
+					'/worldborder warning distance <distance>',
+					'/worldborder warning time <time>'
+				],
+	'wsserver':		[
+					'/* This command is Bedrock Edition only */',
+					'/wsserver <serverUri: string>'
+				]
+}
+
 var aliase = {
+	'connect': 'wsserver',
 	'tell': 'msg',
 	'tp': 'teleport',
 	'w': 'msg',
@@ -820,13 +1266,36 @@ function cmd_befehl(lang, msg, befehl, args) {
 	}
 }
 
+function cmd_enbefehl(lang, msg, befehl, args) {
+	var aliasCmd = ( befehl in aliase ) ? aliase[befehl] : befehl;
+	
+	if ( aliasCmd in enbefehle ) {
+		var regex = new RegExp('/' + aliasCmd, 'g');
+		var cmdSyntax = enbefehle[aliasCmd].join( '\n' ).replace( regex, '/' + befehl );
+		msg.channel.send('```markdown\n' + cmdSyntax + '\n```\n<https://minecraft.gamepedia.com/Commands/' + aliasCmd + '>');
+	}
+	else {
+		msg.react('❓');
+	}
+}
+
 function cmd_befehl2(lang, msg, args, line) {
 	if ( args.length ) {
-		if ( args[0].startsWith('/') ) {
-			cmd_befehl(lang, msg, args[0].substr(1), args.slice(1));
+		if ( lang ) {
+			if ( args[0].startsWith('/') ) {
+				cmd_enbefehl(lang, msg, args[0].substr(1), args.slice(1));
+			}
+			else {
+				cmd_enbefehl(lang, msg, args[0], args.slice(1));
+			}
 		}
 		else {
-			cmd_befehl(lang, msg, args[0], args.slice(1));
+			if ( args[0].startsWith('/') ) {
+				cmd_befehl(lang, msg, args[0].substr(1), args.slice(1));
+			}
+			else {
+				cmd_befehl(lang, msg, args[0], args.slice(1));
+			}
 		}
 	}
 	else {
@@ -1136,6 +1605,7 @@ client.on('message', msg => {
 						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft-de', '');
 					} else if ( !pause && lang ) {
 						if ( invoke in encmdmap ) encmdmap[invoke](lang, msg, args, line);
+						else if ( invoke.startsWith('/') ) cmd_enbefehl(lang, msg, invoke.substr(1), args);
 						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft', '');
 					} else if ( pause && author.id == process.env.owner && invoke in pausecmdmap ) {
