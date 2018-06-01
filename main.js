@@ -313,7 +313,7 @@ function cmd_test(lang, msg, args, line) {
 
 function cmd_technik(lang, msg, args, line) {
 	if ( !args.length ) {
-		msg.channel.send( 'https://technic-de.gamepedia.com/Technik_Wiki' );
+		msg.channel.send( 'https://minecraft-technik.gamepedia.com/Technik_Wiki' );
 	}
 	else {
 		if ( args[0].toLowerCase().startsWith('wiki') ) {
@@ -322,7 +322,7 @@ function cmd_technik(lang, msg, args, line) {
 			var title = args.join('_');
 		}
 		
-		cmd_link(lang, msg, title, 'technic-de', 'technik ');
+		cmd_link(lang, msg, title, 'minecraft-technik', 'technik ');
 	}
 }
 
