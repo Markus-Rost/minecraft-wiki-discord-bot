@@ -928,7 +928,7 @@ var enbefehle = {
 				],
 	'execute':		[
 					'/execute < subcommand >',
-					'\nSubcommands:\n=============',
+					'\nSubcommands:\n============',
 					'run <command>',
 					'align <axes> < subcommand >',
 					'anchored eyes < subcommand >',
