@@ -88,11 +88,11 @@ function cmd_help(lang, msg, args, line) {
 		{ cmd: 'command <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki.', hide: true },
 		{ cmd: 'cmd <Minecraft-Befehl>', desc: 'Ich antworte mit der Syntax des angegebenen Minecraft-Befehls und einem Link auf den Artikel zu diesem Befehl im Minecraft Wiki.', hide: true },
 		{ cmd: 'hilfe', desc: 'Ich liste alle Befehle auf.' },
-		{ cmd: 'hilfe <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.' },
+		{ cmd: 'hilfe <Bot-Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.' },
 		{ cmd: 'hilfe admin', desc: 'Ich liste alle Befehle für Administratoren auf.', admin: true },
 		{ cmd: 'hilfe admin emoji', desc: 'Ich liste alle Server-Emoji auf, die ich kenne.', admin: true },
 		{ cmd: 'help', desc: 'Ich liste alle Befehle auf.', hide: true },
-		{ cmd: 'help <Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.', hide: true },
+		{ cmd: 'help <Bot-Befehl>', desc: 'Frage mich, wie ein Befehl funktioniert.', hide: true },
 		{ cmd: 'help admin', desc: 'Ich liste alle Befehle für Administratoren auf.', hide: true, admin: true },
 		{ cmd: 'help admin emoji', desc: 'Ich liste alle Server-Emoji auf, die ich kenne.', hide: true, admin: true },
 		{ cmd: 'technik <Suchbegriff>', desc: 'Ich antworte mit einem Link auf einen passenden Artikel im Technik Wiki.' },
@@ -187,7 +187,7 @@ function cmd_enhelp(lang, msg, args, line) {
 		{ cmd: 'diff <page name> <diff> [<oldid>]', desc: 'I will answer with a link to the diff on the article in the Minecraft Wiki.', hide: true },
 		{ cmd: 'bug <bug>', desc: 'I will answer with a link to the bug in the bug tracker.' },
 		{ cmd: 'help', desc: 'I will list all the commands that I understand.' },
-		{ cmd: 'help <command>', desc: 'Wonder how a command works? Let me explain it to you!' },
+		{ cmd: 'help <bot command>', desc: 'Wonder how a command works? Let me explain it to you!' },
 		{ cmd: 'help admin', desc: 'I will list all administrator commands.', admin: true },
 		{ cmd: 'help admin emoji', desc: 'I will list all server emoji that I can use.', admin: true },
 		{ cmd: '!<wiki> <search term>', desc: 'I will answer with a link to a matching article in the named Gamepedia wiki: `https://<wiki>.gamepedia.com/`', unsearchable: true },
@@ -344,7 +344,7 @@ function cmd_invite(lang, msg, args, line) {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 			msg.reply('you can join the official Minecraft Discord by clicking this link:\nhttps://discord.gg/minecraft');
 		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
-			client.generateInvite(268954689).then( invite => msg.reply('use this link to invite me to another server:\n' + invite) );
+			client.generateInvite(268954689).then( invite => msg.reply('use this link to invite me to another server:\n<' + invite + '>') );
 		} else {
 			msg.reply('use this link to invite other users to this server:\nhttps://discord.gg/fGdE5ZE');
 		}
@@ -352,7 +352,7 @@ function cmd_invite(lang, msg, args, line) {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 			msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
 		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
-			client.generateInvite(268954689).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n' + invite) );
+			client.generateInvite(268954689).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n<' + invite + '>') );
 		} else {
 			msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
 		}
