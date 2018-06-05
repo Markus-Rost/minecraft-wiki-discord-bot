@@ -1312,8 +1312,8 @@ function cmd_delete(lang, msg, args, line) {
 			}
 			else {
 				msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
-				if ( lang ) msg.reply('the most recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(5000) );
-				else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(5000) );
+				if ( lang ) msg.reply('the most recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(3000) );
+				else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(3000) );
 				console.log('die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
 			}
 		}
