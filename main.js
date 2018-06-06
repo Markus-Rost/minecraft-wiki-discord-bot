@@ -344,7 +344,7 @@ function cmd_invite(lang, msg, args, line) {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 			msg.reply('you can join the official Minecraft Discord by clicking this link:\nhttps://discord.gg/minecraft');
 		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
-			client.generateInvite(268954689).then( invite => msg.reply('use this link to invite me to another server:\n<' + invite + '>') );
+			client.generateInvite(268823617).then( invite => msg.reply('use this link to invite me to another server:\n<' + invite + '>') );
 		} else {
 			msg.reply('use this link to invite other users to this server:\nhttps://discord.gg/fGdE5ZE');
 		}
@@ -352,7 +352,7 @@ function cmd_invite(lang, msg, args, line) {
 		if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 			msg.reply('hier findest du den offiziellen Minecraft-Discord:\nhttps://discord.gg/minecraft');
 		} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
-			client.generateInvite(268954689).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n<' + invite + '>') );
+			client.generateInvite(268823617).then( invite => msg.reply('du kannst mich mit diesem Link auf einen anderen Server einladen:\n<' + invite + '>') );
 		} else {
 			msg.reply('du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd');
 		}
