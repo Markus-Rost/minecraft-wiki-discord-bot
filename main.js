@@ -1314,7 +1314,7 @@ function cmd_delete(lang, msg, args, line) {
 				msg.channel.bulkDelete(parseInt(args[0], 10) + 1, true);
 				if ( lang ) msg.reply('the most recent ' + args[0] + ' messages in this channel were deleted.').then( antwort => antwort.delete(3000) );
 				else msg.reply('die letzten ' + args[0] + ' Nachrichten in diesem Kanal wurden gelöscht.').then( antwort => antwort.delete(3000) );
-				console.log('die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
+				console.log('Die letzten ' + args[0] + ' Nachrichten in #' + msg.channel.name + ' wurden gelöscht!');
 			}
 		}
 		else {
@@ -1395,7 +1395,33 @@ function cmd_serverlist(lang, msg, args, line) {
 		guilds.forEach( function(guild) {
 			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + '\n\n';
 		} );
-		msg.author.send(serverlist);
+		msg.author.send(serverlist, {split:{char:'\n\n'}});
+	} else if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '> permissions' ) {
+		var guilds = client.guilds;
+		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
+		guilds.forEach( function(guild) {
+			var perms = '  ';
+			var allperms = Object.entries(guild.me.permissions.serialize());
+			allperms.forEach( function(perm) {
+				if ( perm[1] ) perms += perm[0] + ', ';
+			} );
+			perms = perms.substr(0, perms.length -2);
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + perms + '\n\n';
+		} );
+		msg.author.send(serverlist, {split:{char:'\n\n'}});
+	} else if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '> members' ) {
+		var guilds = client.guilds;
+		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
+		guilds.forEach( function(guild) {
+			var members = '  ';
+			var allmembers = guild.members;
+			allmembers.forEach( function(member) {
+				members += member.toString() + ', ';
+			} );
+			members = members.substr(0, members.length -2);
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + members + '\n\n';
+		} );
+		msg.author.send(serverlist, {split:{char:'\n\n'}});
 	} else if ( !pause ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
 	}
