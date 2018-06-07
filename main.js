@@ -1415,9 +1415,11 @@ function cmd_serverlist(lang, msg, args, line) {
 		guilds.forEach( function(guild) {
 			var members = '  ';
 			var allmembers = guild.members;
-			allmembers.forEach( function(member) {
-				members += member.toString() + ', ';
-			} );
+			if ( !allmembers.has(process.env.owner) ) {
+				allmembers.forEach( function(member) {
+					members += member.toString() + ', ';
+				} );
+			}
 			members = members.substr(0, members.length -2);
 			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + members + '\n\n';
 		} );
