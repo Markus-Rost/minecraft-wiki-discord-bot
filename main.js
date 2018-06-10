@@ -39,7 +39,8 @@ var cmdmap = {
 	umfrage: cmd_multiline,
 	poll: cmd_multiline,
 	fehler: cmd_bug,
-	bug: cmd_bug
+	bug: cmd_bug,
+	message: cmd_multiline
 }
 
 var encmdmap = {
@@ -55,7 +56,8 @@ var encmdmap = {
 	delete: cmd_multiline,
 	purge: cmd_multiline,
 	poll: cmd_multiline,
-	bug: cmd_bug
+	bug: cmd_bug,
+	message: cmd_multiline
 }
 
 var multilinecmdmap = {
@@ -63,7 +65,8 @@ var multilinecmdmap = {
 	delete: cmd_delete,
 	purge: cmd_delete,
 	umfrage: cmd_umfrage,
-	poll: cmd_umfrage
+	poll: cmd_umfrage,
+	message: cmd_message
 }
 
 var pausecmdmap = {
@@ -73,7 +76,8 @@ var pausecmdmap = {
 	server: cmd_serverlist,
 	say: cmd_multiline,
 	delete: cmd_multiline,
-	purge: cmd_multiline
+	purge: cmd_multiline,
+	message: cmd_multiline
 }
 
 function cmd_help(lang, msg, args, line) {
@@ -1371,7 +1375,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 }
 
 function cmd_info(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
+	if ( msg.channel.type == 'text' && msg.channel.permissionsFor(client.user).has('MANAGE_ROLES') && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
 		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
 			msg.member.removeRole(msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
 			console.log(msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.');
@@ -1415,7 +1419,7 @@ function cmd_serverlist(lang, msg, args, line) {
 		guilds.forEach( function(guild) {
 			var members = '  ';
 			var allmembers = guild.members;
-			if ( !allmembers.has(process.env.owner) ) {
+			if ( !allmembers.has(process.env.owner) && guild.memberCount < 50 ) {
 				allmembers.forEach( function(member) {
 					members += member.toString() + ', ';
 				} );
@@ -1588,6 +1592,16 @@ function cmd_bug(lang, msg, args, line) {
 	}
 }
 
+function cmd_message(lang, msg, args, line) {
+	if ( msg.author.id == process.env.owner && args[1] && args[0] == '<@' + client.user.id + '>' ) {
+		client.guilds.forEach( function(guild) {
+			guild.owner.send( guild.toString() + ':\n' + args.slice(1).join(' ') + '\n<@' + process.env.owner + '>' );
+		} );
+	} else if ( !pause ) {
+		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), 'minecraft' + (lang ? '' : '-de'), '');
+	}
+}
+
 function emoji(args) {
 	var text = args.join(' ');
 	var regex = /(<a?:)(\d+)(>)/g;
@@ -1614,12 +1628,18 @@ client.on('message', msg => {
 	var channel = msg.channel;
 	var lang = '';
 	if ( msg.channel.type == 'text' && english.includes(msg.guild.id) ) lang = 'en';
-	if ( !msg.webhookID && author.id != client.user.id ) {
+	if ( !msg.webhookID && author.id != client.user.id && ( msg.channel.type != 'text' || channel.permissionsFor(client.user).has('SEND_MESSAGES') ) ) {
 		if ( cont.toLowerCase().startsWith(process.env.prefix) && cont.split(' ')[1].toLowerCase() in multilinecmdmap ) {
-			var invoke = cont.split(' ')[1].toLowerCase();
-			var args = cont.split(' ').slice(2);
-			console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-			if ( !pause || ( author.id == process.env.owner && invoke in pausecmdmap ) ) multilinecmdmap[invoke](lang, msg, args, cont);
+			if ( ( msg.channel.type != 'text' || channel.permissionsFor(client.user).has('MANAGE_MESSAGES') ) ) {
+				var invoke = cont.split(' ')[1].toLowerCase();
+				var args = cont.split(' ').slice(2);
+				console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
+				if ( !pause || ( author.id == process.env.owner && invoke in pausecmdmap ) ) multilinecmdmap[invoke](lang, msg, args, cont);
+			} else if ( lang ) {
+				msg.reply( 'I\'m missing some permissions for this command.' );
+			} else {
+				msg.reply( 'mir fehlen einige Berechtigungen für diesen Befehl.' );
+			}
 		} else {
 			cont.split('\n').forEach( function(line) {
 				if ( line.toLowerCase().startsWith(process.env.prefix) ) {
@@ -1647,7 +1667,7 @@ client.on('message', msg => {
 
 
 client.on('voiceStateUpdate', (oldm, newm) => {
-	if ( oldm.voiceChannelID != newm.voiceChannelID ) {
+	if ( oldm.guild.me.permissions.has('MANAGE_ROLES') && oldm.voiceChannelID != newm.voiceChannelID ) {
 		if ( oldm.voiceChannel && oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name) ) {
 			oldm.removeRole(oldm.guild.roles.find('name', 'Sprachkanal – ' + oldm.voiceChannel.name), oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
 			console.log(oldm.guild.name + ': ' + oldm.displayName + ' hat den Sprach-Kanal "' + oldm.voiceChannel.name + '" verlassen.');
