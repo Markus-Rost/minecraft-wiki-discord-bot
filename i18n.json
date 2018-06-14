@@ -27,7 +27,7 @@
 				["bot", "Bot"],
 				["bureaucrat", "Bürokrat"],
 				["sysop", "Administrator"],
-				["GRASP", "GRASP"],
+				["grasp", "GRASP"],
 				["user", "Benutzer"]
 			],
 			"info": "Geschlecht: %1$s\nRegistiert: %2$s\nBearbeitungen: %3$s\nGruppe: %4$s",
@@ -584,7 +584,7 @@
 				["bureaucrat", "Bureaucrat"],
 				["wiki_guardian", "Wiki Guardian"],
 				["sysop", "Administrator"],
-				["GRASP", "GRASP"],
+				["grasp", "GRASP"],
 				["directors", "Director"],
 				["autopatrol", "autopatrol"],
 				["user", "User"]
@@ -1100,6 +1100,566 @@
 				"wsserver":		[
 								"/* This command is Bedrock Edition only */",
 								"/wsserver <serverUri: string>"
+							]
+			}
+		}
+	},
+	"fr": {
+		"link": "minecraft-fr",
+		"aliase": {
+			"technik": "none",
+			"uwmc": "none",
+			"info": "none",
+			"sondage": "poll",
+			"aide": "help",
+			"commande": "command"
+		},
+		"missingperm": "Il me manque certaines permissions pour cette commande.",
+		"voice": {
+			"channel": "Salon vocal",
+			"join": "%1$s a rejoint le salon vocal \"%2$s\".",
+			"left": "%1$s a quitté le salon vocal \"%2$s\"."
+		},
+		"user": {
+			"talk": "discussion:",
+			"gender": {
+				"unknown": "Iconnu",
+				"male": "Homme",
+				"female": "Femme"
+			},
+			"dateformat": "fr-FR",
+			"group": [
+				["global_bot", "Robot Gamepedia"],
+				["hydra_staff", "Staff Gamepedia"],
+				["bot", "Robot"],
+				["bureaucrat", "Bureaucrate"],
+				["wiki_guardian", "Gardien du wiki"],
+				["sysop", "Administrateur"],
+				["grasp", "GRASP"],
+				["directors", "Directeur"],
+				["autopatrol", "autopatrol"],
+				["user", "Utilisateur"]
+			],
+			"info": "Genre : %1$s\nDate d'inscription : %2$s\nNombre d'éditions : %3$s\nGroupe : %4$s",
+			"blocked": "**Cet utilisateur est actuellement bloqué !**\nBloqué le %1$s jusqu'au %2$s par %3$s avec la raison \"%4$s\".",
+			"until_infinity": "moment de la fin des jours"
+		},
+		"search": {
+			"page": "page",
+			"search": "chercher",
+			"user": {
+				"unknown": "utilisateur",
+				"male": "utilisateur",
+				"female": "utilisatrice"
+			},
+			"info": "Pas le bon résultat ? Utilisez %1$s pour une liste de tous les coups ou %2$s pour un lien direct !"
+		},
+		"invite": {
+			"minecraft": "vous pouvez rejoindre le Discord officiel de Minecraft en cliquant sur ce lien :",
+			"bot": "utilisez ce lien pour m'inviter sur un autre serveur :",
+			"wiki": "utilisez ce lien pour inviter d'autres utilisateurs :\nhttps://discord.gg/PSK48k7"
+		},
+		"poll": {
+			"title": "**Sondage :**\n",
+			"help": "écrivez les réponses possibles séparées par un espace puis votre question :```markdown\n%s [<emoji> <emoji> ...] <question en texte libre>```"
+		},
+		"delete": {
+			"invalid": "le nombre spécifié n'est pas valide.",
+			"success": "les %s messages les plus récents dans ce salon ont été supprimés.",
+			"big": "le nombre spécifié est trop grand. Le maximum est %s !"
+		},
+		"test": {
+			"random": 10,
+			"pause": "Je suis actuellement inactif.",
+			"text": [
+				"Je suis toujours en vie !",
+				"et crois-moi, je suis toujours vivant.",
+				"Je fais de la science et je suis toujours en vie.",
+				"Je me sens fantastique et je suis toujours en vie."
+			],
+			"default": "Je suis entièrement fonctionnel !"
+		},
+		"help": {
+			"all": "Donc, vous voulez savoir ce que je peux faire ? Voici une liste de toutes les commandes que je comprends :",
+			"admin": "Ces commandes ne peuvent être effectuées que par des administrateurs :",
+			"emoji": "Ce sont tous les emojis de serveur que je peux utiliser :",
+			"list": [
+				{ "cmd": "<terme de recherche>", "desc": "Je vais répondre avec un lien vers un article correspondant sur Minecraft Wiki.", "unsearchable": true },
+				{ "cmd": "page <nom de la page>", "desc": "Je vais répondre avec un lien vers l'article sur Minecraft Wiki." },
+				{ "cmd": "chercher <terme de recherche>", "desc": "Je vais répondre avec un lien vers la page de recherche de l'article sur Minecraft Wiki." },
+				{ "cmd": "search <terme de recherche>", "desc": "Je vais répondre avec un lien vers la page de recherche de l'article sur Minecraft Wiki.", "hide": true },
+				{ "cmd": "/<commande Minecraft>", "desc": "Je vais répondre avec la syntaxe de la commande Minecraft et un lien vers l'article pour la commande sur Minecraft Wiki.", "unsearchable": true },
+				{ "cmd": "commande <commande Minecraft>", "desc": "Je vais répondre avec la syntaxe de la commande Minecraft et un lien vers l'article pour la commande sur Minecraft Wiki.", "hide": true },
+				{ "cmd": "command <commande Minecraft>", "desc": "Je vais répondre avec la syntaxe de la commande Minecraft et un lien vers l'article pour la commande sur Minecraft Wiki.", "hide": true },
+				{ "cmd": "cmd <commande Minecraft>", "desc": "Je vais répondre avec la syntaxe de la commande Minecraft et un lien vers l'article pour la commande sur Minecraft Wiki.", "hide": true },
+				{ "cmd": "Utilisateur:<nom d'utilisateur>", "desc": "Je vais montrer quelques informations sur l'utilisateur.", "unsearchable": true },
+				{ "cmd": "utilisateur <nom d'utilisateur>", "desc": "Je vais montrer quelques informations sur l'utilisateur.", "hide": true },
+				{ "cmd": "user <nom d'utilisateur>", "desc": "Je vais montrer quelques informations sur l'utilisateur.", "hide": true },
+				{ "cmd": "diff <diff> [<oldid>]", "desc": "Je vais répondre avec un lien vers la diff sur Minecraft Wiki." },
+				{ "cmd": "diff <nom de la page>", "desc": "Je vais répondre avec un lien vers la dernière diff de l'article sur Minecraft Wiki.", "hide": true },
+				{ "cmd": "diff <nom de la page> <diff> [<oldid>]", "desc": "Je vais répondre avec un lien vers la diff de l'article sur Minecraft Wiki.", "hide": true },
+				{ "cmd": "bug <bug>", "desc": "Je vais répondre avec un lien vers le bug sur le bug tracker." },
+				{ "cmd": "aide", "desc": "Je vais lister toutes les commandes que je comprends." },
+				{ "cmd": "aide <commande de robot>", "desc": "Tu te demandes comment une commande fonctionne ? Laisse-moi te l'expliquer !" },
+				{ "cmd": "aide admin", "desc": "Je vais lister toutes les commandes d'administrateur.", "admin": true },
+				{ "cmd": "aide admin emoji", "desc": "Je vais lister tous les emojis de serveurs que je peux utiliser.", "admin": true },
+				{ "cmd": "help", "desc": "Je vais lister toutes les commandes que je comprends.", "hide": true },
+				{ "cmd": "help <commande de robot>", "desc": "Tu te demandes comment une commande fonctionne ? Laisse-moi te l'expliquer !", "hide": true },
+				{ "cmd": "help admin", "desc": "Je vais lister toutes les commandes d'administrateur.", "hide": true, "admin": true },
+				{ "cmd": "help admin emoji", "desc": "Je vais lister tous les emojis de serveurs que je peux utiliser.", "hide": true, "admin": true },
+				{ "cmd": "!<wiki> <terme de recherche>", "desc": "Je vais répondre avec un lien vers un article correspondant sur wiki Gamepedia nommé : `https://<wiki>.gamepedia.com/`", "unsearchable": true },
+				{ "cmd": "sondage <question en texte libre>", "desc": "Je vais créer un sondage et réagir avec <:support:448222377009086465> et <:oppose:448222455425794059>.", "admin": true },
+				{ "cmd": "sondage <emoji> [<emoji> ...] <question en texte libre>", "desc": "Je vais créer un sondage et réagir avec les réponses possibles.", "admin": true },
+				{ "cmd": "poll <question en texte libre>", "desc": "Je vais créer un sondage et réagir avec <:support:448222377009086465> et <:oppose:448222455425794059>.", "hide": true, "admin": true },
+				{ "cmd": "poll <emoji> [<emoji> ...] <question en texte libre>", "desc": "Je vais créer un sondage et réagir avec les réponses possibles.", "hide": true, "admin": true },
+				{ "cmd": "test", "desc": "Si je suis actif, je répondrai ! Autrement non." },
+				{ "cmd": "invite", "desc": "Je vais envoyer un lien d'invitation pour le serveur Discord de Minecraft Wiki." },
+				{ "cmd": "say <message>", "desc": "Je vais écrire le message donné.", "admin": true },
+				{ "cmd": "say alarm <message>", "desc": "Je vais écrire le message donné déjà préformaté : 🚨 **<message>** 🚨", "admin": true },
+				{ "cmd": "delete <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "admin": true },
+				{ "cmd": "purge <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "hide": true, "admin": true }
+			]
+		},
+		"cmd": {
+			"page": "Commandes#",
+			"aliase": {
+				"connect": "wsserver",
+				"tell": "msg",
+				"tp": "teleport",
+				"w": "msg",
+				"xp": "experience"
+			},
+			"list": {
+				"advancement":		[
+								"/advancement grant <cibles> everything",
+								"/advancement grant <cibles> from <progrès>",
+								"/advancement grant <cibles> only <progrès>",
+								"/advancement grant <cibles> only <progrès> <critère>",
+								"/advancement grant <cibles> through <progrès>",
+								"/advancement grant <cibles> until <progrès>",
+								"/advancement revoke <cibles> everything",
+								"/advancement revoke <cibles> from <progrès>",
+								"/advancement revoke <cibles> only <progrès>",
+								"/advancement revoke <cibles> only <progrès> <critère>",
+								"/advancement revoke <cibles> through <progrès>",
+								"/advancement revoke <cibles> until <progrès>"
+							],
+				"ban":			[
+								"/ban <cibles>",
+								"/ban <cibles> <raison>"
+							],
+				"ban-ip":		[
+								"/ban-ip <cible>",
+								"/ban-ip <cible> <raison>"
+							],
+				"banlist":		[
+								"/banlist",
+								"/banlist ips",
+								"/banlist players"
+							],
+				"bossbar":		[
+								"/bossbar add <id> <nom>",
+								"/bossbar get <id> max",
+								"/bossbar get <id> players",
+								"/bossbar get <id> value",
+								"/bossbar get <id> visible",
+								"/bossbar list",
+								"/bossbar remove <id>",
+								"/bossbar set <id> color <couleur>",
+								"/bossbar set <id> max <max>",
+								"/bossbar set <id> name <nom>",
+								"/bossbar set <id> players",
+								"/bossbar set <id> players <cibles>",
+								"/bossbar set <id> style <style>",
+								"/bossbar set <id> value <valeur>",
+								"/bossbar set <id> visible <visible>"
+							],
+				"clear":		[
+								"/clear",
+								"/clear <cibles>",
+								"/clear <cibles> <objet>",
+								"/clear <cibles> <objet> <quantitéMax>"
+							],
+				"clone":		[
+								"/clone <début> <fin> <destination>",
+								"/clone <début> <fin> <destination> filtered <filtre>",
+								"/clone <début> <fin> <destination> filtered <filtre> <mode>",
+								"/clone <début> <fin> <destination> masked",
+								"/clone <début> <fin> <destination> masked <mode>",
+								"/clone <début> <fin> <destination> replace",
+								"/clone <début> <fin> <destination> replace <mode>"
+							],
+				"data":			[
+								"/data get block <position>",
+								"/data get block <position> <chemin>",
+								"/data get block <position> <chemin> <échelle>",
+								"/data get entity <cible>",
+								"/data get entity <cible> <chemin>",
+								"/data get entity <cible> <chemin> <échelle>",
+								"/data merge block <position> <nbt>",
+								"/data merge entity <cible> <nbt>",
+								"/data remove block <position> <chemin>",
+								"/data remove entity <cible> <chemin>"
+							],
+				"datapack":		[
+								"/datapack disable <nom>",
+								"/datapack enable <nom>",
+								"/datapack enable <nom> after <existant>",
+								"/datapack enable <nom> before <existant>",
+								"/datapack enable <nom> first",
+								"/datapack enable <nom> last",
+								"/datapack list",
+								"/datapack list available",
+								"/datapack list enabled"
+							],
+				"debug":		[
+								"/debug start",
+								"/debug stop"
+							],
+				"defaultgamemode":	[
+								"/defaultgamemode adventure",
+								"/defaultgamemode creative",
+								"/defaultgamemode spectator",
+								"/defaultgamemode survival"
+							],
+				"deop":			[
+								"/deop <cibles>"
+							],
+				"difficulty":		[
+								"/difficulty",
+								"/difficulty easy",
+								"/difficulty hard",
+								"/difficulty normal",
+								"/difficulty peaceful"
+							],
+				"effect":		[
+								"/effect clear <cibles>",
+								"/effect clear <cibles> <effet>",
+								"/effect give <cibles> <effet>",
+								"/effect give <cibles> <effet> <secondes>",
+								"/effect give <cibles> <effet> <secondes> <amplifieur>",
+								"/effect give <cibles> <effet> <secondes> <amplifieur> <masquerParticules>"
+							],
+				"enchant":		[
+								"/enchant <cibles> <enchantement>",
+								"/enchant <cibles> <enchantement> <niveau>"
+							],
+				"execute":		[
+								"/execute < sous-commande >",
+								"\nSous-commandes :\n============",
+								"run <commande>",
+								"align <axes> < sous-commande >",
+								"anchored eyes < sous-commande >",
+								"anchored feet < sous-commande >",
+								"as <cibles> < sous-commande >",
+								"at <cibles> < sous-commande >",
+								"facing entity <cibles> eyes < sous-commande >",
+								"facing entity <cibles> feet < sous-commande >",
+								"facing <position> < sous-commande >",
+								"if block <position> <bloc> < sous-commande >",
+								"if blocks <début> <fin> <destination> all < sous-commande >",
+								"if blocks <début> <fin> <destination> masked < sous-commande >",
+								"if entity <entités> < sous-commande >",
+								"if score <cible> <objectifCible> <opération> <source> <objectifSource> < sous-commande >",
+								"if score <cible> <objectifCible> matches <portée> < sous-commande >",
+								"unless block <position> <bloc> < sous-commande >",
+								"unless blocks <début> <fin> <destination> all < sous-commande >",
+								"unless blocks <début> <fin> <destination> masked < sous-commande >",
+								"unless entity <entités> < sous-commande >",
+								"unless score <cible> <objectifCible> <opération> <source> <objectifSource> < sous-commande >",
+								"unless score <cible> <objectifCible> matches <portée> < sous-commande >",
+								"in <dimension> < sous-commande >",
+								"positioned as <cibles> < sous-commande >",
+								"positioned <position> < sous-commande >",
+								"rotated as <cibles> < sous-commande >",
+								"rotated <rotation> < sous-commande >",
+								"store result block <position> <chemin> <typeDonnées> <échelle> < sous-commande >",
+								"store result bossbar <id> max < sous-commande >",
+								"store result bossbar <id> value < sous-commande >",
+								"store result entity <cibles> <chemin> <typeDonnées> <échelle> < sous-commande >",
+								"store result score <cibles> <objectif> < sous-commande >",
+								"store success block <position> <chemin> <typeDonnées> <échelle> < sous-commande >",
+								"store success bossbar <id> max < sous-commande >",
+								"store success bossbar <id> value < sous-commande >",
+								"store success entity <cibles> <chemin> <typeDonnées> <échelle> < sous-commande >",
+								"store success score <cibles> <objectif> < sous-commande >"
+							],
+				"experience":		[
+								"/experience add <cibles> <quantité>",
+								"/experience add <cibles> <quantité> levels",
+								"/experience add <cibles> <quantité> points",
+								"/experience query <cibles> levels",
+								"/experience query <cibles> points",
+								"/experience set <cibles> <quantité>",
+								"/experience set <cibles> <quantité> levels",
+								"/experience set <cibles> <quantité> points"
+							],
+				"fill":			[
+								"/fill <de> <à> <bloc>",
+								"/fill <de> <à> <bloc> destroy",
+								"/fill <de> <à> <bloc> hollow",
+								"/fill <de> <à> <bloc> keep",
+								"/fill <de> <à> <bloc> outline",
+								"/fill <de> <à> <bloc> replace",
+								"/fill <de> <à> <bloc> replace <filtre>"
+							],
+				"function":		[
+								"/function <nom>"
+							],
+				"gamemode":		[
+								"/gamemode adventure",
+								"/gamemode adventure <cible>",
+								"/gamemode creative",
+								"/gamemode creative <cible>",
+								"/gamemode spectator",
+								"/gamemode spectator <cible>",
+								"/gamemode survival",
+								"/gamemode survival <cible>"
+							],
+				"gamerule":		[
+								"/gamerule <règle>",
+								"/gamerule <règle> <valeur>"
+							],
+				"give":			[
+								"/give <cibles> <objet>",
+								"/give <cibles> <objet> <quantité>"
+							],
+				"help":			[
+								"/help",
+								"/help <commande>"
+							],
+				"kick":			[
+								"/kick <cibles>",
+								"/kick <cibles> <raison>"
+							],
+				"kill":			[
+								"/kill <cibles>"
+							],
+				"list":			[
+								"/list",
+								"/list uuids"
+							],
+				"locate":		[
+								"/locate <structure>"
+							],
+				"me":			[
+								"/me <action>"
+							],
+				"msg":			[
+								"/msg <cibles> <message>"
+							],
+				"op":			[
+								"/op <cibles>"
+							],
+				"pardon":		[
+								"/pardon <cibles>"
+							],
+				"pardon-ip":		[
+								"/pardon-ip <cible>"
+							],
+				"particle":		[
+								"/particle <nom>",
+								"/particle <nom> <position> <delta> <vitesse> <quantité>",
+								"/particle <nom> <position> <delta> <vitesse> <quantité> force",
+								"/particle <nom> <position> <delta> <vitesse> <quantité> force <joueurs>",
+								"/particle <nom> <position> <delta> <vitesse> <quantité> normal",
+								"/particle <nom> <position> <delta> <vitesse> <quantité> normal <joueurs>"
+							],
+				"playsound":		[
+								"/playsound <son> <source> <cibles>",
+								"/playsound <son> <source> <cibles> <position>",
+								"/playsound <son> <source> <cibles> <position> <volume>",
+								"/playsound <son> <source> <cibles> <position> <volume> <ton>",
+								"/playsound <son> <source> <cibles> <position> <volume> <ton> <volumeMin>"
+							],
+				"publish":		[
+								"/publish",
+								"/publish <port>"
+							],
+				"recipe":		[
+								"/recipe give <cibles> *",
+								"/recipe give <cibles> <recette>",
+								"/recipe take <cibles> *",
+								"/recipe take <cibles> <recette>"
+							],
+				"reload":		[
+								"/reload"
+							],
+				"replaceitem":		[
+								"/replaceitem block <position> <emplacement> <objet>",
+								"/replaceitem block <position> <emplacement> <objet> <quantité>",
+								"/replaceitem entity <cibles> <emplacement> <objet>",
+								"/replaceitem entity <cibles> <emplacement> <objet> <quantité>"
+							],
+				"save-all":		[
+								"/save-all",
+								"/save-all flush"
+							],
+				"save-off":		[
+								"/save-off"
+							],
+				"save-on":		[
+								"/save-on"
+							],
+				"say":			[
+								"/say <message>"
+							],
+				"scoreboard":		[
+								"/scoreboard objectives add <objectif> <critères>",
+								"/scoreboard objectives add <objectif> <critères> <nomAffichage>",
+								"/scoreboard objectives list",
+								"/scoreboard objectives remove <objectif>",
+								"/scoreboard objectives setdisplay <emplacement>",
+								"/scoreboard objectives setdisplay <emplacement> <objectif>",
+								"/scoreboard players add <cibles> <objectif> <score>",
+								"/scoreboard players enable <cibles> <objectif>",
+								"/scoreboard players get <cible> <objectif>",
+								"/scoreboard players list",
+								"/scoreboard players list <cible>",
+								"/scoreboard players operation <cibles> <objectifCible> <opération> <source> <objectifSource>",
+								"/scoreboard players remove <cibles> <objectif> <score>",
+								"/scoreboard players reset <cibles>",
+								"/scoreboard players reset <cibles> <objectif>",
+								"/scoreboard players set <cibles> <objectif> <score>"
+							],
+				"seed":			[
+								"/seed"
+							],
+				"setblock":		[
+								"/setblock <position> <bloc>",
+								"/setblock <position> <bloc> destroy",
+								"/setblock <position> <bloc> keep",
+								"/setblock <position> <bloc> replace"
+							],
+				"setidletimeout":	[
+								"/setidletimeout <secondes>"
+							],
+				"setworldspawn":	[
+								"/setworldspawn",
+								"/setworldspawn <position>"
+							],
+				"spawnpoint":		[
+								"/spawnpoint",
+								"/spawnpoint <cibles>",
+								"/spawnpoint <cibles> <position>"
+							],
+				"spreadplayers":	[
+								"/spreadplayers <centre> <distancePropagation> <portéeMax> <respecterÉquipes> <cibles>"
+							],
+				"stop":			[
+								"/stop"
+							],
+				"stopsound":		[
+								"/stopsound <cibles>",
+								"/stopsound <cibles> <source>",
+								"/stopsound <cibles> <source> <son>"
+							],
+				"summon":		[
+								"/summon <entité>",
+								"/summon <entité> <position>",
+								"/summon <entité> <position> <nbt>"
+							],
+				"tag":			[
+								"/tag <cibles> add <nom>",
+								"/tag <cibles> list",
+								"/tag <cibles> remove <nom>"
+							],
+				"team":			[
+								"/team add <équipe>",
+								"/team add <équipe> <nomAffichage>",
+								"/team empty <équipe>",
+								"/team join <équipe>",
+								"/team join <équipe> <membres>",
+								"/team leave <membres>",
+								"/team list",
+								"/team list <équipe>",
+								"/team option <équipe> <option> <valeur>",
+								"/team remove <équipe>"
+							],
+				"teleport":		[
+								"/teleport <destination>",
+								"/teleport <localisation>",
+								"/teleport <cibles> <destination>",
+								"/teleport <cibles> <localisation>",
+								"/teleport <cibles> <localisation> <rotation>",
+								"/teleport <cibles> <localisation> facing <orientéLocalisation>",
+								"/teleport <cibles> <localisation> facing entity <orientéEntité> eyes",
+								"/teleport <cibles> <localisation> facing entity <orientéEntité> feet"
+							],
+				"tellraw":		[
+								"/tellraw <cibles> <message>"
+							],
+				"tickingarea":		[
+								"/* Cette commande est sur la version Bedrock uniquement */",
+								"/tickingarea add <de : x y z> <à : x y z>",
+								"/tickingarea add <de : x y z> <à : x y z> <nom: chaîne>",
+								"/tickingarea add circle <centre : x y z> <rayon : entier>",
+								"/tickingarea add circle <centre : x y z> <rayon : entier> <nom : chaîne>",
+								"/tickingarea remove <nom : chaîne>",
+								"/tickingarea remove <position : x y z>",
+								"/tickingarea remove_all",
+								"/tickingarea list",
+								"/tickingarea list all-dimensions"
+							],
+				"time":			[
+								"/time add <temps>",
+								"/time query day",
+								"/time query daytime",
+								"/time query gametime",
+								"/time set day",
+								"/time set midnight",
+								"/time set night",
+								"/time set noon",
+								"/time set <temps>"
+							],
+				"title":		[
+								"/title <cibles> actionbar <titre>",
+								"/title <cibles> clear",
+								"/title <cibles> reset",
+								"/title <cibles> subtitle <titre>",
+								"/title <cibles> times <tempsApparition> <tempsResté> <tempsDisparition>",
+								"/title <cibles> title <titre>"
+							],
+				"transferserver":		[
+								"/* Cette commande est sur la version Bedrock uniquement */",
+								"/transferserver <serveur : chaîne> <port : entier>"
+							],
+				"trigger":		[
+								"/trigger <objectif>",
+								"/trigger <objectif> add <valeur>",
+								"/trigger <objectif> set <valeur>"
+							],
+				"weather":		[
+								"/weather clear",
+								"/weather clear <durée>",
+								"/weather rain",
+								"/weather rain <durée>",
+								"/weather thunder",
+								"/weather thunder <durée>"
+							],
+				"whitelist":		[
+								"/whitelist add <cibles>",
+								"/whitelist list",
+								"/whitelist off",
+								"/whitelist on",
+								"/whitelist reload",
+								"/whitelist remove <cibles>"
+							],
+				"worldborder":		[
+								"/worldborder add <distance>",
+								"/worldborder add <distance> <temps>",
+								"/worldborder center <position>",
+								"/worldborder damage amount <dégâtsParBloc>",
+								"/worldborder damage buffer <distance>",
+								"/worldborder get",
+								"/worldborder set <distance>",
+								"/worldborder set <distance> <temps>",
+								"/worldborder warning distance <distance>",
+								"/worldborder warning time <temps>"
+							],
+				"wsserver":		[
+								"/* Cette commande est sur la version Bedrock uniquement */",
+								"/wsserver <uriServeur : chaîne>"
 							]
 			}
 		}
