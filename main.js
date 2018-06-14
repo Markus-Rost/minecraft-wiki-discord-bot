@@ -209,7 +209,7 @@ function cmd_befehl(lang, msg, befehl, args) {
 	if ( aliasCmd in lang.cmd.list ) {
 		var regex = new RegExp('/' + aliasCmd, 'g');
 		var cmdSyntax = lang.cmd.list[aliasCmd].join( '\n' ).replace( regex, '/' + befehl );
-		msg.channel.send( '```markdown\n' + cmdSyntax + '```\n<https://' + lang.link + '.gamepedia.com/' + lang.cmd.page + aliasCmd + '>', {split:{maxLength:1900,prepend:'```markdown\n',append:'```'}} );
+		msg.channel.send( '```markdown\n' + cmdSyntax + '```<https://' + lang.link + '.gamepedia.com/' + lang.cmd.page + aliasCmd + '>', {split:{prepend:'```markdown\n',append:'```'}} );
 	}
 	else {
 		msg.react('❓');
