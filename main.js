@@ -557,6 +557,8 @@ client.on('message', msg => {
 
 
 client.on('voiceStateUpdate', (oldm, newm) => {
+	var lang = langs['default'];
+	if ( oldm.guild.id in langs ) lang = langs[oldm.guild.id];
 	if ( oldm.guild.me.permissions.has('MANAGE_ROLES') && oldm.voiceChannelID != newm.voiceChannelID ) {
 		if ( oldm.voiceChannel && oldm.guild.roles.find('name', lang.voice + ' – ' + oldm.voiceChannel.name) ) {
 			oldm.removeRole( oldm.guild.roles.find('name', lang.voice + ' – ' + oldm.voiceChannel.name), lang.voice.left.replace( '%1$s', oldm.displayName ).replace( '%2$s', oldm.voiceChannel.name ) );
