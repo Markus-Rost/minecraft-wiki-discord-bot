@@ -14,7 +14,7 @@ var langs = {
 	'450428509874159616': i18n.fr
 }
 
-var pause = false;
+var pause = {};
 
 
 client.on('ready', () => {
@@ -129,7 +129,7 @@ function cmd_say(lang, msg, args, line) {
 }
 
 function cmd_test(lang, msg, args, line) {
-	if ( !pause ) {
+	if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		var text = '';
 		var x = Math.floor(Math.random() * lang.test.random);
 		if ( x < lang.test.text.length ) text = lang.test.text[x];
@@ -180,25 +180,25 @@ function cmd_stop(lang, msg, args, line) {
 		msg.reply( 'ich schalte mich nun aus!' );
 		console.log( 'Ich schalte mich nun aus!' );
 		client.destroy();
-	} else if ( !pause ) {
+	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
 }
 
 function cmd_pause(lang, msg, args, line) {
-	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
-		if ( pause ) {
+	if ( msg.channel.type == 'text' && msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
+		if ( pause[msg.guild.id] ) {
 			msg.reply( 'ich bin wieder wach!' );
 			console.log( 'Ich bin wieder wach!' );
-			pause = false;
+			pause[msg.guild.id] = false;
 			client.user.setStatus('online');
 		} else {
 			msg.reply( 'ich lege mich nun schlafen!' );
 			console.log( 'Ich lege mich nun schlafen!' );
-			pause = true;
+			pause[msg.guild.id] = true;
 			client.user.setStatus('invisible');
 		}
-	} else if ( !pause ) {
+	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
 }
@@ -344,7 +344,7 @@ function cmd_serverlist(lang, msg, args, line) {
 			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + members + '\n\n';
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
-	} else if ( !pause ) {
+	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
 }
@@ -493,7 +493,7 @@ function cmd_message(lang, msg, args, line) {
 		client.guilds.forEach( function(guild) {
 			guild.owner.send( guild.toString() + ':\n' + args.slice(1).join(' ') + '\n~<@' + process.env.owner + '>' );
 		} );
-	} else if ( !pause ) {
+	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
 }
@@ -526,12 +526,12 @@ client.on('message', msg => {
 	if ( msg.channel.type == 'text' && msg.guild.id in langs ) lang = langs[msg.guild.id];
 	if ( !msg.webhookID && author.id != client.user.id && ( msg.channel.type != 'text' || channel.permissionsFor(client.user).has('SEND_MESSAGES') ) ) {
 		if ( cont.toLowerCase().startsWith(process.env.prefix) && cont.split(' ')[1].toLowerCase() in multilinecmdmap ) {
-			if ( ( msg.channel.type != 'text' || channel.permissionsFor(client.user).has('MANAGE_MESSAGES') ) ) {
+			if ( msg.channel.type != 'text' || channel.permissionsFor(client.user).has('MANAGE_MESSAGES') ) {
 				var invoke = cont.split(' ')[1].toLowerCase();
 				var args = cont.split(' ').slice(2);
 				var aliasInvoke = ( invoke in lang.aliase ) ? lang.aliase[invoke] : invoke;
 				console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-				if ( !pause || ( author.id == process.env.owner && aliasInvoke in pausecmdmap ) ) multilinecmdmap[aliasInvoke](lang, msg, args, cont);
+				if ( msg.channel.type != 'text' || !pause[msg.guild.id] || ( author.id == process.env.owner && aliasInvoke in pausecmdmap ) ) multilinecmdmap[aliasInvoke](lang, msg, args, cont);
 			} else {
 				msg.reply( lang.missingperm );
 			}
@@ -542,12 +542,12 @@ client.on('message', msg => {
 					var args = line.split(' ').slice(2);
 					var aliasInvoke = ( invoke in lang.aliase ) ? lang.aliase[invoke] : invoke;
 					console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
-					if ( !pause ) {
+					if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 						if ( aliasInvoke in cmdmap ) cmdmap[aliasInvoke](lang, msg, args, line);
 						else if ( invoke.startsWith('/') ) cmd_befehl(lang, msg, invoke.substr(1), args);
 						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
 						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
-					} else if ( pause && author.id == process.env.owner && aliasInvoke in pausecmdmap ) {
+					} else if ( msg.channel.type == 'text' && pause[msg.guild.id] && author.id == process.env.owner && aliasInvoke in pausecmdmap ) {
 						pausecmdmap[aliasInvoke](lang, msg, args, line);
 					}
 				}
