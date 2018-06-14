@@ -428,12 +428,12 @@ function cmd_user(lang, msg, username, wiki, title) {
 						var editcount = body.query.users[0].editcount;
 						var groups = body.query.users[0].groups;
 						var group = '';
-						lang.user.group.forEach( function(entry) {
-							if ( groups.includes(entry[0]) ) {
-								group = entry[1];
+						for ( var i = 0; i < lang.user.group.length; i++ ) {
+							if ( groups.includes(lang.user.group[i][0]) ) {
+								group = lang.user.group[i][1];
 								break;
 							}
-						} );
+						}
 						var blockid = body.query.users[0].blockid;
 						var blockedtimestamp = (new Date(body.query.users[0].blockedtimestamp)).toLocaleString(lang.user.dateformat, options);
 						var blockexpiry = body.query.users[0].blockexpiry;
