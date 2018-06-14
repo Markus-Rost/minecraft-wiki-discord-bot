@@ -1346,7 +1346,7 @@
 							],
 				"execute":		[
 								"/execute < sous-commande >",
-								"\nSous-commandes :\n============",
+								"\nSous-commandes :\n================",
 								"run <commande>",
 								"align <axes> < sous-commande >",
 								"anchored eyes < sous-commande >",
