@@ -1123,7 +1123,7 @@
 		"user": {
 			"talk": "discussion:",
 			"gender": {
-				"unknown": "Iconnu",
+				"unknown": "Inconnu",
 				"male": "Homme",
 				"female": "Femme"
 			},
@@ -1152,7 +1152,7 @@
 				"male": "utilisateur",
 				"female": "utilisatrice"
 			},
-			"info": "Pas le bon résultat ? Utilisez %1$s pour une liste de tous les coups ou %2$s pour un lien direct !"
+			"info": "Pas le bon résultat ? Utilisez %1$s pour une liste de toutes les correspondances ou %2$s pour un lien direct !"
 		},
 		"invite": {
 			"minecraft": "vous pouvez rejoindre le Discord officiel de Minecraft en cliquant sur ce lien :",
