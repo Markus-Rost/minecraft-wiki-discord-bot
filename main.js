@@ -480,7 +480,7 @@ function cmd_multiline(lang, msg, args, line) {
 }
 
 function cmd_bug(lang, msg, args, line) {
-	if ( args.length ) {
+	if ( args.length && /\d+$/.test(args[0]) ) {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
 			hourglass = reaction;
