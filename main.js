@@ -230,7 +230,7 @@ function cmd_befehl2(lang, msg, args, line) {
 
 function cmd_delete(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
-		if ( parseInt(args[0], 10) + 1 > 0 ) {
+		if ( /^\d+$/.test(args[0]) && parseInt(args[0], 10) + 1 > 0 ) {
 			if ( parseInt(args[0], 10) > 99 ) {
 				msg.reply( lang.delete.big.replace( '%s', '`99`' ) );
 			}
@@ -481,9 +481,31 @@ function cmd_multiline(lang, msg, args, line) {
 
 function cmd_bug(lang, msg, args, line) {
 	if ( args.length ) {
-		var project = '';
-		if ( parseInt(args[0], 10) ) project = 'MC-';
-		msg.channel.send( 'https://bugs.mojang.com/browse/' + project + args[0] );
+		var hourglass;
+		msg.react('⏳').then( function( reaction ) {
+			hourglass = reaction;
+			var project = '';
+			if ( /^\d+$/.test(args[0]) ) project = 'MC-';
+			request( {
+				uri: 'https://bugs.mojang.com/rest/api/2/issue/' + project + args[0] + '?fields=summary',
+				json: true
+			}, function( error, response, body ) {
+				if ( error || !response || !body ) {
+					console.log( 'Fehler beim Erhalten der Zusammenfassung' + ( error ? ': ' + error.message : '.' ) );
+					msg.channel.send( 'https://bugs.mojang.com/browse/' + project + args[0] ).then( message => message.react('440871715938238494') );
+				}
+				else {
+					if ( body.errorMessages || body.errors ) {
+						msg.react('❓');
+					}
+					else {
+						msg.channel.send( body.fields.summary + '\nhttps://bugs.mojang.com/browse/' + body.key );
+					}
+				}
+				
+				if ( hourglass != undefined ) hourglass.remove();
+			} );
+		} );
 	}
 	else {
 		cmd_link(lang, msg, line.split(' ')[1], lang.link, '');
