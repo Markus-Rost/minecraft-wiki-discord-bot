@@ -74,7 +74,7 @@ function cmd_help(lang, msg, args, line) {
 				var emojis = client.emojis;
 				emojis.forEach( function(emoji, i) {
 					var br = '\t\t';
-					if ( i % 3 > 1 ) br = '\n';
+					if ( i % 2 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 				} );
 				msg.channel.send(cmdlist, {split:true});
