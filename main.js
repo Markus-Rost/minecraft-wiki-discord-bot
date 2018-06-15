@@ -75,7 +75,7 @@ function cmd_help(lang, msg, args, line) {
 				var i = 0;
 				emojis.forEach( function(emoji) {
 					var br = '\t\t';
-					if ( i % 2 ) br = '\n';
+					if ( i % 3 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 					i++;
 				} );
