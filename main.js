@@ -72,12 +72,10 @@ function cmd_help(lang, msg, args, line) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = lang.help.emoji + '\n';
 				var emojis = client.emojis;
-				var i = 0;
-				emojis.forEach( function(emoji) {
+				emojis.forEach( function(emoji, i) {
 					var br = '\t\t';
-					if ( i % 3 ) br = '\n';
+					if ( ( i % 3 ) == 2 ) br = '\n';
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
-					i++;
 				} );
 				msg.channel.send(cmdlist, {split:true});
 			}
