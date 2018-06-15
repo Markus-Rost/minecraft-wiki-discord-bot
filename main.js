@@ -508,7 +508,7 @@ function cmd_bug(lang, msg, args, line) {
 		} );
 	}
 	else {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : ''), lang.link, '');
+		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
 }
 
