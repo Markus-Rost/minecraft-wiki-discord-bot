@@ -26,8 +26,13 @@
 				["hydra_staff", "Gamepedia-Mitarbeiter"],
 				["bot", "Bot"],
 				["bureaucrat", "Bürokrat"],
+				["wiki_guardian", "Wiki Guardian"],
 				["sysop", "Administrator"],
 				["grasp", "GRASP"],
+				["directors", "Direktor"],
+				["editor", "Autor"],
+				["autoreview", "autoreview"],
+				["autopatrol", "autopatrol"],
 				["user", "Benutzer"]
 			],
 			"info": "Geschlecht: %1$s\nRegistiert: %2$s\nBearbeitungen: %3$s\nGruppe: %4$s",
@@ -586,6 +591,8 @@
 				["sysop", "Administrator"],
 				["grasp", "GRASP"],
 				["directors", "Director"],
+				["editor", "Editor"],
+				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "User"]
 			],
@@ -1137,6 +1144,8 @@
 				["sysop", "Administrateur"],
 				["grasp", "GRASP"],
 				["directors", "Directeur"],
+				["editor", "Éditeur"],
+				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "Utilisateur"]
 			],
@@ -1681,7 +1690,7 @@
 			"left": "%1$s wyszedł z \"%2$s\"."
 		},
 		"user": {
-			"talk": "Dyskusja:",
+			"talk": "dyskusja:",
 			"gender": {
 				"unknown": "Nieznane",
 				"male": "Mężczyzna",
@@ -1698,6 +1707,7 @@
 				["GRASP", "GRASP"],
 				["directors", "Dyrektor"],
 				["editor", "Redaktor"],
+				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "Użytkownik"]
 			],
