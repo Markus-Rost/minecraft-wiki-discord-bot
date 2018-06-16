@@ -596,15 +596,19 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 	var lang = langs['default'];
 	if ( oldm.guild.id in langs ) lang = langs[oldm.guild.id];
 	if ( oldm.guild.me.permissions.has('MANAGE_ROLES') && oldm.voiceChannelID != newm.voiceChannelID ) {
-		var oldrole = oldm.guild.roles.find('name', lang.voice.channel + ' – ' + oldm.voiceChannel.name);
-		if ( oldm.voiceChannel && oldrole && oldrole.comparePositionTo(oldm.guild.me.highestRole) < 0 ) {
-			oldm.removeRole( oldrole, lang.voice.left.replace( '%1$s', oldm.displayName ).replace( '%2$s', oldm.voiceChannel.name ) );
-			console.log( oldm.guild.name + ': ' + oldm.displayName + ' hat den Sprachkanal "' + oldm.voiceChannel.name + '" verlassen.' );
+		if ( oldm.voiceChannel ) {
+			var oldrole = oldm.guild.roles.find('name', lang.voice.channel + ' – ' + oldm.voiceChannel.name);
+			if ( oldrole && oldrole.comparePositionTo(oldm.guild.me.highestRole) < 0 ) {
+				oldm.removeRole( oldrole, lang.voice.left.replace( '%1$s', oldm.displayName ).replace( '%2$s', oldm.voiceChannel.name ) );
+				console.log( oldm.guild.name + ': ' + oldm.displayName + ' hat den Sprachkanal "' + oldm.voiceChannel.name + '" verlassen.' );
+			}
 		}
-		var newrole = newm.guild.roles.find('name', lang.voice.channel + ' – ' + newm.voiceChannel.name);
-		if ( newm.voiceChannel && newrole && newrole.comparePositionTo(newm.guild.me.highestRole) < 0 ) {
-			newm.addRole( newrole, lang.voice.join.replace( '%1$s', newm.displayName ).replace( '%2$s', newm.voiceChannel.name ) );
-			console.log( newm.guild.name + ': ' + newm.displayName + ' hat den Sprachkanal "' + newm.voiceChannel.name + '" betreten.' );
+		if ( newm.voiceChannel ) {
+			var newrole = newm.guild.roles.find('name', lang.voice.channel + ' – ' + newm.voiceChannel.name);
+			if ( newrole && newrole.comparePositionTo(newm.guild.me.highestRole) < 0 ) {
+				newm.addRole( newrole, lang.voice.join.replace( '%1$s', newm.displayName ).replace( '%2$s', newm.voiceChannel.name ) );
+				console.log( newm.guild.name + ': ' + newm.displayName + ' hat den Sprachkanal "' + newm.voiceChannel.name + '" betreten.' );
+			}
 		}
 	}
 });
