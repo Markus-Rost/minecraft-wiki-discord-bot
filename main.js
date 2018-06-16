@@ -173,7 +173,7 @@ function cmd_invite(lang, msg, args, line) {
 	} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
 		client.generateInvite(268823617).then( invite => msg.reply( lang.invite.bot + '\n<' + invite + '>' ) );
 	} else {
-		msg.reply( lang.invite.wiki );
+		msg.reply( lang.invite.wiki + '\n' + lang.invite.link );
 	}
 }
 
@@ -409,6 +409,7 @@ function cmd_user(lang, msg, username, wiki, title) {
 						msg.react('🤷');
 					}
 					else {
+						username = body.query.users[0].name.replace( / /g, '_' );
 						var options = {  
 							year: "numeric",
 							month: "short",
