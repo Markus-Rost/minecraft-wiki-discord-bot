@@ -316,7 +316,7 @@ function cmd_serverlist(lang, msg, args, line) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
 		guilds.forEach( function(guild) {
-			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + '\n\n';
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + ' (' + guild.id + ')\n\n';
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
 	} else if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '> permissions' ) {
@@ -615,12 +615,12 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 
 
 client.on('guildCreate', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + ' (' + guild.id + ')' ) );
 	console.log( 'Ich wurde zu einem Server hinzugefügt.' );
 });
 
 client.on('guildDelete', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + ' (' + guild.id + ')' ) );
 	console.log( 'Ich wurde von einem Server entfernt.' );
 });
 
