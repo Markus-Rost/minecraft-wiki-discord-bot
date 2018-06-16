@@ -52,7 +52,8 @@
 		"invite": {
 			"minecraft": "hier findest du den offiziellen Minecraft-Discord:",
 			"bot": "du kannst mich mit diesem Link auf einen anderen Server einladen:",
-			"wiki": "du kannst andere Nutzer mit diesem Link einladen:\nhttps://discord.gg/F75vfpd"
+			"wiki": "du kannst andere Nutzer mit diesem Link einladen:",
+			"link": "https://discord.gg/F75vfpd"
 		},
 		"poll": {
 			"title": "**Umfrage:**\n",
@@ -613,7 +614,8 @@
 		"invite": {
 			"minecraft": "you can join the official Minecraft Discord by clicking this link:",
 			"bot": "use this link to invite me to another server:",
-			"wiki": "use this link to invite other users:\nhttps://discord.gg/fGdE5ZE"
+			"wiki": "use this link to invite other users:",
+			"link": "https://discord.gg/fGdE5ZE"
 		},
 		"poll": {
 			"title": "**Poll:**\n",
@@ -1166,7 +1168,8 @@
 		"invite": {
 			"minecraft": "vous pouvez rejoindre le Discord officiel de Minecraft en cliquant sur ce lien :",
 			"bot": "utilisez ce lien pour m'inviter sur un autre serveur :",
-			"wiki": "utilisez ce lien pour inviter d'autres utilisateurs :\nhttps://discord.gg/PSK48k7"
+			"wiki": "utilisez ce lien pour inviter d'autres utilisateurs :",
+			"link": "https://discord.gg/PSK48k7"
 		},
 		"poll": {
 			"title": "**Sondage :**\n",
@@ -1733,7 +1736,8 @@
 		"invite": {
 			"minecraft": "możesz dołączyć do oficjalnego serwera Discord Minecraft używając tego linku:",
 			"bot": "użyj tego linku aby zaprosić mnie na inny serwer:",
-			"wiki": "użyj tego linku do zapraszania innych osób:\nhttps://discord.gg/9ZCcTnT"
+			"wiki": "użyj tego linku do zapraszania innych osób:",
+			"link": "https://discord.gg/9ZCcTnT"
 		},
 		"poll": {
 			"title": "**Ankieta:**\n",
