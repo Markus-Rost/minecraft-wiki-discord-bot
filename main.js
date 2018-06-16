@@ -43,7 +43,8 @@ var cmdmap = {
 	purge: cmd_multiline,
 	poll: cmd_multiline,
 	bug: cmd_bug,
-	message: cmd_multiline
+	message: cmd_multiline,
+	voice: cmd_voice
 }
 
 var multilinecmdmap = {
@@ -79,7 +80,7 @@ function cmd_help(lang, msg, args, line) {
 					cmdlist += emoji.toString() + '`' + emoji.toString().replace(emoji.name + ':', '') + '`' + br;
 					i++;
 				} );
-				msg.channel.send(cmdlist, {split:true});
+				msg.channel.send( cmdlist, {split:true} );
 			}
 			else {
 				var cmdlist = lang.help.admin + '\n';
@@ -89,7 +90,7 @@ function cmd_help(lang, msg, args, line) {
 					}
 				}
 				
-				msg.channel.send(cmdlist);
+				msg.channel.send( cmdlist );
 			}
 		}
 		else {
@@ -101,7 +102,7 @@ function cmd_help(lang, msg, args, line) {
 			}
 			
 			if ( cmdlist == '' ) msg.react('❓');
-			else msg.channel.send(cmdlist);
+			else msg.channel.send( cmdlist );
 		}
 	}
 	else {
@@ -112,7 +113,7 @@ function cmd_help(lang, msg, args, line) {
 			}
 		}
 		
-		msg.channel.send(cmdlist);
+		msg.channel.send( cmdlist );
 	}
 }
 
@@ -382,7 +383,8 @@ function cmd_umfrage(lang, msg, args, line) {
 				}
 			}
 		} else {
-			msg.reply( lang.poll.help.replace( '%s', process.env.prefix + line.split(' ')[1] ) );
+			args[0] = line.split(' ')[1];
+			cmd_help(lang, msg, args, line);
 		}
 	} else {
 		msg.react('❌');
@@ -523,6 +525,14 @@ function cmd_message(lang, msg, args, line) {
 	}
 }
 
+function cmd_voice(lang, msg, args, line) {
+	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+		msg.reply( lang.voice.text.replace( '%s', '`' + lang.voice.channel + ' – <' + lang.voice.name + '>`' ) );
+	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
+		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+	}
+}
+
 function emoji(args) {
 	var text = args.join(' ');
 	var regex = /(<a?:)(\d+)(>)/g;
@@ -586,11 +596,11 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 	var lang = langs['default'];
 	if ( oldm.guild.id in langs ) lang = langs[oldm.guild.id];
 	if ( oldm.guild.me.permissions.has('MANAGE_ROLES') && oldm.voiceChannelID != newm.voiceChannelID ) {
-		if ( oldm.voiceChannel && oldm.guild.roles.find('name', lang.voice.channel + ' – ' + oldm.voiceChannel.name) ) {
+		if ( oldm.voiceChannel && oldm.guild.roles.find('name', lang.voice.channel + ' – ' + oldm.voiceChannel.name).comparePositionTo(oldm.guild.me.highestRole) < 0 ) {
 			oldm.removeRole( oldm.guild.roles.find('name', lang.voice.channel + ' – ' + oldm.voiceChannel.name), lang.voice.left.replace( '%1$s', oldm.displayName ).replace( '%2$s', oldm.voiceChannel.name ) );
 			console.log( oldm.guild.name + ': ' + oldm.displayName + ' hat den Sprachkanal "' + oldm.voiceChannel.name + '" verlassen.' );
 		}
-		if ( newm.voiceChannel && newm.guild.roles.find('name', lang.voice.channel + ' – ' + newm.voiceChannel.name) ) {
+		if ( newm.voiceChannel && newm.guild.roles.find('name', lang.voice.channel + ' – ' + newm.voiceChannel.name).comparePositionTo(newm.guild.me.highestRole) < 0 ) {
 			newm.addRole( newm.guild.roles.find('name', lang.voice.channel + ' – ' + newm.voiceChannel.name), lang.voice.join.replace( '%1$s', newm.displayName ).replace( '%2$s', newm.voiceChannel.name ) );
 			console.log( newm.guild.name + ': ' + newm.displayName + ' hat den Sprachkanal "' + newm.voiceChannel.name + '" betreten.' );
 		}
