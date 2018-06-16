@@ -9,6 +9,8 @@
 		},
 		"missingperm": "mir fehlen einige Berechtigungen für diesen Befehl.",
 		"voice": {
+			"text": "ich versuche allen in einem Sprachkanal eine bestimmte Rolle zu geben: %s",
+			"name": "Name des Sprachkanal",
 			"channel": "Sprachkanal",
 			"join": "%1$s hat den Sprachkanal \"%2$s\" betreten.",
 			"left": "%1$s hat den Sprachkanal \"%2$s\" verlassen."
@@ -56,8 +58,7 @@
 			"link": "https://discord.gg/F75vfpd"
 		},
 		"poll": {
-			"title": "**Umfrage:**\n",
-			"help": "schreibe zuerst die Antwortmöglichkeiten mit Leerzeichen getrennt und dann deine Frage:```markdown\n%s [<Emoji> <Emoji> ...] <Frage als Freitext>```"
+			"title": "**Umfrage:**\n"
 		},
 		"delete": {
 			"invalid": "du hast keine gültige Anzahl angegeben.",
@@ -571,6 +572,8 @@
 		},
 		"missingperm": "I'm missing some permissions for this command.",
 		"voice": {
+			"text": "I try to give everyone in a voice channel a specific role: %s",
+			"name": "voice channel name",
 			"channel": "Voice channel",
 			"join": "%1$s joined the voice channel \"%2$s\".",
 			"left": "%1$s left the voice channel \"%2$s\"."
@@ -618,8 +621,7 @@
 			"link": "https://discord.gg/fGdE5ZE"
 		},
 		"poll": {
-			"title": "**Poll:**\n",
-			"help": "write out the possible answers separated by a space and then your question:```markdown\n%s [<emoji> <emoji> ...] <question as free text>```"
+			"title": "**Poll:**\n"
 		},
 		"delete": {
 			"invalid": "the specified number isn't valid.",
@@ -1125,6 +1127,8 @@
 		},
 		"missingperm": "Il me manque certaines permissions pour cette commande.",
 		"voice": {
+			"text": "j'essaye de donner un rôle spécifique à tout le monde dans un salon vocal : %s",
+			"name": "nom du salon vocal",
 			"channel": "Salon vocal",
 			"join": "%1$s a rejoint le salon vocal \"%2$s\".",
 			"left": "%1$s a quitté le salon vocal \"%2$s\"."
@@ -1172,8 +1176,7 @@
 			"link": "https://discord.gg/PSK48k7"
 		},
 		"poll": {
-			"title": "**Sondage :**\n",
-			"help": "écrivez les réponses possibles séparées par un espace puis votre question :```markdown\n%s [<emoji> <emoji> ...] <question en texte libre>```"
+			"title": "**Sondage :**\n"
 		},
 		"delete": {
 			"invalid": "le nombre spécifié n'est pas valide.",
@@ -1693,6 +1696,8 @@
 		},
 		"missingperm": "Brakuje mi upawnień!",
 		"voice": {
+			"text": "nadaję każdemu w kanale głosowym określoną rolę: %s",
+			"name": "nazwa kanału głosowego",
 			"channel": "Kanał głosowy",
 			"join": "%1$s dołączył do \"%2$s\".",
 			"left": "%1$s wyszedł z \"%2$s\"."
@@ -1740,8 +1745,7 @@
 			"link": "https://discord.gg/9ZCcTnT"
 		},
 		"poll": {
-			"title": "**Ankieta:**\n",
-			"help": "określ wszystkie możliwe odpowiedzi oddzielając je spacją a następnie podaj pytanie:```markdown\n%s [<emotka> <emotka> ...] <pytanie>```"
+			"title": "**Ankieta:**\n"
 		},
 		"delete": {
 			"invalid": "podany numer nie jest poprawny.",
