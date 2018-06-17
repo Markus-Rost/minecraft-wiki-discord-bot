@@ -22,6 +22,7 @@ var langs = {
 	'448549361119395850': i18n.de,
 	'450428509874159616': i18n.fr,
 	'452404998295257088': i18n.de,
+	'453885282694201345': i18n.de,
 	'454296882982944768': i18n.de
 }
 
@@ -536,7 +537,7 @@ function cmd_message(lang, msg, args, line) {
 
 function cmd_voice(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
-		msg.reply( lang.voice.text.replace( '%s', '`' + lang.voice.channel + ' – <' + lang.voice.name + '>`' ) );
+		msg.reply( lang.voice.text + '\n`' + lang.voice.channel + ' – <' + lang.voice.name + '>`' );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
