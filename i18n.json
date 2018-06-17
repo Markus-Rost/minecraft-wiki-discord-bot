@@ -9,7 +9,7 @@
 		},
 		"missingperm": "mir fehlen einige Berechtigungen für diesen Befehl.",
 		"voice": {
-			"text": "ich versuche allen in einem Sprachkanal eine bestimmte Rolle zu geben: %s",
+			"text": "ich versuche allen in einem Sprachkanal eine bestimmte Rolle zu geben:",
 			"name": "Name des Sprachkanal",
 			"channel": "Sprachkanal",
 			"join": "%1$s hat den Sprachkanal \"%2$s\" betreten.",
@@ -572,7 +572,7 @@
 		},
 		"missingperm": "I'm missing some permissions for this command.",
 		"voice": {
-			"text": "I try to give everyone in a voice channel a specific role: %s",
+			"text": "I try to give everyone in a voice channel a specific role:",
 			"name": "voice channel name",
 			"channel": "Voice channel",
 			"join": "%1$s joined the voice channel \"%2$s\".",
@@ -1127,7 +1127,7 @@
 		},
 		"missingperm": "Il me manque certaines permissions pour cette commande.",
 		"voice": {
-			"text": "j'essaye de donner un rôle spécifique à tout le monde dans un salon vocal : %s",
+			"text": "j'essaye de donner un rôle spécifique à tout le monde dans un salon vocal :",
 			"name": "nom du salon vocal",
 			"channel": "Salon vocal",
 			"join": "%1$s a rejoint le salon vocal \"%2$s\".",
@@ -1696,7 +1696,7 @@
 		},
 		"missingperm": "Brakuje mi upawnień!",
 		"voice": {
-			"text": "nadaję każdemu w kanale głosowym określoną rolę: %s",
+			"text": "nadaję każdemu w kanale głosowym określoną rolę:",
 			"name": "nazwa kanału głosowego",
 			"channel": "Kanał głosowy",
 			"join": "%1$s dołączył do \"%2$s\".",
