@@ -188,7 +188,7 @@ function cmd_invite(lang, msg, args, line) {
 	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 		msg.reply( lang.invite.minecraft + '\nhttps://discord.gg/minecraft' );
 	} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
-		client.generateInvite(268823617).then( invite => msg.reply( lang.invite.bot + '\n<' + invite + '>' ) );
+		client.generateInvite(268954689).then( invite => msg.reply( lang.invite.bot + '\n<' + invite + '>' ) );
 	} else {
 		msg.reply( lang.invite.wiki + '\n' + lang.invite.link );
 	}
