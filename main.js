@@ -3,7 +3,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 var request = require('request');
 
-var client = new Discord.Client();
+var client = new Discord.Client( {disableEveryone:true} );
 
 var i18n = JSON.parse(fs.readFileSync('i18n.json', 'utf8'));
 var langs = {
@@ -131,12 +131,17 @@ function cmd_help(lang, msg, args, line) {
 function cmd_say(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
 		args = emoji(args);
-		if ( args[0] == 'alarm' ) {
-			msg.channel.send( '🚨 **' + args.slice(1).join(' ') + '** 🚨' );
-		} else {
-			msg.channel.send( args.join(' ') );
+		var text = args.join(' ');
+		if ( args[0] == 'alarm' ) text = '🚨 **' + args.slice(1).join(' ') + '** 🚨';
+		var imgs = [];
+		var i = 0;
+		msg.attachments.forEach( function(img) {
+			imgs[i] = {attachment:img.proxyURL,name:img.filename};
+			i++;
+		} );
+		if ( text || imgs[0] ) {
+			msg.channel.send( text, {disableEveryone:false,files:imgs} ).then( message => msg.delete(), error => msg.react('440871715938238494') );
 		}
-		msg.delete();
 	} else {
 		msg.react('❌');
 	}
@@ -365,25 +370,21 @@ function cmd_serverlist(lang, msg, args, line) {
 
 function cmd_umfrage(lang, msg, args, line) {
 	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
-		if ( args.length ) {
+		var imgs = [];
+		var a = 0;
+		msg.attachments.forEach( function(img) {
+			imgs[a] = {attachment:img.proxyURL,name:img.filename};
+			a++;
+		} );
+		if ( args.length || imgs[0] ) {
 			var reactions = [];
 			args = emoji(args);
-			for ( var i = 0; i < args.length; i++ ) {
+			for ( var i = 0; ( i < args.length || imgs[0] ); i++ ) {
 				var reaction = args[i];
 				var custom = /^<a?:/;
 				var pattern = /^[\w\säÄöÖüÜßẞ!"#$%&'()*+,./:;<=>?@^`{|}~–[\]\-\\]{2,}/;
 				if ( !custom.test(reaction) && pattern.test(reaction) ) {
-					msg.channel.send( lang.poll.title + args.slice(i).join(' ') ).then( poll => {
-						if ( reactions.length ) {
-							reactions.forEach( function(entry) {
-								poll.react(entry).catch( error => poll.react('440871715938238494') );
-							} );
-						} else {
-							poll.react('448222377009086465');
-							poll.react('448222455425794059');
-						}
-					} );
-					msg.delete();
+					cmd_sendumfrage(lang, msg, args, reactions, imgs, i);
 					break;
 				} else if ( reaction == '' ) {
 				} else {
@@ -391,6 +392,10 @@ function cmd_umfrage(lang, msg, args, line) {
 						reaction = reaction.substring(reaction.lastIndexOf(':')+1, reaction.length-1);
 					}
 					reactions[i] = reaction;
+					if ( i == args.length-1 ) {
+						cmd_sendumfrage(lang, msg, args, reactions, imgs, i+1);
+						break;
+					}
 				}
 			}
 		} else {
@@ -400,6 +405,20 @@ function cmd_umfrage(lang, msg, args, line) {
 	} else {
 		msg.react('❌');
 	}
+}
+
+function cmd_sendumfrage(lang, msg, args, reactions, imgs, i) {
+	msg.channel.send( lang.poll.title + args.slice(i).join(' '), {disableEveryone:false,files:imgs} ).then( poll => {
+		msg.delete();
+		if ( reactions.length ) {
+			reactions.forEach( function(entry) {
+				poll.react(entry).catch( error => poll.react('440871715938238494') );
+			} );
+		} else {
+			poll.react('448222377009086465');
+			poll.react('448222455425794059');
+		}
+	}, error => msg.react('440871715938238494') );
 }
 
 function cmd_user(lang, msg, username, wiki, title) {
@@ -461,7 +480,7 @@ function cmd_user(lang, msg, username, wiki, title) {
 						}
 						var blockedby = body.query.users[0].blockedby;
 						var blockreason = body.query.users[0].blockreason;
-						msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\n' + lang.user.info.replace( '%1$s', gender ).replace( '%2$s', registration ).replace( '%3$s', editcount ).replace( '%4$s', group ) + ( blockid ? '\n\n' + lang.user.blocked.replace( '%1$s', blockedtimestamp ).replace( '%2$s', blockexpiry ).replace( '%3$s', blockedby ).replace( '%4$s', blockreason ) : '' ));
+						msg.channel.send( '<https://' + wiki + '.gamepedia.com/UserProfile:' + username + '>\n\n' + lang.user.info.replace( '%1$s', gender ).replace( '%2$s', registration ).replace( '%3$s', editcount ).replace( '%4$s', group ) + ( blockid ? '\n\n' + lang.user.blocked.replace( '%1$s', blockedtimestamp ).replace( '%2$s', blockexpiry ).replace( '%3$s', blockedby ).replace( '%4$s', blockreason ) : '' ) );
 					}
 				}
 				
