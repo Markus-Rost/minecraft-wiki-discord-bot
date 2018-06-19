@@ -80,7 +80,7 @@ var pausecmdmap = {
 function cmd_help(lang, msg, args, line) {
 	var cmds = lang.help.list;
 	if ( args.length ) {
-		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || admin(msg) ) ) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = lang.help.emoji + '\n';
 				var emojis = client.emojis;
@@ -107,7 +107,7 @@ function cmd_help(lang, msg, args, line) {
 		else {
 			var cmdlist = ''
 			for ( var i = 0; i < cmds.length; i++ ) {
-				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( msg.channel.type != 'text' || !cmds[i].admin || msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( msg.channel.type != 'text' || !cmds[i].admin || admin(msg) ) ) {
 					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 				}
 			}
@@ -129,7 +129,7 @@ function cmd_help(lang, msg, args, line) {
 }
 
 function cmd_say(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+	if ( admin(msg) ) {
 		args = emoji(args);
 		var text = args.join(' ');
 		if ( args[0] == 'alarm' ) text = '🚨 **' + args.slice(1).join(' ') + '** 🚨';
@@ -246,7 +246,7 @@ function cmd_befehl2(lang, msg, args, line) {
 }
 
 function cmd_delete(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+	if ( admin(msg) ) {
 		if ( /^\d+$/.test(args[0]) && parseInt(args[0], 10) + 1 > 0 ) {
 			if ( parseInt(args[0], 10) > 99 ) {
 				msg.reply( lang.delete.big.replace( '%s', '`99`' ) );
@@ -369,7 +369,7 @@ function cmd_serverlist(lang, msg, args, line) {
 }
 
 function cmd_umfrage(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+	if ( admin(msg) ) {
 		var imgs = [];
 		var a = 0;
 		msg.attachments.forEach( function(img) {
@@ -513,7 +513,10 @@ function cmd_multiline(lang, msg, args, line) {
 }
 
 function cmd_bug(lang, msg, args, line) {
-	if ( args.length && /\d+$/.test(args[0]) ) {
+	if ( args[0] == '<@' + client.user.id + '>' ) {
+		msg.reply( lang.bug.text.replace( '%s', '<@' + process.env.owner + '>' ) + '\n<https://' + lang.link + '.gamepedia.com/index.php?action=edit&preload=&editintro=&preloadtitle=Wiki-Bot' + ( args.slice(1).length ? encodeURI( ': ' + args.slice(1).join(' ') ) : '' ) + '&section=new&title=User_talk:MarkusRost>' );
+	}
+	else if ( args.length && /\d+$/.test(args[0]) ) {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
 			hourglass = reaction;
@@ -556,11 +559,16 @@ function cmd_message(lang, msg, args, line) {
 }
 
 function cmd_voice(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) {
+	if ( admin(msg) ) {
 		msg.reply( lang.voice.text + '\n`' + lang.voice.channel + ' – <' + lang.voice.name + '>`' );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
 	}
+}
+
+function admin(msg) {
+	if ( msg.channel.type == 'text' && ( msg.member.permissions.has('MANAGE_GUILD') || msg.author.id == process.env.owner ) ) return true;
+	else return false;
 }
 
 function emoji(args) {
