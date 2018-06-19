@@ -8,6 +8,9 @@
 			"fehler": "bug"
 		},
 		"missingperm": "mir fehlen einige Berechtigungen für diesen Befehl.",
+		"bug": {
+			"text": "wenn du einen Fehler gefunden hast kontaktiere bitte %s per Direktnachricht oder im Wiki:"
+		},
 		"voice": {
 			"text": "ich versuche allen in einem Sprachkanal eine bestimmte Rolle zu geben:",
 			"name": "Name des Sprachkanal",
@@ -126,7 +129,9 @@
 				{ "cmd": "say alarm <Nachricht>", "desc": "Ich schreibe die angegebene Nachricht bereits vorformatiert: 🚨 **<Nachricht>** 🚨", "admin": true },
 				{ "cmd": "delete <Anzahl>", "desc": "Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.", "admin": true },
 				{ "cmd": "purge <Anzahl>", "desc": "Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.", "hide": true, "admin": true },
-				{ "cmd": "info", "desc": "Du wirst bei neuen Entwicklungsversionen auf dem Server des deutschen Minecraft Wiki erwähnt." }
+				{ "cmd": "info", "desc": "Du wirst bei neuen Entwicklungsversionen auf dem Server des deutschen Minecraft Wiki erwähnt." },
+				{ "cmd": "fehler @Wiki-Bot [<Zusammenfassung>]", "desc": "Ich erkläre, wie man einen meiner Fehler meldet.", "hide": true, "admin": true },
+				{ "cmd": "bug @Wiki-Bot [<Zusammenfassung>]", "desc": "Ich erkläre, wie man einen meiner Fehler meldet.", "hide": true, "admin": true }
 			]
 		},
 		"cmd": {
@@ -571,6 +576,9 @@
 			"info": "none"
 		},
 		"missingperm": "I'm missing some permissions for this command.",
+		"bug": {
+			"text": "if you found a bug please contact %s via DM or in the wiki:"
+		},
 		"voice": {
 			"text": "I try to give everyone in a voice channel a specific role:",
 			"name": "voice channel name",
@@ -668,7 +676,8 @@
 				{ "cmd": "say <message>", "desc": "I will write the given message.", "admin": true },
 				{ "cmd": "say alarm <message>", "desc": "I will write the given message already preformatted: 🚨 **<message>** 🚨", "admin": true },
 				{ "cmd": "delete <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "admin": true },
-				{ "cmd": "purge <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "hide": true, "admin": true }
+				{ "cmd": "purge <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "hide": true, "admin": true },
+				{ "cmd": "bug @Wiki-Bot [<summary>]", "desc": "I will explain how to report one of my bugs.", "hide": true, "admin": true }
 			]
 		},
 		"cmd": {
@@ -1126,6 +1135,9 @@
 			"commande": "command"
 		},
 		"missingperm": "Il me manque certaines permissions pour cette commande.",
+		"bug": {
+			"text": "si vous trouvez un bug, merci de contacter %s en message privé ou sur le wiki :"
+		},
 		"voice": {
 			"text": "j'essaye de donner un rôle spécifique à tout le monde dans un salon vocal :",
 			"name": "nom du salon vocal",
@@ -1235,7 +1247,8 @@
 				{ "cmd": "say <message>", "desc": "Je vais écrire le message donné.", "admin": true },
 				{ "cmd": "say alarm <message>", "desc": "Je vais écrire le message donné déjà préformaté : 🚨 **<message>** 🚨", "admin": true },
 				{ "cmd": "delete <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "admin": true },
-				{ "cmd": "purge <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "hide": true, "admin": true }
+				{ "cmd": "purge <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "hide": true, "admin": true },
+				{ "cmd": "bug @Wiki-Bot [<résumé>]", "desc": "Je vais expliquer comment signaler un de mes bugs.", "hide": true, "admin": true }
 			]
 		},
 		"cmd": {
@@ -1695,6 +1708,9 @@
 			"usuń": "delete"
 		},
 		"missingperm": "Brakuje mi upawnień!",
+		"bug": {
+			"text": "jeżeli znalazłeś błąd skontaktuj się z %s przez prywatną wiadomość lub wiki:"
+		},
 		"voice": {
 			"text": "nadaję każdemu w kanale głosowym określoną rolę:",
 			"name": "nazwa kanału głosowego",
@@ -1808,7 +1824,8 @@
 				{ "cmd": "say alarm <wiadomość>", "desc": "Napiszę specjalnie sformatowaną wiadomość: 🚨 **<wiadomość>** 🚨", "admin": true },
 				{ "cmd": "usuń <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "admin": true },
 				{ "cmd": "delete <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "hide": true, "admin": true },
-				{ "cmd": "purge <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "hide": true, "admin": true }
+				{ "cmd": "purge <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "hide": true, "admin": true },
+				{ "cmd": "bug @Wiki-Bot [<opis>]", "desc": "Wytłumaczę jak zgłosić błąd.", "hide": true, "admin": true }
 			]
 		},
 		"cmd": {
