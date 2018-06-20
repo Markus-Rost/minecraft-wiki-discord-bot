@@ -295,7 +295,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 					if ( body.query.pages ) {
 						if ( body.query.pages['-1'] ) {
 							var srtitle = title;
-							if ( body.query.normalized[0] ) srtitle = body.query.normalized[0].to.replace( / /g, '_' );
+							if ( body.query.normalized ) srtitle = body.query.normalized[0].to.replace( / /g, '_' );
 							request( {
 								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + srtitle + '&srlimit=1',
 								json: true
@@ -321,7 +321,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 							msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( Object.values(body.query.pages)[0].title.replace( / /g, '_' ) ) );
 						}
 					}
-					else if ( body.query.interwiki[0] ) {
+					else if ( body.query.interwiki ) {
 						var inter = body.query.interwiki[0];
 						var iwtitle = inter.title.substr(inter.iw.length+1).replace( / /g, '_' );
 						var regex = /^(?:https?:)?\/\/(.*)\.gamepedia\.com\/\$1$/
