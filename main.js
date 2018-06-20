@@ -284,22 +284,59 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 		msg.react('⏳').then( function( reaction ) {
 			hourglass = reaction;
 			request( {
-				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
+				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&meta=siteinfo&siprop=interwikimap&redirects=true&titles=' + title,
 				json: true
 			}, function( error, response, body ) {
-				if ( error || !response || !body || !body.query || ( !body.query.search[0] && body.query.searchinfo.totalhits != 0 ) ) {
+				if ( error || !response || !body || !body.query ) {
 					console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '.' ) : '.' ) ) );
 					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title ).then( message => message.react('440871715938238494') );
 				}
 				else {
-					if ( body.query.searchinfo.totalhits == 0 ) {
-						msg.react('🤷');
+					if ( body.query.pages ) {
+						if ( body.query.pages['-1'] ) {
+							var srtitle = title;
+							if ( body.query.normalized[0] ) srtitle = body.query.normalized[0].to.replace( / /g, '_' );
+							request( {
+								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + srtitle + '&srlimit=1',
+								json: true
+							}, function( srerror, srresponse, srbody ) {
+								if ( srerror || !srresponse || !srbody || !srbody.query || ( !srbody.query.search[0] && srbody.query.searchinfo.totalhits != 0 ) ) {
+									console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( srerror ? ': ' + srerror.message : ( srbody ? ( srbody.error ? ': ' + srbody.error.info : '.' ) : '.' ) ) );
+									msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + srtitle ).then( message => message.react('440871715938238494') );
+								}
+								else {
+									if ( srbody.query.searchinfo.totalhits == 0 ) {
+										msg.react('🤷');
+									}
+									else if ( srbody.query.searchinfo.totalhits == 1 ) {
+										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) );
+									}
+									else {
+										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.info.replace( '%1$s', '`' + process.env.prefix + cmd + lang.search.search + ' ' + title.replace( /_/g, ' ' ) + '`' ).replace( '%2$s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title.replace( /_/g, ' ' ) + '`' ) );
+									}
+								}
+							} );
+						}
+						else {
+							msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( Object.values(body.query.pages)[0].title.replace( / /g, '_' ) ) );
+						}
 					}
-					else if ( body.query.searchinfo.totalhits == 1 ) {
-						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( / /g, '_' ) ) );
+					else if ( body.query.interwiki[0] ) {
+						var inter = body.query.interwiki[0];
+						var iwtitle = inter.title.substr(inter.iw.length+1).replace( / /g, '_' );
+						var regex = /^(?:https?:)?\/\/(.*)\.gamepedia\.com\/\$1$/
+						var entry = body.query.interwikimap;
+						for ( var i = 0; i < entry.length; i++ ) {
+							if ( entry[i].prefix == inter.iw ) {
+								var link = regex.exec(entry[i].url)[1];
+								if ( regex.test(entry[i].url) ) cmd_link(lang, msg, iwtitle, link, '!' + link + ' ');
+								else msg.channel.send( entry[i].url.replace( '$1', encodeURI( iwtitle ) ) );
+								break;
+							}
+						}
 					}
 					else {
-						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( body.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.info.replace( '%1$s', '`' + process.env.prefix + cmd + lang.search.search + ' ' + title.replace( /_/g, ' ' ) + '`' ).replace( '%2$s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title.replace( /_/g, ' ' ) + '`' ) );
+						msg.react('🤷');
 					}
 				}
 				
