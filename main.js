@@ -318,7 +318,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 							} );
 						}
 						else {
-							msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( Object.values(body.query.pages)[0].title.replace( / /g, '_' ) ) );
+							msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( Object.values(body.query.pages)[0].title.replace( / /g, '_' ) + ( body.query.redirects && body.query.redirects[0].tofragment ? '#' + body.query.redirects[0].tofragment : '' ) ) );
 						}
 					}
 					else if ( body.query.interwiki ) {
