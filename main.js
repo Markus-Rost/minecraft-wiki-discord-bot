@@ -328,8 +328,10 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 						var entry = body.query.interwikimap;
 						for ( var i = 0; i < entry.length; i++ ) {
 							if ( entry[i].prefix == inter.iw ) {
-								var link = regex.exec(entry[i].url)[1];
-								if ( regex.test(entry[i].url) ) cmd_link(lang, msg, iwtitle, link, '!' + link + ' ');
+								if ( regex.test(entry[i].url) ) {
+									var link = regex.exec(entry[i].url)[1];
+									cmd_link(lang, msg, iwtitle, link, '!' + link + ' ');
+								}
 								else msg.channel.send( entry[i].url.replace( '$1', encodeURI( iwtitle ) ) );
 								break;
 							}
