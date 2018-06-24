@@ -323,16 +323,17 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 					}
 					else if ( body.query.interwiki ) {
 						var inter = body.query.interwiki[0];
-						var iwtitle = inter.title.substr(inter.iw.length+1).replace( / /g, '_' );
-						var regex = /^(?:https?:)?\/\/(.*)\.gamepedia\.com\/\$1$/
+						var intertitle = inter.title.substr(inter.iw.length+1).replace( / /g, '_' );
+						var regex = /^(?:https?:)?\/\/(.*)\.gamepedia\.com\//
 						var entry = body.query.interwikimap;
 						for ( var i = 0; i < entry.length; i++ ) {
 							if ( entry[i].prefix == inter.iw ) {
 								if ( regex.test(entry[i].url) ) {
+									var iwtitle = entry[i].url.replace( '$1', intertitle ).replace( regex.exec(entry[i].url)[0], '' );
 									var link = regex.exec(entry[i].url)[1];
 									cmd_link(lang, msg, iwtitle, link, '!' + link + ' ');
 								}
-								else msg.channel.send( entry[i].url.replace( '$1', encodeURI( iwtitle ) ) );
+								else msg.channel.send( entry[i].url.replace( '$1', encodeURI( intertitle ) ) );
 								break;
 							}
 						}
