@@ -2380,7 +2380,7 @@
 				{ "cmd": "say <message>", "desc": "I will write the given message.", "admin": true },
 				{ "cmd": "say alarm <message>", "desc": "I will write the given message already preformatted: 🚨 **<message>** 🚨", "admin": true },
 				{ "cmd": "delete <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "admin": true },
-				{ "cmd": "purge <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "hide": true, "admin": true },
+				{ "cmd": "purge <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "hide": true, "admin": true }
 			]
 		},
 		"cmd": {
