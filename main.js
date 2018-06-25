@@ -10,6 +10,7 @@ var langs = {
 	'default': i18n.en,
 	'287878955078254592': i18n.de,
 	'322961504922238978': i18n.de,
+	'355355604946255873': i18n.conan,
 	'391913321747447808': i18n.de,
 	'393341740217532428': i18n.de,
 	'396940651218075649': i18n.de,
@@ -167,9 +168,9 @@ function cmd_technik(lang, msg, args, line) {
 	}
 	else {
 		if ( args[0].toLowerCase().startsWith('wiki') ) {
-			var title = 'Technik_' + args.join('_');
+			var title = 'Technik ' + args.join(' ');
 		} else {
-			var title = args.join('_');
+			var title = args.join(' ');
 		}
 		
 		cmd_link(lang, msg, title, 'minecraft-technik', 'technik ');
@@ -177,7 +178,7 @@ function cmd_technik(lang, msg, args, line) {
 }
 
 function cmd_en(lang, msg, args, line) {
-	cmd_link(lang, msg, args.join('_'), 'minecraft', 'en ');
+	cmd_link(lang, msg, args.join(' '), 'minecraft', 'en ');
 }
 
 function cmd_uwmc(lang, msg, args, line) {
@@ -200,7 +201,7 @@ function cmd_stop(lang, msg, args, line) {
 		console.log( 'Ich schalte mich nun aus!' );
 		client.destroy();
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
@@ -218,11 +219,11 @@ function cmd_pause(lang, msg, args, line) {
 			client.user.setStatus('invisible');
 		}
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
-function cmd_befehl(lang, msg, befehl, args) {
+function cmd_befehl(lang, msg, befehl, args, line) {
 	var aliasCmd = ( ( befehl in lang.cmd.aliase ) ? lang.cmd.aliase[befehl] : befehl ).toLowerCase();
 	
 	if ( aliasCmd in lang.cmd.list ) {
@@ -232,16 +233,17 @@ function cmd_befehl(lang, msg, befehl, args) {
 	}
 	else {
 		msg.react('❓');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
 function cmd_befehl2(lang, msg, args, line) {
 	if ( args.length ) {
-		if ( args[0].startsWith('/') ) cmd_befehl(lang, msg, args[0].substr(1), args.slice(1));
-		else cmd_befehl(lang, msg, args[0], args.slice(1));
+		if ( args[0].startsWith('/') ) cmd_befehl(lang, msg, args[0].substr(1), args.slice(1), line);
+		else cmd_befehl(lang, msg, args[0], args.slice(1), line);
 	}
 	else {
-		cmd_link(lang, msg, line.split(' ')[1], lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
@@ -266,19 +268,19 @@ function cmd_delete(lang, msg, args, line) {
 }
 
 function cmd_link(lang, msg, title, wiki, cmd) {
-	var invoke = title.split('_')[0].toLowerCase();
-	var args = title.split('_').slice(1);
+	var invoke = title.split(' ')[0].toLowerCase();
+	var args = title.split(' ').slice(1);
 	
 	if ( invoke == 'page' || invoke == lang.search.page ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'search' || invoke == lang.search.search ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
 	else if ( invoke == 'diff' ) cmd_diff(lang, msg, args, wiki);
-	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title );
-	else if ( invoke == 'user' || invoke == lang.search.user.unknown || invoke == lang.search.user.male || invoke == lang.search.user.female ) cmd_user(lang, msg, args.join('_'), wiki, title);
-	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title);
-	else if ( invoke.startsWith('userprofile:') ) cmd_user(lang, msg, title.substr(12), wiki, title);
-	else if ( invoke.startsWith(lang.search.user.unknown + ':') ) cmd_user(lang, msg, title.substr(lang.search.user.unknown.length + 1), wiki, title);
-	else if ( invoke.startsWith(lang.search.user.male + ':') ) cmd_user(lang, msg, title.substr(lang.search.user.male.length + 1), wiki, title);
-	else if ( invoke.startsWith(lang.search.user.female + ':') ) cmd_user(lang, msg, title.substr(lang.search.user.female.length + 1), wiki, title);
+	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title.replace( / /g, '_' ) );
+	else if ( invoke == 'user' || invoke == lang.search.user.unknown || invoke == lang.search.user.male || invoke == lang.search.user.female ) cmd_user(lang, msg, args.join('_'), wiki, title.replace( / /g, '_' ));
+	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title.replace( / /g, '_' ));
+	else if ( invoke.startsWith('userprofile:') ) cmd_user(lang, msg, title.substr(12), wiki, title.replace( / /g, '_' ));
+	else if ( invoke.startsWith(lang.search.user.unknown + ':') ) cmd_user(lang, msg, title.substr(lang.search.user.unknown.length + 1), wiki, title.replace( / /g, '_' ));
+	else if ( invoke.startsWith(lang.search.user.male + ':') ) cmd_user(lang, msg, title.substr(lang.search.user.male.length + 1), wiki, title.replace( / /g, '_' ));
+	else if ( invoke.startsWith(lang.search.user.female + ':') ) cmd_user(lang, msg, title.substr(lang.search.user.female.length + 1), wiki, title.replace( / /g, '_' ));
 	else {
 		var hourglass;
 		msg.react('⏳').then( function( reaction ) {
@@ -289,20 +291,18 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 			}, function( error, response, body ) {
 				if ( error || !response || !body || !body.query ) {
 					console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( error ? ': ' + error.message : ( body ? ( body.error ? ': ' + body.error.info : '.' ) : '.' ) ) );
-					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title ).then( message => message.react('440871715938238494') );
+					msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title.replace( / /g, '_' ) ).then( message => message.react('440871715938238494') );
 				}
 				else {
 					if ( body.query.pages ) {
 						if ( body.query.pages['-1'] ) {
-							var srtitle = title;
-							if ( body.query.normalized ) srtitle = body.query.normalized[0].to.replace( / /g, '_' );
 							request( {
-								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + srtitle + '&srlimit=1',
+								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
 								json: true
 							}, function( srerror, srresponse, srbody ) {
 								if ( srerror || !srresponse || !srbody || !srbody.query || ( !srbody.query.search[0] && srbody.query.searchinfo.totalhits != 0 ) ) {
 									console.log( 'Fehler beim Erhalten der Suchergebnisse' + ( srerror ? ': ' + srerror.message : ( srbody ? ( srbody.error ? ': ' + srbody.error.info : '.' ) : '.' ) ) );
-									msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + srtitle ).then( message => message.react('440871715938238494') );
+									msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title.replace( / /g, '_' ) ).then( message => message.react('440871715938238494') );
 								}
 								else {
 									if ( srbody.query.searchinfo.totalhits == 0 ) {
@@ -312,7 +312,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) );
 									}
 									else {
-										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.info.replace( '%1$s', '`' + process.env.prefix + cmd + lang.search.search + ' ' + title.replace( /_/g, ' ' ) + '`' ).replace( '%2$s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title.replace( /_/g, ' ' ) + '`' ) );
+										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.info.replace( '%1$s', '`' + process.env.prefix + cmd + lang.search.search + ' ' + title + '`' ).replace( '%2$s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title + '`' ) );
 									}
 								}
 							} );
@@ -323,7 +323,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 					}
 					else if ( body.query.interwiki ) {
 						var inter = body.query.interwiki[0];
-						var intertitle = inter.title.substr(inter.iw.length+1).replace( / /g, '_' );
+						var intertitle = inter.title.substr(inter.iw.length+1);
 						var regex = /^(?:https?:)?\/\/(.*)\.gamepedia\.com\//
 						var entry = body.query.interwikimap;
 						for ( var i = 0; i < entry.length; i++ ) {
@@ -333,7 +333,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 									var link = regex.exec(entry[i].url)[1];
 									cmd_link(lang, msg, iwtitle, link, '!' + link + ' ');
 								}
-								else msg.channel.send( entry[i].url.replace( '$1', encodeURI( intertitle ) ) );
+								else msg.channel.send( entry[i].url.replace( '$1', encodeURI( intertitle.replace( / /g, '_' ) ) ) );
 								break;
 							}
 						}
@@ -404,7 +404,7 @@ function cmd_serverlist(lang, msg, args, line) {
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
@@ -584,7 +584,7 @@ function cmd_bug(lang, msg, args, line) {
 		} );
 	}
 	else {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
@@ -594,7 +594,7 @@ function cmd_message(lang, msg, args, line) {
 			guild.owner.send( guild.toString() + ':\n' + args.slice(1).join(' ') + '\n~<@' + process.env.owner + '>' );
 		} );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
@@ -602,7 +602,7 @@ function cmd_voice(lang, msg, args, line) {
 	if ( admin(msg) ) {
 		msg.reply( lang.voice.text + '\n`' + lang.voice.channel + ' – <' + lang.voice.name + '>`' );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
@@ -657,9 +657,9 @@ client.on('message', msg => {
 					console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
 					if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 						if ( aliasInvoke in cmdmap ) cmdmap[aliasInvoke](lang, msg, args, line);
-						else if ( invoke.startsWith('/') ) cmd_befehl(lang, msg, invoke.substr(1), args);
-						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join('_'), invoke.substr(1), invoke + ' ');
-						else cmd_link(lang, msg, line.split(' ')[1] + (args.length ? '_' : '') + args.join('_'), lang.link, '');
+						else if ( invoke.startsWith('/') ) cmd_befehl(lang, msg, invoke.substr(1), args, line);
+						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join(' '), invoke.substr(1), invoke + ' ');
+						else cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 					} else if ( msg.channel.type == 'text' && pause[msg.guild.id] && author.id == process.env.owner && aliasInvoke in pausecmdmap ) {
 						pausecmdmap[aliasInvoke](lang, msg, args, line);
 					}
