@@ -572,7 +572,12 @@ function cmd_bug(lang, msg, args, line) {
 				}
 				else {
 					if ( body.errorMessages || body.errors ) {
-						msg.react('❓');
+						if ( body.errorMessages && body.errorMessages[0] == 'Issue Does Not Exist' ) {
+							msg.react('❓');
+						}
+						else {
+							msg.channel.send( lang.bug.private + '\nhttps://bugs.mojang.com/browse/' + project + args[0] );
+						}
 					}
 					else {
 						msg.channel.send( body.fields.summary + '\nhttps://bugs.mojang.com/browse/' + body.key );
