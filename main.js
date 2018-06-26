@@ -295,7 +295,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 				}
 				else {
 					if ( body.query.pages ) {
-						if ( body.query.pages['-1'] ) {
+						if ( body.query.pages['-1'] && body.query.pages['-1'].missing != undefined ) {
 							request( {
 								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
 								json: true
