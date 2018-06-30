@@ -10,7 +10,6 @@ var langs = {
 	'default': i18n.en,
 	'287878955078254592': i18n.de,
 	'322961504922238978': i18n.de,
-	'355355604946255873': i18n.conan,
 	'391913321747447808': i18n.de,
 	'393341740217532428': i18n.de,
 	'396940651218075649': i18n.de,
@@ -22,6 +21,9 @@ var langs = {
 	'443042769922031617': i18n.de,
 	'447104142729674753': i18n.en,
 	'448549361119395850': i18n.de,
+	'449166712190009344': i18n.de,
+	'449951561523920896': i18n.de,
+	'450327699404095508': i18n.de,
 	'450428509874159616': i18n.fr,
 	'452404998295257088': i18n.de,
 	'452772322378776586': i18n.de,
@@ -212,12 +214,10 @@ function cmd_pause(lang, msg, args, line) {
 			msg.reply( 'ich bin wieder wach!' );
 			console.log( 'Ich bin wieder wach!' );
 			pause[msg.guild.id] = false;
-			client.user.setStatus('online');
 		} else {
 			msg.reply( 'ich lege mich nun schlafen!' );
 			console.log( 'Ich lege mich nun schlafen!' );
 			pause[msg.guild.id] = true;
-			client.user.setStatus('invisible');
 		}
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
