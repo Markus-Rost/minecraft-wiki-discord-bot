@@ -60,7 +60,8 @@ var cmdmap = {
 	poll: cmd_multiline,
 	bug: cmd_bug,
 	message: cmd_multiline,
-	voice: cmd_voice
+	voice: cmd_voice,
+	eval: cmd_multiline
 }
 
 var multilinecmdmap = {
@@ -68,7 +69,8 @@ var multilinecmdmap = {
 	delete: cmd_delete,
 	purge: cmd_delete,
 	poll: cmd_umfrage,
-	message: cmd_message
+	message: cmd_message,
+	eval: cmd_eval
 }
 
 var pausecmdmap = {
@@ -79,7 +81,8 @@ var pausecmdmap = {
 	say: cmd_multiline,
 	delete: cmd_multiline,
 	purge: cmd_multiline,
-	message: cmd_multiline
+	message: cmd_multiline,
+	eval: cmd_multiline
 }
 
 function cmd_help(lang, msg, args, line) {
@@ -196,6 +199,23 @@ function cmd_invite(lang, msg, args, line) {
 		client.generateInvite(268954689).then( invite => msg.reply( lang.invite.bot + '\n<' + invite + '>' ) );
 	} else {
 		msg.reply( lang.invite.wiki + '\n' + lang.invite.link );
+	}
+}
+
+function cmd_eval(lang, msg, args, line) {
+	if ( msg.author.id == process.env.owner && args.length && args[0].replace( '!', '' ) == '<@' + client.user.id + '>' ) {
+		var text = 'Bitte gebe einen Befehl an!';
+		if ( args[1] ) {
+			try {
+				text = eval( args.slice(1).join(' ') );
+			} catch ( error ) {
+				text = error.name + ': ' + error.message;
+			}
+		}
+		console.log( text );
+		msg.channel.send( '```js\n' + text + '```' );
+	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
 
