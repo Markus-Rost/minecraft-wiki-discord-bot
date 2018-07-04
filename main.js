@@ -577,7 +577,7 @@ function cmd_multiline(lang, msg, args, line) {
 
 function cmd_bug(lang, msg, args, line) {
 	if ( args[0] == '<@' + client.user.id + '>' ) {
-		msg.reply( lang.bug.text.replace( '%s', '<@' + process.env.owner + '>' ) + '\nhttps://discord.gg/v77RTk5' );
+		msg.reply( lang.bug.text + '\nhttps://discord.gg/v77RTk5' );
 	}
 	else if ( args.length && /\d+$/.test(args[0]) ) {
 		var hourglass;
