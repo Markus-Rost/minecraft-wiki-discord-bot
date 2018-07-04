@@ -577,7 +577,7 @@ function cmd_multiline(lang, msg, args, line) {
 
 function cmd_bug(lang, msg, args, line) {
 	if ( args[0] == '<@' + client.user.id + '>' ) {
-		msg.reply( lang.bug.text.replace( '%s', '<@' + process.env.owner + '>' ) + '\n<https://' + lang.link + '.gamepedia.com/index.php?action=edit&preload=&editintro=&preloadtitle=Wiki-Bot' + ( args.slice(1).length ? encodeURI( ': ' + args.slice(1).join(' ') ) : '' ) + '&section=new&title=User_talk:MarkusRost>' );
+		msg.reply( lang.bug.text.replace( '%s', '<@' + process.env.owner + '>' ) + '\nhttps://discord.gg/v77RTk5' );
 	}
 	else if ( args.length && /\d+$/.test(args[0]) ) {
 		var hourglass;
