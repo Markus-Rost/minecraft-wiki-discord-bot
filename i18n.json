@@ -9,7 +9,7 @@
 		},
 		"missingperm": "mir fehlen einige Berechtigungen für diesen Befehl.",
 		"bug": {
-			"text": "wenn du einen Fehler gefunden hast kontaktiere bitte %s per Direktnachricht oder im Wiki:",
+			"text": "bei Fragen oder Problemen besuche bitte meinen Support-Server:",
 			"private": "**Privater Fehler**"
 		},
 		"voice": {
@@ -578,7 +578,7 @@
 		},
 		"missingperm": "I'm missing some permissions for this command.",
 		"bug": {
-			"text": "if you found a bug please contact %s via DM or in the wiki:",
+			"text": "for questions and problems please visit my support server:",
 			"private": "**Private Issue**"
 		},
 		"voice": {
@@ -1138,7 +1138,7 @@
 		},
 		"missingperm": "Il me manque certaines permissions pour cette commande.",
 		"bug": {
-			"text": "si vous trouvez un bug, merci de contacter %s en message privé ou sur le wiki :",
+			"text": "pour tout problème ou question, merci de visiter mon serveur de support :",
 			"private": "**Problème privé**"
 		},
 		"voice": {
@@ -1712,7 +1712,7 @@
 		},
 		"missingperm": "Brakuje mi upawnień!",
 		"bug": {
-			"text": "jeżeli znalazłeś błąd skontaktuj się z %s przez prywatną wiadomość lub wiki:",
+			"text": "w przypadku pytań lub problemów, odwiedź mój serwer:",
 			"private": "**Private Issue**"
 		},
 		"voice": {
