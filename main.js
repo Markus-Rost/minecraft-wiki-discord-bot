@@ -60,7 +60,6 @@ var cmdmap = {
 	purge: cmd_multiline,
 	poll: cmd_multiline,
 	bug: cmd_bug,
-	message: cmd_multiline,
 	voice: cmd_voice,
 	eval: cmd_multiline
 }
@@ -70,7 +69,6 @@ var multilinecmdmap = {
 	delete: cmd_delete,
 	purge: cmd_delete,
 	poll: cmd_umfrage,
-	message: cmd_message,
 	eval: cmd_eval
 }
 
@@ -82,7 +80,6 @@ var pausecmdmap = {
 	say: cmd_multiline,
 	delete: cmd_multiline,
 	purge: cmd_multiline,
-	message: cmd_multiline,
 	eval: cmd_multiline
 }
 
@@ -204,17 +201,14 @@ function cmd_invite(lang, msg, args, line) {
 }
 
 function cmd_eval(lang, msg, args, line) {
-	if ( msg.author.id == process.env.owner && args.length && args[0].replace( '!', '' ) == '<@' + client.user.id + '>' ) {
-		var text = 'Bitte gebe einen Befehl an!';
-		if ( args[1] != undefined ) {
-			try {
-				text = eval( args.slice(1).join(' ') );
-			} catch ( error ) {
-				text = error.name + ': ' + error.message;
-			}
+	if ( msg.author.id == process.env.owner && args.length ) {
+		try {
+			var text = eval( args.join(' ') );
+		} catch ( error ) {
+			var text = error.name + ': ' + error.message;
 		}
 		console.log( text );
-		msg.channel.send( '```js\n' + text + '```', {split:{prepend:'```js\n',append:'```'}} );
+		msg.channel.send( '```js\n' + text + '```', {split:{prepend:'```js\n',append:'```'}} ).catch( err => msg.channel.send( '```js\n' + err.name + ': ' + err.message + '```', {split:{prepend:'```js\n',append:'```'}} ) );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		msg.react('❌');
 	}
@@ -333,10 +327,10 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 										msg.react('🤷');
 									}
 									else if ( srbody.query.searchinfo.totalhits == 1 ) {
-										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) );
+										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.infopage.replace( '%s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title + '`' ) );
 									}
 									else {
-										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.info.replace( '%1$s', '`' + process.env.prefix + cmd + lang.search.search + ' ' + title + '`' ).replace( '%2$s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title + '`' ) );
+										msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + encodeURI( srbody.query.search[0].title.replace( / /g, '_' ) ) + '\n' + lang.search.infosearch.replace( '%1$s', '`' + process.env.prefix + cmd + lang.search.page + ' ' + title + '`' ).replace( '%2$s', '`' + process.env.prefix + cmd + lang.search.search + ' ' + title + '`' ) );
 									}
 								}
 							} );
@@ -613,16 +607,6 @@ function cmd_bug(lang, msg, args, line) {
 		} );
 	}
 	else {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
-	}
-}
-
-function cmd_message(lang, msg, args, line) {
-	if ( msg.author.id == process.env.owner && args[1] && args[0] == '<@' + client.user.id + '>' ) {
-		client.guilds.forEach( function(guild) {
-			guild.owner.send( guild.toString() + ':\n' + args.slice(1).join(' ') + '\n~<@' + process.env.owner + '>' );
-		} );
-	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
 }
