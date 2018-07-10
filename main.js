@@ -657,7 +657,7 @@ client.on('message', msg => {
 	var cont = msg.content;
 	var author = msg.author;
 	var channel = msg.channel;
-	if ( cont.indexOf( process.env.prefix ) != -1 && !msg.webhookID && author.id != client.user.id && ( channel.type != 'text' || channel.permissionsFor(client.user).has('SEND_MESSAGES') ) ) {
+	if ( cont.indexOf( process.env.prefix ) != -1 && !msg.webhookID && author.id != client.user.id && ( channel.type != 'text' || channel.permissionsFor(client.user).has(['SEND_MESSAGES','ADD_REACTIONS','USE_EXTERNAL_EMOJIS']) ) ) {
 		var lang = langs['default'];
 		if ( channel.type == 'text' && msg.guild.id in langs ) lang = langs[msg.guild.id];
 		var invoke = cont.split(' ')[1].toLowerCase();
@@ -668,7 +668,7 @@ client.on('message', msg => {
 				console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
 				if ( channel.type != 'text' || !pause[msg.guild.id] || ( author.id == process.env.owner && aliasInvoke in pausecmdmap ) ) multilinecmdmap[aliasInvoke](lang, msg, args, cont);
 			} else {
-				msg.reply( lang.missingperm );
+				msg.reply( lang.missingperm + ' `MANAGE_MESSAGES`' );
 			}
 		} else {
 			cont.split('\n').forEach( function(line) {
