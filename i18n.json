@@ -7,7 +7,7 @@
 			"umfrage": "poll",
 			"fehler": "bug"
 		},
-		"missingperm": "mir fehlen einige Berechtigungen für diesen Befehl.",
+		"missingperm": "mir fehlen einige Berechtigungen für diesen Befehl:",
 		"bug": {
 			"text": "bei Fragen oder Problemen besuche bitte meinen Support-Server:",
 			"private": "**Privater Fehler**"
@@ -577,7 +577,7 @@
 			"uwmc": "none",
 			"info": "none"
 		},
-		"missingperm": "I'm missing some permissions for this command.",
+		"missingperm": "I'm missing some permissions for this command:",
 		"bug": {
 			"text": "for questions and problems please visit my support server:",
 			"private": "**Private Issue**"
@@ -1138,7 +1138,7 @@
 			"aide": "help",
 			"commande": "command"
 		},
-		"missingperm": "Il me manque certaines permissions pour cette commande.",
+		"missingperm": "Il me manque certaines permissions pour cette commande :",
 		"bug": {
 			"text": "pour tout problème ou question, merci de visiter mon serveur de support :",
 			"private": "**Problème privé**"
@@ -1713,7 +1713,7 @@
 			"zaproszenie": "invite",
 			"usuń": "delete"
 		},
-		"missingperm": "Brakuje mi upawnień!",
+		"missingperm": "Brakuje mi upawnień:",
 		"bug": {
 			"text": "w przypadku pytań lub problemów, odwiedź mój serwer:",
 			"private": "**Private Issue**"
