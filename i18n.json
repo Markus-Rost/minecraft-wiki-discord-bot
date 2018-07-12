@@ -37,6 +37,7 @@
 				["grasp", "GRASP"],
 				["directors", "Direktor"],
 				["editor", "Autor"],
+				["patrollers", "Kontrolleur"],
 				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "Benutzer"]
@@ -608,6 +609,7 @@
 				["grasp", "GRASP"],
 				["directors", "Director"],
 				["editor", "Editor"],
+				["patrollers", "Patrollers"],
 				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "User"]
@@ -1170,6 +1172,7 @@
 				["grasp", "GRASP"],
 				["directors", "Directeur"],
 				["editor", "Éditeur"],
+				["patrollers", "Patrollers"],
 				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "Utilisateur"]
@@ -1746,6 +1749,7 @@
 				["GRASP", "GRASP"],
 				["directors", "Dyrektor"],
 				["editor", "Redaktor"],
+				["patrollers", "Patrollers"],
 				["autoreview", "autoreview"],
 				["autopatrol", "autopatrol"],
 				["user", "Użytkownik"]
