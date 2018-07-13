@@ -422,9 +422,11 @@
 							],
 				"scoreboard":		[
 								"/scoreboard objectives add <Ziel> <Kriterientyp>",
-								"/scoreboard objectives add <Ziel> <Kriterientyp> <Anzeigename>",
+								"/scoreboard objectives add <Ziel> <Kriterientyp> <Anzeigename als JSON-Text>",
 								"/scoreboard objectives list",
-								"/scoreboard objectives modify <Ziel> displayname <Anzeigename>",
+								"/scoreboard objectives modify <Ziel> displayname <Anzeigename als JSON-Text>",
+								"/scoreboard objectives modify <Ziel> rendertype hearts",
+								"/scoreboard objectives modify <Ziel> rendertype integer",
 								"/scoreboard objectives remove <Ziel>",
 								"/scoreboard objectives setdisplay <Anzeigeposition>",
 								"/scoreboard objectives setdisplay <Anzeigeposition> <Ziel>",
@@ -488,7 +490,7 @@
 								"/team leave <Selektor>",
 								"/team list",
 								"/team list <Teamname>",
-								"/team option <Teamname> <Eigenschaft> <Wert>",
+								"/team modify <Teamname> <Eigenschaft> <Wert>",
 								"/team remove <Teamname>"
 							],
 				"teleport":		[
@@ -976,6 +978,8 @@
 								"/scoreboard objectives add <objective> <criteria> <displayName>",
 								"/scoreboard objectives list",
 								"/scoreboard objectives modify <objective> displayname <displayName>",
+								"/scoreboard objectives modify <objective> rendertype hearts",
+								"/scoreboard objectives modify <objective> rendertype integer",
 								"/scoreboard objectives remove <objective>",
 								"/scoreboard objectives setdisplay <slot>",
 								"/scoreboard objectives setdisplay <slot> <objective>",
@@ -1041,7 +1045,7 @@
 								"/team leave <members>",
 								"/team list",
 								"/team list <team>",
-								"/team option <team> <option> <value>",
+								"/team modify <team> <option> <value>",
 								"/team remove <team>"
 							],
 				"teleport":		[
@@ -1551,6 +1555,8 @@
 								"/scoreboard objectives add <objectif> <critères> <nomAffichage>",
 								"/scoreboard objectives list",
 								"/scoreboard objectives modify <objectif> displayname <nomAffichage>",
+								"/scoreboard objectives modify <objectif> rendertype hearts",
+								"/scoreboard objectives modify <objectif> rendertype integer",
 								"/scoreboard objectives remove <objectif>",
 								"/scoreboard objectives setdisplay <emplacement>",
 								"/scoreboard objectives setdisplay <emplacement> <objectif>",
@@ -1616,7 +1622,7 @@
 								"/team leave <membres>",
 								"/team list",
 								"/team list <équipe>",
-								"/team option <équipe> <option> <valeur>",
+								"/team modify <équipe> <option> <valeur>",
 								"/team remove <équipe>"
 							],
 				"teleport":		[
@@ -2132,6 +2138,8 @@
 								"/scoreboard objectives add <objective> <criteria> <displayName>",
 								"/scoreboard objectives list",
 								"/scoreboard objectives modify <objective> displayname <displayName>",
+								"/scoreboard objectives modify <objective> rendertype hearts",
+								"/scoreboard objectives modify <objective> rendertype integer",
 								"/scoreboard objectives remove <objective>",
 								"/scoreboard objectives setdisplay <slot>",
 								"/scoreboard objectives setdisplay <slot> <objective>",
@@ -2197,7 +2205,7 @@
 								"/team leave <members>",
 								"/team list",
 								"/team list <team>",
-								"/team option <team> <option> <value>",
+								"/team modify <team> <option> <value>",
 								"/team remove <team>"
 							],
 				"teleport":		[
