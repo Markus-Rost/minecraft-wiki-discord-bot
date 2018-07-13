@@ -483,7 +483,7 @@
 							],
 				"team":			[
 								"/team add <Teamname>",
-								"/team add <Teamname> <Anzeigename>",
+								"/team add <Teamname> <Anzeigename als JSON-Text>",
 								"/team empty <Teamname>",
 								"/team join <Teamname>",
 								"/team join <Teamname> <Selektor>",
