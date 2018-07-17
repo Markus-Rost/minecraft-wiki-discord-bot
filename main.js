@@ -316,7 +316,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 		msg.react('⏳').then( function( reaction ) {
 			hourglass = reaction;
 			request( {
-				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&meta=siteinfo&siprop=interwikimap&redirects=true&titles=' + title,
+				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&meta=siteinfo&siprop=interwikimap&redirects=true&titles=' + encodeURI( title ),
 				json: true
 			}, function( error, response, body ) {
 				if ( error || !response || !body || !body.query ) {
@@ -327,7 +327,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 					if ( body.query.pages ) {
 						if ( body.query.pages['-1'] && body.query.pages['-1'].missing != undefined ) {
 							request( {
-								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + title + '&srlimit=1',
+								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|6|10|12|14&srsearch=' + encodeURI( title ) + '&srlimit=1',
 								json: true
 							}, function( srerror, srresponse, srbody ) {
 								if ( srerror || !srresponse || !srbody || !srbody.query || ( !srbody.query.search[0] && srbody.query.searchinfo.totalhits != 0 ) ) {
@@ -499,7 +499,7 @@ function cmd_user(lang, msg, username, wiki, title) {
 		msg.react('⏳').then( function( reaction ) {
 			hourglass = reaction;
 			request( {
-				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=users&usprop=blockinfo|groups|editcount|registration|gender&ususers=' + username,
+				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=users&usprop=blockinfo|groups|editcount|registration|gender&ususers=' + encodeURI( username ),
 				json: true
 			}, function( error, response, body ) {
 				if ( error || !response || !body || !body.query || !body.query.users[0] ) {
