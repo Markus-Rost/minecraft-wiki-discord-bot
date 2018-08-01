@@ -190,6 +190,12 @@
 								"/bossbar set <Name> value <Wert>",
 								"/bossbar set <Name> visible <Sichtbarkeit>"
 							],
+				"chunk":		[
+								"/chunk force <Position ohne Y-Koordinate>",
+								"/chunk unforce <Position ohne Y-Koordinate>",
+								"/chunk in <Dimension> force <Position ohne Y-Koordinate>",
+								"/chunk in <Dimension> unforce <Position ohne Y-Koordinate>"
+							],
 				"clear":		[
 								"/clear",
 								"/clear <Selektor>",
@@ -742,6 +748,12 @@
 								"/bossbar set <id> style <style>",
 								"/bossbar set <id> value <value>",
 								"/bossbar set <id> visible <visible>"
+							],
+				"chunk":		[
+								"/chunk force <pos>",
+								"/chunk unforce <pos>",
+								"/chunk in <dimension> force <pos>",
+								"/chunk in <dimension> unforce <pos>"
 							],
 				"clear":		[
 								"/clear",
@@ -1319,6 +1331,12 @@
 								"/bossbar set <id> style <style>",
 								"/bossbar set <id> value <valeur>",
 								"/bossbar set <id> visible <visible>"
+							],
+				"chunk":		[
+								"/chunk force <position>",
+								"/chunk unforce <position>",
+								"/chunk in <dimension> force <position>",
+								"/chunk in <dimension> unforce <position>"
 							],
 				"clear":		[
 								"/clear",
@@ -1902,6 +1920,12 @@
 								"/bossbar set <id> style <style>",
 								"/bossbar set <id> value <value>",
 								"/bossbar set <id> visible <visible>"
+							],
+				"chunk":		[
+								"/chunk force <pos>",
+								"/chunk unforce <pos>",
+								"/chunk in <dimension> force <pos>",
+								"/chunk in <dimension> unforce <pos>"
 							],
 				"clear":		[
 								"/clear",
