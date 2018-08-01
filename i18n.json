@@ -750,10 +750,10 @@
 								"/bossbar set <id> visible <visible>"
 							],
 				"chunk":		[
-								"/chunk force <pos>",
-								"/chunk unforce <pos>",
-								"/chunk in <dimension> force <pos>",
-								"/chunk in <dimension> unforce <pos>"
+								"/chunk force <x> <y>",
+								"/chunk unforce <x> <y>",
+								"/chunk in <dimension> force <x> <y>",
+								"/chunk in <dimension> unforce <x> <y>"
 							],
 				"clear":		[
 								"/clear",
@@ -1333,10 +1333,10 @@
 								"/bossbar set <id> visible <visible>"
 							],
 				"chunk":		[
-								"/chunk force <position>",
-								"/chunk unforce <position>",
-								"/chunk in <dimension> force <position>",
-								"/chunk in <dimension> unforce <position>"
+								"/chunk force <x> <y>",
+								"/chunk unforce <x> <y>",
+								"/chunk in <dimension> force <x> <y>",
+								"/chunk in <dimension> unforce <x> <y>"
 							],
 				"clear":		[
 								"/clear",
@@ -1922,10 +1922,10 @@
 								"/bossbar set <id> visible <visible>"
 							],
 				"chunk":		[
-								"/chunk force <pos>",
-								"/chunk unforce <pos>",
-								"/chunk in <dimension> force <pos>",
-								"/chunk in <dimension> unforce <pos>"
+								"/chunk force <x> <y>",
+								"/chunk unforce <x> <y>",
+								"/chunk in <dimension> force <x> <y>",
+								"/chunk in <dimension> unforce <x> <y>"
 							],
 				"clear":		[
 								"/clear",
