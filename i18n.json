@@ -46,6 +46,13 @@
 			"blocked": "**Dieser Benutzer ist derzeit gesperrt!**\nGesperrt am %1$s bis zum %2$s von %3$s mit der Begründung \"%4$s\".",
 			"until_infinity": "Ende aller Tage"
 		},
+		"diff": {
+			"badrev": "mindestens eine Version existiert nicht!",
+			"nocomment": "*Keine Zusammenfassung angegeben*",
+			"notags": "*keine*",
+			"hidden": "*versteckt*",
+			"info": "Autor: %1$s\nZeitpunkt: %2$s\nUnterschied: %3$s Bytes\nZusammenfassung: %4$s\nMarkierungen: %5$s"
+		},
 		"search": {
 			"page": "seite",
 			"search": "suche",
@@ -118,7 +125,6 @@
 				{ "cmd": "user <Benutzername>", "desc": "Ich liste ein paar Informationen über den Benutzer auf.", "hide": true },
 				{ "cmd": "diff <diff> [<oldid>]", "desc": "Ich verlinke auf die Änderung im Minecraft Wiki." },
 				{ "cmd": "diff <Seitenname>", "desc": "Ich verlinke auf die letzte Änderung an der Seite im Minecraft Wiki.", "hide": true },
-				{ "cmd": "diff <Seitenname> <diff> [<oldid>]", "desc": "Ich verlinke auf die Änderung an der Seite im Minecraft Wiki.", "hide": true },
 				{ "cmd": "fehler <Fehler>", "desc": "Ich verlinke auf den Fehler im Bugtracker." },
 				{ "cmd": "bug <Fehler>", "desc": "Ich verlinke auf den Fehler im Bugtracker.", "hide": true },
 				{ "cmd": "umfrage <Frage als Freitext>", "desc": "Ich erstelle eine Umfrage und reagiere mit <:support:448222377009086465> und <:oppose:448222455425794059>.", "admin": true },
@@ -626,6 +632,13 @@
 			"blocked": "**This user is currently blocked!**\nBlocked on %1$s until %2$s by %3$s with reason \"%4$s\".",
 			"until_infinity": "the end of all days"
 		},
+		"diff": {
+			"badrev": "at least one revision doesn't exist!",
+			"nocomment": "*No description provided*",
+			"notags": "*none*",
+			"hidden": "*hidden*",
+			"info": "Editor: %1$s\nEdit date: %2$s\nDifference: %3$s Bytes\nComment: %4$s\nTags: %5$s"
+		},
 		"search": {
 			"page": "page",
 			"search": "search",
@@ -677,7 +690,6 @@
 				{ "cmd": "user <username>", "desc": "I will show some information about the user.", "hide": true },
 				{ "cmd": "diff <diff> [<oldid>]", "desc": "I will answer with a link to the diff in the Minecraft Wiki." },
 				{ "cmd": "diff <page name>", "desc": "I will answer with a link to the last diff on the article in the Minecraft Wiki.", "hide": true },
-				{ "cmd": "diff <page name> <diff> [<oldid>]", "desc": "I will answer with a link to the diff on the article in the Minecraft Wiki.", "hide": true },
 				{ "cmd": "bug <bug>", "desc": "I will answer with a link to the bug in the bug tracker." },
 				{ "cmd": "help", "desc": "I will list all the commands that I understand." },
 				{ "cmd": "help <bot command>", "desc": "Wonder how a command works? Let me explain it to you!" },
@@ -1197,6 +1209,13 @@
 			"blocked": "**Cet utilisateur est actuellement bloqué !**\nBloqué le %1$s jusqu'au %2$s par %3$s avec la raison \"%4$s\".",
 			"until_infinity": "moment de la fin des jours"
 		},
+		"diff": {
+			"badrev": "au moins une des révisions n'existe pas !",
+			"nocomment": "*Aucune description*",
+			"notags": "*aucun*",
+			"hidden": "*masqué*",
+			"info": "Éditeur : %1$s\nDate : %2$s\nDifférence : %3$s octets\nCommentaire : %4$s\nBalises :  %5$s"
+		},
 		"search": {
 			"page": "page",
 			"search": "chercher",
@@ -1251,7 +1270,6 @@
 				{ "cmd": "user <nom d'utilisateur>", "desc": "Je vais montrer quelques informations sur l'utilisateur.", "hide": true },
 				{ "cmd": "diff <diff> [<oldid>]", "desc": "Je vais répondre avec un lien vers la diff sur Minecraft Wiki." },
 				{ "cmd": "diff <nom de la page>", "desc": "Je vais répondre avec un lien vers la dernière diff de l'article sur Minecraft Wiki.", "hide": true },
-				{ "cmd": "diff <nom de la page> <diff> [<oldid>]", "desc": "Je vais répondre avec un lien vers la diff de l'article sur Minecraft Wiki.", "hide": true },
 				{ "cmd": "en <terme de recherche>", "desc": "Je réponds avec un lien vers un article approprié sur le wiki Minecraft anglais." },
 				{ "cmd": "en page <nom de la page>", "desc": "Je réponds avec un lien vers la page donnée sur le wiki Minecraft anglais.", "hide": true },
 				{ "cmd": "en chercher <terme de recherche>", "desc": "Je réponds avec un lien vers la page de recherche pour ce terme sur le wiki Minecraft anglais.", "hide": true },
@@ -1782,6 +1800,13 @@
 			"blocked": "**Ten użytkownik jest obecnie zablokowany!**\nZablokowany %1$s do %2$s przez %3$s z powodu \"%4$s\".",
 			"until_infinity": "do końca wszechświata"
 		},
+		"diff": {
+			"badrev": "przynajmniej jedna zmiana nie istnieje!",
+			"nocomment": "*Nie podano opisu zmiany*",
+			"notags": "*brak*",
+			"hidden": "*ukryte*",
+			"info": "Autor: %1$s\nData edycji: %2$s\nWielkość zmiany: %3$s bajtów\nKomentarz: %4$s\nTagi: %5$s"
+		},
 		"search": {
 			"page": "strona",
 			"search": "szukaj",
@@ -1838,7 +1863,6 @@
 				{ "cmd": "user <nazwa użytkownika>", "desc": "Pokażę informacje na temat użytkownika.", "hide": true },
 				{ "cmd": "diff <diff> [<oldid>]", "desc": "Odpowiem linkiem do podanej zmiany na Minecraft Wiki." },
 				{ "cmd": "diff <nazwa strony>", "desc": "Odpowiem linkiem do ostatniej zmiany w podanym artykule na Minecraft Wiki.", "hide": true },
-				{ "cmd": "diff <nazwa strony> <diff> [<oldid>]", "desc": "Odpowiem linkiem do porównania zmian z podanym ID zmiany.", "hide": true },
 				{ "cmd": "en <wyszukiwana fraza>", "desc": "Odpowiem linkiem do pasujacego artykułu na angielskiej Minecraft Wiki." },
 				{ "cmd": "en page <nazwa strony>", "desc": "Odpowiem linkiem do pasujacego artykułu na angielskiej Minecraft Wiki.", "hide": true },
 				{ "cmd": "en chercher <wyszukiwana fraza>", "desc": "Odpowiem linkiem do strony wyszukiwania z podaną frazą na angielskiej Minecraft Wiki.", "hide": true },
