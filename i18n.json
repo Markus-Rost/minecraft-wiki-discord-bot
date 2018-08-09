@@ -107,11 +107,9 @@
 				{ "cmd": "hilfe", "desc": "Ich liste alle Befehle auf." },
 				{ "cmd": "hilfe <Bot-Befehl>", "desc": "Frage mich, wie ein Befehl funktioniert." },
 				{ "cmd": "hilfe admin", "desc": "Ich liste alle Befehle für Administratoren auf.", "admin": true },
-				{ "cmd": "hilfe admin emoji", "desc": "Ich liste alle Server-Emoji auf, die ich kenne.", "admin": true },
 				{ "cmd": "help", "desc": "Ich liste alle Befehle auf.", "hide": true },
 				{ "cmd": "help <Bot-Befehl>", "desc": "Frage mich, wie ein Befehl funktioniert.", "hide": true },
 				{ "cmd": "help admin", "desc": "Ich liste alle Befehle für Administratoren auf.", "hide": true, "admin": true },
-				{ "cmd": "help admin emoji", "desc": "Ich liste alle Server-Emoji auf, die ich kenne.", "hide": true, "admin": true },
 				{ "cmd": "technik <Suchbegriff>", "desc": "Ich antworte mit einem Link auf einen passenden Artikel im Technik Wiki." },
 				{ "cmd": "technik seite <Seitenname>", "desc": "Ich antworte mit einem Link zu der angegebenen Seite im Technik Wiki.", "hide": true },
 				{ "cmd": "technik suche <Suchbegriff>", "desc": "Ich antworte mit einem Link auf die Suchseite zu diesem Begriff im Technik Wiki.", "hide": true },
@@ -139,8 +137,8 @@
 				{ "cmd": "delete <Anzahl>", "desc": "Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.", "admin": true },
 				{ "cmd": "purge <Anzahl>", "desc": "Ich lösche die letzten Nachrichten in dem Kanal, solange sie nicht älter als 14 Tage sind.", "hide": true, "admin": true },
 				{ "cmd": "info", "desc": "Du wirst bei neuen Entwicklungsversionen auf dem Server des deutschen Minecraft Wiki erwähnt." },
-				{ "cmd": "fehler @Wiki-Bot [<Zusammenfassung>]", "desc": "Ich erkläre, wie man einen meiner Fehler meldet.", "hide": true, "admin": true },
-				{ "cmd": "bug @Wiki-Bot [<Zusammenfassung>]", "desc": "Ich erkläre, wie man einen meiner Fehler meldet.", "hide": true, "admin": true }
+				{ "cmd": "fehler @Wiki-Bot", "desc": "Ich erkläre, wie man einen meiner Fehler meldet.", "hide": true, "admin": true },
+				{ "cmd": "bug @Wiki-Bot", "desc": "Ich erkläre, wie man einen meiner Fehler meldet.", "hide": true, "admin": true }
 			]
 		},
 		"cmd": {
@@ -590,8 +588,7 @@
 		"aliase": {
 			"technik": "none",
 			"en": "none",
-			"uwmc": "none",
-			"info": "none"
+			"uwmc": "none"
 		},
 		"missingperm": "I'm missing some permissions for this command:",
 		"bug": {
@@ -694,7 +691,6 @@
 				{ "cmd": "help", "desc": "I will list all the commands that I understand." },
 				{ "cmd": "help <bot command>", "desc": "Wonder how a command works? Let me explain it to you!" },
 				{ "cmd": "help admin", "desc": "I will list all administrator commands.", "admin": true },
-				{ "cmd": "help admin emoji", "desc": "I will list all server emoji that I can use.", "admin": true },
 				{ "cmd": "!<wiki> <search term>", "desc": "I will answer with a link to a matching article in the named Gamepedia wiki: `https://<wiki>.gamepedia.com/`", "unsearchable": true },
 				{ "cmd": "poll <question as free text>", "desc": "I will create a poll and react with <:support:448222377009086465> and <:oppose:448222455425794059>.", "admin": true },
 				{ "cmd": "poll <emoji> [<emoji> ...] <question as free text>", "desc": "I will create a poll and react with the possible answers.", "admin": true },
@@ -704,7 +700,7 @@
 				{ "cmd": "say alarm <message>", "desc": "I will write the given message already preformatted: 🚨 **<message>** 🚨", "admin": true },
 				{ "cmd": "delete <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "admin": true },
 				{ "cmd": "purge <count>", "desc": "I will delete the recent messages in the channel, as long as they aren't older than 14 days.", "hide": true, "admin": true },
-				{ "cmd": "bug @Wiki-Bot [<summary>]", "desc": "I will explain how to report one of my bugs.", "hide": true, "admin": true }
+				{ "cmd": "info", "desc": "I will explain how to report one of my bugs.", "admin": true }
 			]
 		},
 		"cmd": {
@@ -1165,7 +1161,6 @@
 		"aliase": {
 			"technik": "none",
 			"uwmc": "none",
-			"info": "none",
 			"sondage": "poll",
 			"aide": "help",
 			"commande": "command"
@@ -1277,11 +1272,9 @@
 				{ "cmd": "aide", "desc": "Je vais lister toutes les commandes que je comprends." },
 				{ "cmd": "aide <commande de robot>", "desc": "Tu te demandes comment une commande fonctionne ? Laisse-moi te l'expliquer !" },
 				{ "cmd": "aide admin", "desc": "Je vais lister toutes les commandes d'administrateur.", "admin": true },
-				{ "cmd": "aide admin emoji", "desc": "Je vais lister tous les emojis de serveurs que je peux utiliser.", "admin": true },
 				{ "cmd": "help", "desc": "Je vais lister toutes les commandes que je comprends.", "hide": true },
 				{ "cmd": "help <commande de robot>", "desc": "Tu te demandes comment une commande fonctionne ? Laisse-moi te l'expliquer !", "hide": true },
 				{ "cmd": "help admin", "desc": "Je vais lister toutes les commandes d'administrateur.", "hide": true, "admin": true },
-				{ "cmd": "help admin emoji", "desc": "Je vais lister tous les emojis de serveurs que je peux utiliser.", "hide": true, "admin": true },
 				{ "cmd": "!<wiki> <terme de recherche>", "desc": "Je vais répondre avec un lien vers un article correspondant sur wiki Gamepedia nommé : `https://<wiki>.gamepedia.com/`", "unsearchable": true },
 				{ "cmd": "sondage <question en texte libre>", "desc": "Je vais créer un sondage et réagir avec <:support:448222377009086465> et <:oppose:448222455425794059>.", "admin": true },
 				{ "cmd": "sondage <emoji> [<emoji> ...] <question en texte libre>", "desc": "Je vais créer un sondage et réagir avec les réponses possibles.", "admin": true },
@@ -1293,7 +1286,7 @@
 				{ "cmd": "say alarm <message>", "desc": "Je vais écrire le message donné déjà préformaté : 🚨 **<message>** 🚨", "admin": true },
 				{ "cmd": "delete <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "admin": true },
 				{ "cmd": "purge <quantité>", "desc": "Je vais supprimer les messages récents dans le salon, tant qu'ils ne datent pas de plus de 14 jours.", "hide": true, "admin": true },
-				{ "cmd": "bug @Wiki-Bot [<résumé>]", "desc": "Je vais expliquer comment signaler un de mes bugs.", "hide": true, "admin": true }
+				{ "cmd": "info", "desc": "Je vais expliquer comment signaler un de mes bugs.", "admin": true }
 			]
 		},
 		"cmd": {
@@ -1754,7 +1747,6 @@
 		"aliase": {
 			"technik": "none",
 			"uwmc": "none",
-			"info": "none",
 			"komenda": "command",
 			"pomoc": "help",
 			"ankieta": "poll",
@@ -1870,11 +1862,9 @@
 				{ "cmd": "pomoc", "desc": "Wylistuję wszystkie komendy, które rozumiem." },
 				{ "cmd": "pomoc <komenda bota>", "desc": "Wyłumaczę działanie komendy!" },
 				{ "cmd": "pomoc admin", "desc": "Wylistuję wszystkie komendy administracyjne.", "admin": true },
-				{ "cmd": "pomoc admin emoji", "desc": "Wylistuję wszystkie serwerowe emotki, które mogę użyć.", "admin": true },
 				{ "cmd": "help", "desc": "Wylistuję wszystkie komendy, które rozumiem.", "hide": true },
 				{ "cmd": "help <komenda bota>", "desc": "Wyłumaczę działanie komendy!", "hide": true },
 				{ "cmd": "help admin", "desc": "Wylistuję wszystkie komendy administracyjne.", "hide": true, "admin": true },
-				{ "cmd": "help admin emoji", "desc": "Wylistuję wszystkie serwerowe emotki, które mogę użyć.", "hide": true, "admin": true },
 				{ "cmd": "!<wiki> <wyszukiwana fraza>", "desc": "Odpowiem z pasującym linkiem do podanej wiki na Gamepedii: `https://<wiki>.gamepedia.com/`", "unsearchable": true },
 				{ "cmd": "ankieta <pytanie>", "desc": "Utworzę ankietę i dodam do niej domyślne reakcje (<:support:448222377009086465> oraz <:oppose:448222455425794059>)", "admin": true },
 				{ "cmd": "ankieta <emotka> [<emotka> ...] <pytanie>", "desc": "Utworzę ankietę i dodam do niej podane reakcje..", "admin": true },
@@ -1888,7 +1878,7 @@
 				{ "cmd": "usuń <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "admin": true },
 				{ "cmd": "delete <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "hide": true, "admin": true },
 				{ "cmd": "purge <ilość>", "desc": "Usunę podaną ilość najnowszych wiadomości na kanale, jeżeli nie są starsze niż 14 dni.", "hide": true, "admin": true },
-				{ "cmd": "bug @Wiki-Bot [<opis>]", "desc": "Wytłumaczę jak zgłosić błąd.", "hide": true, "admin": true }
+				{ "cmd": "info", "desc": "Wytłumaczę jak zgłosić błąd.", "admin": true }
 			]
 		},
 		"cmd": {
