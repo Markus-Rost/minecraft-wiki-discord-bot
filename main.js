@@ -22,6 +22,7 @@ var langs = {
 	'417255782820872192': i18n.de,
 	'422480985603571712': i18n.en,
 	'425692306511888384': i18n.de,
+	'428239221074165760': i18n.de,
 	'430968211417202688': i18n.de,
 	'433718362506395648': i18n.de,
 	'434423926706405377': i18n.de,
@@ -37,10 +38,12 @@ var langs = {
 	'453885282694201345': i18n.de,
 	'454296882982944768': i18n.de,
 	'460175800247779328': i18n.de,
+	'462277577298542604': i18n.de,
 	'466908128282148884': i18n.de,
 	'466985157652643886': i18n.de,
 	'467358937084198922': i18n.de,
-	'472407021946273792': i18n.de
+	'472407021946273792': i18n.de,
+	'476775010640592897': i18n.de
 }
 
 var pause = {};
@@ -96,7 +99,8 @@ var pausecmdmap = {
 function cmd_help(lang, msg, args, line) {
 	var cmds = lang.help.list;
 	if ( args.length ) {
-		if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || admin(msg) ) ) {
+		if ( mention(args[0]) ) cmd_helpserver(lang, msg);
+		else if ( args[0].toLowerCase() == 'admin' && ( msg.channel.type != 'text' || admin(msg) ) ) {
 			if ( args[1] && args[1].toLowerCase() == 'emoji' ) {
 				var cmdlist = lang.help.emoji + '\n';
 				var emojis = client.emojis;
@@ -210,7 +214,7 @@ function cmd_uwmc(lang, msg, args, line) {
 function cmd_invite(lang, msg, args, line) {
 	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 		msg.reply( lang.invite.minecraft + '\nhttps://discord.gg/minecraft' );
-	} else if ( args.length && args[0].toLowerCase() == '<@' + client.user.id + '>' ) {
+	} else if ( args.length && mention(args[0]) ) {
 		client.generateInvite(268954689).then( invite => msg.reply( lang.invite.bot + '\n<' + invite + '>' ) );
 	} else {
 		msg.reply( lang.invite.wiki + '\n' + lang.invite.link );
@@ -232,7 +236,7 @@ function cmd_eval(lang, msg, args, line) {
 }
 
 function cmd_stop(lang, msg, args, line) {
-	if ( msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
+	if ( msg.author.id == process.env.owner && mention(args[0]) ) {
 		msg.reply( 'ich schalte mich nun aus!' );
 		console.log( 'Ich schalte mich nun aus!' );
 		client.destroy();
@@ -242,7 +246,7 @@ function cmd_stop(lang, msg, args, line) {
 }
 
 function cmd_pause(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && msg.author.id == process.env.owner && args[0] == '<@' + client.user.id + '>' ) {
+	if ( msg.channel.type == 'text' && msg.author.id == process.env.owner && mention(args[0]) ) {
 		if ( pause[msg.guild.id] ) {
 			msg.reply( 'ich bin wieder wach!' );
 			console.log( 'Ich bin wieder wach!' );
@@ -386,20 +390,26 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 }
 
 function cmd_info(lang, msg, args, line) {
-	if ( msg.channel.type == 'text' && msg.channel.permissionsFor(client.user).has('MANAGE_ROLES') && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
-		if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
-			msg.member.removeRole( msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
-			console.log( msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
-			msg.react('🔕');
+	if ( lang == i18n.de ) {
+		if ( msg.channel.type == 'text' && msg.channel.permissionsFor(client.user).has('MANAGE_ROLES') && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
+			if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
+				msg.member.removeRole( msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
+				console.log( msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
+				msg.react('🔕');
+			}
+			else {
+				msg.member.addRole( msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
+				console.log( msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
+				msg.react('🔔');
+			}
 		}
 		else {
-			msg.member.addRole( msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
-			console.log( msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
-			msg.react('🔔');
+			msg.react('❌');
 		}
 	}
 	else {
-		msg.react('❌');
+		if ( args.length ) cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		else cmd_helpserver(lang, msg);
 	}
 }
 
@@ -704,9 +714,13 @@ function cmd_multiline(lang, msg, args, line) {
 	msg.react('440871715938238494');
 }
 
+function cmd_helpserver(lang, msg) {
+	msg.reply( lang.bug.text + '\nhttps://discord.gg/v77RTk5' );
+}
+
 function cmd_bug(lang, msg, args, line) {
-	if ( args[0] == '<@' + client.user.id + '>' ) {
-		msg.reply( lang.bug.text + '\nhttps://discord.gg/v77RTk5' );
+	if ( mention(args[0]) ) {
+		cmd_helpserver(lang, msg);
 	}
 	else if ( args.length && /\d+$/.test(args[0]) ) {
 		var hourglass;
@@ -751,6 +765,11 @@ function cmd_voice(lang, msg, args, line) {
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
 		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
 	}
+}
+
+function mention(arg) {
+	if ( arg == '<@' + client.user.id + '>' || arg == '<@!' + client.user.id + '>' ) return true;
+	else return false;
 }
 
 function admin(msg) {
