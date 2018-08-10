@@ -8,6 +8,7 @@ var client = new Discord.Client( {disableEveryone:true} );
 var i18n = JSON.parse(fs.readFileSync('i18n.json', 'utf8'));
 var langs = {
 	'default': i18n.en,
+	'251008837983797259': i18n.de,
 	'287878955078254592': i18n.de,
 	'322961504922238978': i18n.de,
 	'332487008016662538': i18n.de,
