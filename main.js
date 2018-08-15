@@ -118,7 +118,7 @@ function cmd_help(lang, msg, args, line) {
 				var cmdlist = lang.help.admin + '\n';
 				for ( var i = 0; i < cmds.length; i++ ) {
 					if ( cmds[i].admin && !cmds[i].hide ) {
-						cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+						cmdlist += '🔹 `' + process.env.prefix + ' ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 					}
 				}
 				
@@ -129,7 +129,7 @@ function cmd_help(lang, msg, args, line) {
 			var cmdlist = ''
 			for ( var i = 0; i < cmds.length; i++ ) {
 				if ( cmds[i].cmd.split(' ')[0] === args[0].toLowerCase() && !cmds[i].unsearchable && ( msg.channel.type != 'text' || !cmds[i].admin || admin(msg) ) ) {
-					cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+					cmdlist += '🔹 `' + process.env.prefix + ' ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 				}
 			}
 			
@@ -141,7 +141,7 @@ function cmd_help(lang, msg, args, line) {
 		var cmdlist = lang.help.all + '\n';
 		for ( var i = 0; i < cmds.length; i++ ) {
 			if ( !cmds[i].hide && !cmds[i].admin ) {
-				cmdlist += '🔹 `' + process.env.prefix + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
+				cmdlist += '🔹 `' + process.env.prefix + ' ' + cmds[i].cmd + '`\n\t' + cmds[i].desc + '\n';
 			}
 		}
 		
@@ -200,12 +200,12 @@ function cmd_technik(lang, msg, args, line) {
 			var title = args.join(' ');
 		}
 		
-		cmd_link(lang, msg, title, 'minecraft-technik', 'technik ');
+		cmd_link(lang, msg, title, 'minecraft-technik', ' technik ');
 	}
 }
 
 function cmd_en(lang, msg, args, line) {
-	cmd_link(lang, msg, args.join(' '), 'minecraft', 'en ');
+	cmd_link(lang, msg, args.join(' '), 'minecraft', ' en ');
 }
 
 function cmd_uwmc(lang, msg, args, line) {
@@ -242,7 +242,7 @@ function cmd_stop(lang, msg, args, line) {
 		console.log( 'Ich schalte mich nun aus!' );
 		client.destroy();
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -258,7 +258,7 @@ function cmd_pause(lang, msg, args, line) {
 			pause[msg.guild.id] = true;
 		}
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -272,7 +272,7 @@ function cmd_befehl(lang, msg, befehl, args, line) {
 	}
 	else {
 		msg.react('❓');
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -282,7 +282,7 @@ function cmd_befehl2(lang, msg, args, line) {
 		else cmd_befehl(lang, msg, args[0], args.slice(1), line);
 	}
 	else {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -372,7 +372,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 								if ( regex.test(entry[i].url) ) {
 									var iwtitle = entry[i].url.replace( '$1', intertitle ).replace( regex.exec(entry[i].url)[0], '' );
 									var link = regex.exec(entry[i].url)[1];
-									cmd_link(lang, msg, iwtitle, link, '!' + link + ' ');
+									cmd_link(lang, msg, iwtitle, link, ' !' + link + ' ');
 								}
 								else msg.channel.send( entry[i].url.replace( '$1', intertitle.replace( / /g, '_' ) ) );
 								break;
@@ -409,7 +409,7 @@ function cmd_info(lang, msg, args, line) {
 		}
 	}
 	else {
-		if ( args.length ) cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		if ( args.length ) cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 		else cmd_helpserver(lang, msg);
 	}
 }
@@ -451,7 +451,7 @@ function cmd_serverlist(lang, msg, args, line) {
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -756,7 +756,7 @@ function cmd_bug(lang, msg, args, line) {
 		} );
 	}
 	else {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -764,7 +764,7 @@ function cmd_voice(lang, msg, args, line) {
 	if ( admin(msg) ) {
 		msg.reply( lang.voice.text + '\n`' + lang.voice.channel + ' – <' + lang.voice.name + '>`' );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
-		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+		cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 	}
 }
 
@@ -825,8 +825,8 @@ client.on('message', msg => {
 					if ( channel.type != 'text' || !pause[msg.guild.id] ) {
 						if ( aliasInvoke in cmdmap ) cmdmap[aliasInvoke](lang, msg, args, line);
 						else if ( invoke.startsWith('/') ) cmd_befehl(lang, msg, invoke.substr(1), args, line);
-						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join(' '), invoke.substr(1), invoke + ' ');
-						else cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, '');
+						else if ( invoke.startsWith('!') ) cmd_link(lang, msg, args.join(' '), invoke.substr(1), ' ' + invoke + ' ');
+						else cmd_link(lang, msg, line.split(' ').slice(1).join(' '), lang.link, ' ');
 					} else if ( channel.type == 'text' && pause[msg.guild.id] && author.id == process.env.owner && aliasInvoke in pausecmdmap ) {
 						pausecmdmap[aliasInvoke](lang, msg, args, line);
 					}
