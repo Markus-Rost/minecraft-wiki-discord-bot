@@ -38,7 +38,6 @@ var langs = {
 	'452404998295257088': i18n.de,
 	'453885282694201345': i18n.de,
 	'454296882982944768': i18n.de,
-	'460175800247779328': i18n.de,
 	'462277577298542604': i18n.de,
 	'466908128282148884': i18n.de,
 	'466985157652643886': i18n.de,
@@ -315,7 +314,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 	if ( invoke == 'page' || invoke == lang.search.page ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + args.join('_') );
 	else if ( invoke == 'search' || invoke == lang.search.search ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/Special:Search/' + args.join('_') );
 	else if ( invoke == 'diff' ) cmd_diff(lang, msg, args, wiki);
-	else if ( title == '' || title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title.replace( / /g, '_' ) );
+	else if ( title.indexOf( '#' ) != -1 || title.indexOf( '?' ) != -1 ) msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + title.replace( / /g, '_' ) );
 	else if ( invoke == 'user' || invoke == lang.search.user.unknown || invoke == lang.search.user.male || invoke == lang.search.user.female ) cmd_user(lang, msg, args.join('_'), wiki, title.replace( / /g, '_' ));
 	else if ( invoke.startsWith('user:') ) cmd_user(lang, msg, title.substr(5), wiki, title.replace( / /g, '_' ));
 	else if ( invoke.startsWith('userprofile:') ) cmd_user(lang, msg, title.substr(12), wiki, title.replace( / /g, '_' ));
@@ -327,7 +326,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 		msg.react('⏳').then( function( reaction ) {
 			hourglass = reaction;
 			request( {
-				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&meta=siteinfo&siprop=interwikimap&redirects=true&titles=' + encodeURI( title ),
+				uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&meta=siteinfo&siprop=general|interwikimap&redirects=true&titles=' + encodeURI( title ),
 				json: true
 			}, function( error, response, body ) {
 				if ( error || !response || !body || !body.query ) {
@@ -381,7 +380,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 						}
 					}
 					else {
-						msg.react('🤷');
+						msg.channel.send( 'https://' + wiki + '.gamepedia.com/' + body.query.general.mainpage.replace( / /g, '_' ) );
 					}
 				}
 				
@@ -806,7 +805,7 @@ client.on('message', msg => {
 	if ( cont.toLowerCase().indexOf( process.env.prefix ) != -1 && !msg.webhookID && author.id != client.user.id && ( channel.type != 'text' || channel.permissionsFor(client.user).has(['SEND_MESSAGES','ADD_REACTIONS','USE_EXTERNAL_EMOJIS']) ) ) {
 		var lang = langs['default'];
 		if ( channel.type == 'text' && msg.guild.id in langs ) lang = langs[msg.guild.id];
-		var invoke = cont.split(' ')[1].toLowerCase();
+		var invoke = cont.split(' ')[1] ? cont.split(' ')[1].toLowerCase() : '';
 		var aliasInvoke = ( invoke in lang.aliase ) ? lang.aliase[invoke] : invoke;
 		if ( cont.toLowerCase().startsWith(process.env.prefix) && aliasInvoke in multilinecmdmap ) {
 			if ( channel.type != 'text' || channel.permissionsFor(client.user).has('MANAGE_MESSAGES') ) {
@@ -819,7 +818,7 @@ client.on('message', msg => {
 		} else {
 			cont.split('\n').forEach( function(line) {
 				if ( line.toLowerCase().startsWith(process.env.prefix) ) {
-					invoke = line.split(' ')[1].toLowerCase();
+					invoke = line.split(' ')[1] ? line.split(' ')[1].toLowerCase() : '';
 					var args = line.split(' ').slice(2);
 					aliasInvoke = ( invoke in lang.aliase ) ? lang.aliase[invoke] : invoke;
 					console.log((msg.guild ? msg.guild.name : '@' + author.username) + ': ' + invoke + ' - ' + args);
