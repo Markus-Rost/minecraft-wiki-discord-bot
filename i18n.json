@@ -194,12 +194,6 @@
 								"/bossbar set <Name> value <Wert>",
 								"/bossbar set <Name> visible <Sichtbarkeit>"
 							],
-				"chunk":		[
-								"/chunk force <Position ohne Y-Koordinate>",
-								"/chunk unforce <Position ohne Y-Koordinate>",
-								"/chunk in <Dimension> force <Position ohne Y-Koordinate>",
-								"/chunk in <Dimension> unforce <Position ohne Y-Koordinate>"
-							],
 				"clear":		[
 								"/clear",
 								"/clear <Selektor>",
@@ -328,6 +322,10 @@
 								"/fill <Position1> <Position2> <Block> outline",
 								"/fill <Position1> <Position2> <Block> replace",
 								"/fill <Position1> <Position2> <Block> replace <Filterblock>"
+							],
+				"forceload":		[
+								"/forceload force <Position ohne Y-Koordinate>",
+								"/forceload unforce <Position ohne Y-Koordinate>"
 							],
 				"function":		[
 								"/function <Funktion>"
@@ -757,12 +755,6 @@
 								"/bossbar set <id> value <value>",
 								"/bossbar set <id> visible <visible>"
 							],
-				"chunk":		[
-								"/chunk force <x> <z>",
-								"/chunk unforce <x> <z>",
-								"/chunk in <dimension> force <x> <z>",
-								"/chunk in <dimension> unforce <x> <z>"
-							],
 				"clear":		[
 								"/clear",
 								"/clear <targets>",
@@ -891,6 +883,10 @@
 								"/fill <from> <to> <block> outline",
 								"/fill <from> <to> <block> replace",
 								"/fill <from> <to> <block> replace <filter>"
+							],
+				"forceload":		[
+								"/forceload force <x> <z>",
+								"/forceload unforce <x> <z>"
 							],
 				"function":		[
 								"/function <name>"
@@ -1343,12 +1339,6 @@
 								"/bossbar set <id> value <valeur>",
 								"/bossbar set <id> visible <visible>"
 							],
-				"chunk":		[
-								"/chunk force <x> <z>",
-								"/chunk unforce <x> <z>",
-								"/chunk in <dimension> force <x> <z>",
-								"/chunk in <dimension> unforce <x> <z>"
-							],
 				"clear":		[
 								"/clear",
 								"/clear <cibles>",
@@ -1477,6 +1467,10 @@
 								"/fill <de> <à> <bloc> outline",
 								"/fill <de> <à> <bloc> replace",
 								"/fill <de> <à> <bloc> replace <filtre>"
+							],
+				"forceload":		[
+								"/forceload force <x> <z>",
+								"/forceload unforce <x> <z>"
 							],
 				"function":		[
 								"/function <nom>"
@@ -1935,12 +1929,6 @@
 								"/bossbar set <id> value <value>",
 								"/bossbar set <id> visible <visible>"
 							],
-				"chunk":		[
-								"/chunk force <x> <z>",
-								"/chunk unforce <x> <z>",
-								"/chunk in <dimension> force <x> <z>",
-								"/chunk in <dimension> unforce <x> <z>"
-							],
 				"clear":		[
 								"/clear",
 								"/clear <targets>",
@@ -2069,6 +2057,10 @@
 								"/fill <from> <to> <block> outline",
 								"/fill <from> <to> <block> replace",
 								"/fill <from> <to> <block> replace <filter>"
+							],
+				"forceload":		[
+								"/forceload force <x> <z>",
+								"/forceload unforce <x> <z>"
 							],
 				"function":		[
 								"/function <name>"
