@@ -324,10 +324,12 @@
 								"/fill <Position1> <Position2> <Block> replace <Filterblock>"
 							],
 				"forceload":		[
-								"/forceload add <Position ohne Y-Koordinate>",
-								"/forceload remove <Position ohne Y-Koordinate>",
+								"/forceload add <x> <z>",
+								"/forceload add <x> <z> <x> <z>",
+								"/forceload remove <x> <z>",
+								"/forceload remove <x> <z> <x> <z>",
 								"/forceload query",
-								"/forceload query <Position ohne Y-Koordinate>"
+								"/forceload query <x> <z>"
 							],
 				"function":		[
 								"/function <Funktion>"
@@ -888,7 +890,9 @@
 							],
 				"forceload":		[
 								"/forceload add <x> <z>",
+								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
+								"/forceload remove <x> <z> <x> <z>",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
@@ -1474,7 +1478,9 @@
 							],
 				"forceload":		[
 								"/forceload add <x> <z>",
+								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
+								"/forceload remove <x> <z> <x> <z>",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
@@ -2066,7 +2072,9 @@
 							],
 				"forceload":		[
 								"/forceload add <x> <z>",
+								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
+								"/forceload remove <x> <z> <x> <z>",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
