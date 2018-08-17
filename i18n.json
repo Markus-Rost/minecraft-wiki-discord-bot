@@ -328,6 +328,7 @@
 								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
 								"/forceload remove <x> <z> <x> <z>",
+								"/forceload remove all",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
@@ -893,6 +894,7 @@
 								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
 								"/forceload remove <x> <z> <x> <z>",
+								"/forceload remove all",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
@@ -1481,6 +1483,7 @@
 								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
 								"/forceload remove <x> <z> <x> <z>",
+								"/forceload remove all",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
@@ -2075,6 +2078,7 @@
 								"/forceload add <x> <z> <x> <z>",
 								"/forceload remove <x> <z>",
 								"/forceload remove <x> <z> <x> <z>",
+								"/forceload remove all",
 								"/forceload query",
 								"/forceload query <x> <z>"
 							],
