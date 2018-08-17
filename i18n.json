@@ -324,8 +324,10 @@
 								"/fill <Position1> <Position2> <Block> replace <Filterblock>"
 							],
 				"forceload":		[
-								"/forceload force <Position ohne Y-Koordinate>",
-								"/forceload unforce <Position ohne Y-Koordinate>"
+								"/forceload add <Position ohne Y-Koordinate>",
+								"/forceload remove <Position ohne Y-Koordinate>",
+								"/forceload query",
+								"/forceload query <Position ohne Y-Koordinate>"
 							],
 				"function":		[
 								"/function <Funktion>"
@@ -885,8 +887,10 @@
 								"/fill <from> <to> <block> replace <filter>"
 							],
 				"forceload":		[
-								"/forceload force <x> <z>",
-								"/forceload unforce <x> <z>"
+								"/forceload add <x> <z>",
+								"/forceload remove <x> <z>",
+								"/forceload query",
+								"/forceload query <x> <z>"
 							],
 				"function":		[
 								"/function <name>"
@@ -1469,8 +1473,10 @@
 								"/fill <de> <à> <bloc> replace <filtre>"
 							],
 				"forceload":		[
-								"/forceload force <x> <z>",
-								"/forceload unforce <x> <z>"
+								"/forceload add <x> <z>",
+								"/forceload remove <x> <z>",
+								"/forceload query",
+								"/forceload query <x> <z>"
 							],
 				"function":		[
 								"/function <nom>"
@@ -2059,8 +2065,10 @@
 								"/fill <from> <to> <block> replace <filter>"
 							],
 				"forceload":		[
-								"/forceload force <x> <z>",
-								"/forceload unforce <x> <z>"
+								"/forceload add <x> <z>",
+								"/forceload remove <x> <z>",
+								"/forceload query",
+								"/forceload query <x> <z>"
 							],
 				"function":		[
 								"/function <name>"
