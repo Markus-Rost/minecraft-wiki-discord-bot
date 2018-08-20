@@ -392,14 +392,15 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 
 function cmd_info(lang, msg, args, line) {
 	if ( lang == i18n.de ) {
-		if ( msg.channel.type == 'text' && msg.channel.permissionsFor(client.user).has('MANAGE_ROLES') && msg.guild.roles.find('name', 'Entwicklungsversion') ) {
-			if ( msg.member.roles.find('name', 'Entwicklungsversion') ) {
-				msg.member.removeRole( msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
+		var role = msg.guild.roles.find( arole => arole.name == 'Entwicklungsversion' );
+		if ( msg.channel.type == 'text' && msg.channel.permissionsFor(client.user).has('MANAGE_ROLES') && role ) {
+			if ( msg.member.roles.has(role.id) ) {
+				msg.member.removeRole( role, msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
 				console.log( msg.member.displayName + ' wird nun nicht mehr bei neuen Entwicklungsversionen benachrichtigt.' );
 				msg.react('🔕');
 			}
 			else {
-				msg.member.addRole( msg.member.guild.roles.find('name', 'Entwicklungsversion'), msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
+				msg.member.addRole( role, msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
 				console.log( msg.member.displayName + ' wird nun bei neuen Entwicklungsversionen benachrichtigt.' );
 				msg.react('🔔');
 			}
@@ -419,7 +420,7 @@ function cmd_serverlist(lang, msg, args, line) {
 		var guilds = client.guilds;
 		var serverlist = 'Ich befinde mich aktuell auf ' + guilds.size + ' Servern:\n\n';
 		guilds.forEach( function(guild) {
-			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + ' (' + guild.id + ')\n\n';
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find( channel => channel.type == 'text' ).toString() + ' (' + guild.id + ')\n\n';
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
 	} else if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '> permissions' ) {
@@ -432,7 +433,7 @@ function cmd_serverlist(lang, msg, args, line) {
 				if ( perm[1] ) perms += perm[0] + ', ';
 			} );
 			perms = perms.substr(0, perms.length -2);
-			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + perms + '\n\n';
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find( channel => channel.type == 'text' ).toString() + perms + '\n\n';
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
 	} else if ( msg.author.id == process.env.owner && args.join(' ') == 'list all <@' + client.user.id + '> members' ) {
@@ -447,7 +448,7 @@ function cmd_serverlist(lang, msg, args, line) {
 				} );
 			}
 			members = members.substr(0, members.length -2);
-			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + members + '\n\n';
+			serverlist += '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find( channel => channel.type == 'text' ).toString() + members + '\n\n';
 		} );
 		msg.author.send( serverlist, {split:{char:'\n\n'}} );
 	} else if ( msg.channel.type != 'text' || !pause[msg.guild.id] ) {
@@ -842,14 +843,14 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 	if ( oldm.guild.id in langs ) lang = langs[oldm.guild.id];
 	if ( oldm.guild.me.permissions.has('MANAGE_ROLES') && oldm.voiceChannelID != newm.voiceChannelID ) {
 		if ( oldm.voiceChannel ) {
-			var oldrole = oldm.guild.roles.find('name', lang.voice.channel + ' – ' + oldm.voiceChannel.name);
+			var oldrole = oldm.guild.roles.find( role => role.name == lang.voice.channel + ' – ' + oldm.voiceChannel.name );
 			if ( oldrole && oldrole.comparePositionTo(oldm.guild.me.highestRole) < 0 ) {
 				oldm.removeRole( oldrole, lang.voice.left.replace( '%1$s', oldm.displayName ).replace( '%2$s', oldm.voiceChannel.name ) );
 				console.log( oldm.guild.name + ': ' + oldm.displayName + ' hat den Sprachkanal "' + oldm.voiceChannel.name + '" verlassen.' );
 			}
 		}
 		if ( newm.voiceChannel ) {
-			var newrole = newm.guild.roles.find('name', lang.voice.channel + ' – ' + newm.voiceChannel.name);
+			var newrole = newm.guild.roles.find( role => role.name == lang.voice.channel + ' – ' + newm.voiceChannel.name );
 			if ( newrole && newrole.comparePositionTo(newm.guild.me.highestRole) < 0 ) {
 				newm.addRole( newrole, lang.voice.join.replace( '%1$s', newm.displayName ).replace( '%2$s', newm.voiceChannel.name ) );
 				console.log( newm.guild.name + ': ' + newm.displayName + ' hat den Sprachkanal "' + newm.voiceChannel.name + '" betreten.' );
@@ -860,12 +861,12 @@ client.on('voiceStateUpdate', (oldm, newm) => {
 
 
 client.on('guildCreate', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + ' (' + guild.id + ')' ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde zu einem Server hinzugefügt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find( channel => channel.type == 'text' ).toString() + ' (' + guild.id + ')' ) );
 	console.log( 'Ich wurde zu einem Server hinzugefügt.' );
 });
 
 client.on('guildDelete', guild => {
-	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find('type', 'text').toString() + ' (' + guild.id + ')' ) );
+	client.fetchUser(process.env.owner).then( owner => owner.send( 'Ich wurde von einem Server entfernt:\n\n' + '"' + guild.toString() + '" von ' + guild.owner.toString() + ' mit ' + guild.memberCount + ' Mitgliedern\n' + guild.channels.find( channel => channel.type == 'text' ).toString() + ' (' + guild.id + ')' ) );
 	console.log( 'Ich wurde von einem Server entfernt.' );
 });
 
