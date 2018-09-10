@@ -130,7 +130,6 @@
 				{ "cmd": "poll <Frage als Freitext>", "desc": "Ich erstelle eine Umfrage und reagiere mit <:support:448222377009086465> und <:oppose:448222455425794059>.", "hide": true, "admin": true },
 				{ "cmd": "poll <Emoji> [<Emoji> ...] <Frage als Freitext>", "desc": "Ich erstelle eine Umfrage und reagiere mit den angegebenen Antworten.", "hide": true, "admin": true },
 				{ "cmd": "test", "desc": "Wenn ich gerade aktiv bin, werde ich antworten! Sonst nicht." },
-				{ "cmd": "uwmc <Seitenname>", "desc": "Ich antworte mit einem Link zu der angegebenen Seite im Unlimitedworld-Forum." },
 				{ "cmd": "invite", "desc": "Ich antworte mit einem Invite-Link für den Server des deutschen Minecraft Wiki." },
 				{ "cmd": "say <Nachricht>", "desc": "Ich schreibe die angegebene Nachricht.", "admin": true },
 				{ "cmd": "say alarm <Nachricht>", "desc": "Ich schreibe die angegebene Nachricht bereits vorformatiert: 🚨 **<Nachricht>** 🚨", "admin": true },
@@ -590,8 +589,7 @@
 		"link": "minecraft",
 		"aliase": {
 			"technik": "none",
-			"en": "none",
-			"uwmc": "none"
+			"en": "none"
 		},
 		"missingperm": "I'm missing some permissions for this command:",
 		"bug": {
@@ -1166,7 +1164,6 @@
 		"link": "minecraft-fr",
 		"aliase": {
 			"technik": "none",
-			"uwmc": "none",
 			"sondage": "poll",
 			"aide": "help",
 			"commande": "command"
@@ -1755,7 +1752,6 @@
 		"link": "minecraft-pl",
 		"aliase": {
 			"technik": "none",
-			"uwmc": "none",
 			"komenda": "command",
 			"pomoc": "help",
 			"ankieta": "poll",
