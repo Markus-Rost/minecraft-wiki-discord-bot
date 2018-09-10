@@ -61,7 +61,6 @@ var cmdmap = {
 	test: cmd_test,
 	technik: cmd_technik,
 	en: cmd_en,
-	uwmc: cmd_uwmc,
 	invite: cmd_invite,
 	stop: cmd_stop,
 	pause: cmd_pause,
@@ -204,10 +203,6 @@ function cmd_technik(lang, msg, args, line) {
 
 function cmd_en(lang, msg, args, line) {
 	cmd_link(lang, msg, args.join(' '), 'minecraft', ' en ');
-}
-
-function cmd_uwmc(lang, msg, args, line) {
-	msg.channel.send( 'https://uwmc.de/' + args.join('-') );
 }
 
 function cmd_invite(lang, msg, args, line) {
