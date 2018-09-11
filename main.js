@@ -42,7 +42,8 @@ var langs = {
 	'467358937084198922': i18n.de,
 	'472407021946273792': i18n.de,
 	'478183917472710657': i18n.de,
-	'486802042765967363': i18n.de
+	'486802042765967363': i18n.de,
+	'488261550310817842': i18n.de
 }
 
 var pause = {};
@@ -331,7 +332,7 @@ function cmd_link(lang, msg, title, wiki, cmd) {
 					if ( body.query.pages ) {
 						if ( body.query.pages['-1'] && body.query.pages['-1'].missing != undefined ) {
 							request( {
-								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|10|12|14|10000|10002|10004|10006|10008|10010&srsearch=' + encodeURI( title ) + '&srlimit=1',
+								uri: 'https://' + wiki + '.gamepedia.com/api.php?action=query&format=json&list=search&srnamespace=0|4|12|14|10000|10002|10004|10006|10008|10010&srsearch=' + encodeURI( title ) + '&srlimit=1',
 								json: true
 							}, function( srerror, srresponse, srbody ) {
 								if ( srerror || !srresponse || !srbody || !srbody.query || ( !srbody.query.search[0] && srbody.query.searchinfo.totalhits != 0 ) ) {
