@@ -7,43 +7,15 @@ var client = new Discord.Client( {disableEveryone:true} );
 
 var i18n = JSON.parse(fs.readFileSync('i18n.json', 'utf8'));
 var langs = {
-	'default': i18n.en,
-	'251008837983797259': i18n.de,
-	'287878955078254592': i18n.de,
-	'322961504922238978': i18n.de,
-	'334056630411067393': i18n.de,
-	'373496151028006913': i18n.de,
-	'387970842262241280': i18n.de,
+	'default': i18n.de,
 	'391913321747447808': i18n.de,
 	'393341740217532428': i18n.de,
-	'396940651218075649': i18n.de,
 	'410395277317373953': i18n.pl,
-	'411860234131472385': i18n.de,
 	'417255782820872192': i18n.de,
 	'422480985603571712': i18n.en,
-	'425692306511888384': i18n.de,
-	'428239221074165760': i18n.de,
-	'430968211417202688': i18n.de,
-	'433718362506395648': i18n.de,
-	'434423926706405377': i18n.de,
-	'439427347771293717': i18n.en,
-	'443042769922031617': i18n.de,
 	'447104142729674753': i18n.en,
-	'448549361119395850': i18n.de,
-	'449166712190009344': i18n.de,
 	'450428509874159616': i18n.fr,
-	'452113393113890818': i18n.de,
-	'452404998295257088': i18n.de,
-	'453885282694201345': i18n.de,
-	'454296882982944768': i18n.de,
-	'462277577298542604': i18n.de,
-	'466259172430970890': i18n.de,
-	'466908128282148884': i18n.de,
-	'467358937084198922': i18n.de,
-	'472407021946273792': i18n.de,
-	'478183917472710657': i18n.de,
-	'486802042765967363': i18n.de,
-	'488261550310817842': i18n.de
+	'464084451165732868': i18n.en
 }
 
 var pause = {};
@@ -209,7 +181,7 @@ function cmd_en(lang, msg, args, line) {
 function cmd_invite(lang, msg, args, line) {
 	if ( args.length && args[0].toLowerCase() == 'minecraft' ) {
 		msg.reply( lang.invite.minecraft + '\nhttps://discord.gg/minecraft' );
-	} else if ( args.length && mention(args[0]) ) {
+	} else if ( args.length && mention(args[0]) && msg.author.id == process.env.owner ) {
 		client.generateInvite(268954689).then( invite => msg.reply( lang.invite.bot + '\n<' + invite + '>' ) );
 	} else {
 		msg.reply( lang.invite.wiki + '\n' + lang.invite.link );
