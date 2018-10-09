@@ -23,7 +23,7 @@ var pause = {};
 
 client.on('ready', () => {
 	console.log( 'Erfolgreich als ' + client.user.username + ' angemeldet!' );
-	client.user.setActivity('Minecraft Wiki');
+	client.user.setActivity('This bot will be removed soon!');
 });
 
 
@@ -803,6 +803,7 @@ client.on('message', msg => {
 	var author = msg.author;
 	var channel = msg.channel;
 	if ( cont.toLowerCase().includes( process.env.prefix ) && !msg.webhookID && author.id != client.user.id && ( channel.type != 'text' || channel.permissionsFor(client.user).has(['SEND_MESSAGES','ADD_REACTIONS','USE_EXTERNAL_EMOJIS']) ) ) {
+		if ( admin(msg) ) channel.send('⚠ **This bot will be removed soon!** ⚠\nPlease invite the new bot and set you wiki and language as it is right now.\n<https://discordapp.com/oauth2/authorize?client_id=461189216198590464&permissions=268954689&scope=bot>');
 		var lang = langs['default'];
 		if ( channel.type == 'text' && msg.guild.id in langs ) lang = langs[msg.guild.id];
 		var invoke = cont.split(' ')[1] ? cont.split(' ')[1].toLowerCase() : '';
